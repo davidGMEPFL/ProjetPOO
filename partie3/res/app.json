@@ -8,7 +8,7 @@
       },
 	"background" : "sand.png",
 	"debug background" : "sand.png",
-    "size"       : 1500
+    "size"       : 1200
     },
     "generator" : {
         "nutriment" : {

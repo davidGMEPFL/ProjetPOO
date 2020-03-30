@@ -5,7 +5,7 @@ Lab::Lab():
     Petri(getApp().getCentre(),0.5*.95*getApp().getLabSize().x)
 {}
 
-void Lab::drawOn(sf::RenderTarget& targetWindow) const{
+void Lab::drawOn(sf::RenderTarget& targetWindow) {
     Petri.drawOn(targetWindow);
 }
 
@@ -25,7 +25,7 @@ bool Lab::addNutriment(Nutriment* nut){
 
 
 double Lab::getTemperature(){
-    Petri.getTemperature();
+    return Petri.getTemperature();
 }
 void Lab::increaseTemperature(){
     Petri.increaseTemperature();

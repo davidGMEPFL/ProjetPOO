@@ -10,7 +10,7 @@ Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
 Quantity Nutriment::takeQuantity(Quantity qtTaken){
     Quantity ret(nbNutriments);
     if((nbNutriments-=qtTaken)>=0) ret=qtTaken;
-    else if(nbNutriments<0) nbNutriments=0;
+    else nbNutriments=0;
 
     // retournera la quantité qui a pu être prélevée
     rayon=nbNutriments;
@@ -28,7 +28,7 @@ void Nutriment::setQuantity(Quantity const& newQt){
     rayon=nbNutriments;
 }
 
-void Nutriment::drawOn(sf::RenderTarget& target) const{
+void Nutriment::drawOn(sf::RenderTarget& target) {
     auto const& texture = getAppTexture(getConfig()["texture"].toString());
     auto nutrimentSprite = buildSprite(position, rayon, texture);
     // adapte la taille du Sprite au rayon du nutriment:

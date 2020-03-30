@@ -7,5 +7,5 @@ class NutrimentA: public Nutriment
 {
 public:
     NutrimentA(const Quantity&,const Vec2d&);
-    j::Value const& getConfig() override;
+    j::Value const getConfig() override;
 };

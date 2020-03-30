@@ -12,7 +12,7 @@ public:
     PetriDish Petri;
 public:
     Lab();
-    void drawOn(sf::RenderTarget&) const;
+    void drawOn(sf::RenderTarget&) ;
     void update(sf::Time);
     void reset();
     bool contains(const CircularBody&);

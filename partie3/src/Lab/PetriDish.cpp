@@ -37,7 +37,7 @@ void PetriDish::update(sf::Time dt){
     //fait évoluer toutes les bactéries de l'assiette à chaque pas de temps
     for (auto& objet : Nut) objet->update(dt);
 }
-void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
+void PetriDish::drawOn(sf::RenderTarget& targetWindow)  {
     //dessine sur une fenêtre graphique le contour de l'assiette
     sf::Color couleur(sf::Color::Black);
     double epaisseur(5);
