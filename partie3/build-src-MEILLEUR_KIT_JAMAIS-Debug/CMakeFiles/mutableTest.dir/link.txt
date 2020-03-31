@@ -1,3 +1,0 @@
-C:\Qt\Tools\CMake_64\bin\cmake.exe -E remove -f CMakeFiles\mutableTest.dir/objects.a
-C:\Qt\Tools\mingw730_64\bin\ar.exe cr CMakeFiles\mutableTest.dir/objects.a @CMakeFiles\mutableTest.dir\objects1.rsp
-C:\Qt\Tools\mingw730_64\bin\g++.exe -Wall -g   -Wl,--whole-archive CMakeFiles\mutableTest.dir/objects.a -Wl,--no-whole-archive  -o mutableTest.exe -Wl,--out-implib,libmutableTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\mutableTest.dir\linklibs.rsp

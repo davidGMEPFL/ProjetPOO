@@ -11,6 +11,7 @@ PetriDish::PetriDish(Vec2d position,double rayon):
 bool PetriDish::addBacterium(Bacterium*){
     //permettra de peupler l'assiette
     //bool sert à savoir si l'on a réussit à placer la bactérie
+    return true;
 }
 bool PetriDish::addNutriment(Nutriment* nut){
     //place des nutriments dans l'assiette

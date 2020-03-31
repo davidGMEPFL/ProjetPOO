@@ -3,8 +3,8 @@
 
 MutableNumber::MutableNumber(const double& valeur_, const double& proba_,
                              const double& sigma,
-                             const double& borneinf=0.0, const double& bornesup=0.0,
-                             const bool&  if_borne_inf_=false,const bool& if_borne_sup_=false)
+                             const bool&  if_borne_inf_, const double& borneinf,
+                             const bool& if_borne_sup_,const double& bornesup)
     : proba_mutation(proba_),
       if_borne_inf(if_borne_inf_), if_borne_sup(if_borne_sup_),
       borne_inf(borneinf), borne_sup(bornesup),
@@ -45,24 +45,24 @@ void MutableNumber::mutate() {
 
 MutableNumber MutableNumber::probability(double initialValue,
                                          double mutationProbability, double sigma){
-    return MutableNumber (initialValue, mutationProbability, sigma, 0., 1. ,true, true);
+    return MutableNumber (initialValue, mutationProbability, sigma, true, 0. , true, 1.);
 
 }
 
 MutableNumber MutableNumber::probability(j::Value const& config){
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
-            config["sigma"].toDouble(), 0, 1 ,true, true);
+            config["sigma"].toDouble(), true, 0. , true, 1.);
 
 }
 
 MutableNumber MutableNumber::positive(double initialValue,
                                       double mutationProbability, double sigma,
-                                      bool hasMax=false, double max=0.){
-    return MutableNumber (initialValue, mutationProbability, sigma, max, 0. ,true, hasMax);
+                                      bool hasMax, double max){
+    return MutableNumber (initialValue, mutationProbability, sigma, true, 0., hasMax, max);
 }
 
 
-MutableNumber MutableNumber::positive(j::Value const& config, bool hasMax=false, double max=0.){
+MutableNumber MutableNumber::positive(j::Value const& config, bool hasMax, double max){
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
-            config["sigma"].toDouble(), max, 0. ,true, hasMax);
+            config["sigma"].toDouble(), true, 0, hasMax, max);
 }

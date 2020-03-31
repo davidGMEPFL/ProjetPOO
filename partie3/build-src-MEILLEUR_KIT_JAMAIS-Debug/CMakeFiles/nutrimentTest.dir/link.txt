@@ -1,3 +1,0 @@
-C:\Qt\Tools\CMake_64\bin\cmake.exe -E remove -f CMakeFiles\nutrimentTest.dir/objects.a
-C:\Qt\Tools\mingw730_64\bin\ar.exe cr CMakeFiles\nutrimentTest.dir/objects.a @CMakeFiles\nutrimentTest.dir\objects1.rsp
-C:\Qt\Tools\mingw730_64\bin\g++.exe -Wall -g   -Wl,--whole-archive CMakeFiles\nutrimentTest.dir/objects.a -Wl,--no-whole-archive  -o nutrimentTest.exe -Wl,--out-implib,libnutrimentTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\nutrimentTest.dir\linklibs.rsp

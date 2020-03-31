@@ -1,3 +1,0 @@
-C:\Qt\Tools\CMake_64\bin\cmake.exe -E remove -f CMakeFiles\circularBodyTest.dir/objects.a
-C:\Qt\Tools\mingw730_64\bin\ar.exe cr CMakeFiles\circularBodyTest.dir/objects.a @CMakeFiles\circularBodyTest.dir\objects1.rsp
-C:\Qt\Tools\mingw730_64\bin\g++.exe -Wall -g   -Wl,--whole-archive CMakeFiles\circularBodyTest.dir/objects.a -Wl,--no-whole-archive  -o circularBodyTest.exe -Wl,--out-implib,libcircularBodyTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\circularBodyTest.dir\linklibs.rsp

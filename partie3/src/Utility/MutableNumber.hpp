@@ -13,8 +13,9 @@ private :
     double ecart_type;
 
 public:
-    MutableNumber(const double&, const double&, const double&, const double&,
-                  const double&,  const bool&, const bool&);
+    MutableNumber(const double& valeur_, const double& proba_, const double& sigma,
+                                 const bool&  if_borne_inf_=false, const double& borneinf=0.0,
+                                 const bool& if_borne_sup_=false,const double& bornesup=0.0);
 
     MutableNumber(j::Value const&);
 
@@ -25,8 +26,8 @@ public:
 
     static MutableNumber probability(double initialValue, double mutationProbability, double sigma);
     static MutableNumber probability(j::Value const& config);
-    static MutableNumber positive(double initialValue, double mutationProbability, double sigma, bool hasMax, double max);
-    static MutableNumber positive(j::Value const& config, bool hasMax, double max);
+    static MutableNumber positive(double initialValue, double mutationProbability, double sigma, bool hasMax=false, double max=0.);
+    static MutableNumber positive(j::Value const& config, bool hasMax=false, double max=0.);
 
 
 };
