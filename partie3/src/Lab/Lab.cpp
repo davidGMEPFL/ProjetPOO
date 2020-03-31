@@ -10,10 +10,12 @@ void Lab::drawOn(sf::RenderTarget& targetWindow) const{
 }
 
 void Lab::update(sf::Time dt){
+    Generator.update(dt);
     Petri.update(dt);
 }
 void Lab::reset(){
     Petri.reset();
+    Generator.reset();
 }
 
 bool Lab::contains(const CircularBody& autre){
@@ -22,6 +24,8 @@ bool Lab::contains(const CircularBody& autre){
 bool Lab::addNutriment(Nutriment* nut){
     return Petri.addNutriment(nut);
 }
+
+
 
 
 double Lab::getTemperature(){

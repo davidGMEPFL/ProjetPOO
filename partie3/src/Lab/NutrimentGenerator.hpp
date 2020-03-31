@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 
-class NutrimentGenerator : public
+class NutrimentGenerator
 {
     sf::Time TimeLastGen;
 public:
