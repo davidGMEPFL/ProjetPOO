@@ -82,8 +82,8 @@ find_package(SFML 2.5 QUIET COMPONENTS graphics window system)
       #target_link_libraries(application sfml-graphics sfml-window sfml-system)
 	
       #Units tests:
-#      add_executable (mutableTest  ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
-#      target_link_libraries(mutableTest sfml-graphics sfml-window sfml-system)
+      add_executable (mutableTest  ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
+      target_link_libraries(mutableTest sfml-graphics sfml-window sfml-system)
       add_executable (circularBodyTest  ${TEST_DIR}/UnitTests/CircularBodyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
       target_link_libraries(circularBodyTest sfml-graphics sfml-window sfml-system)
       add_executable (vec2dTest  ${TEST_DIR}/UnitTests/Vec2dTest.cpp ${CACHE_SOURCES})
@@ -115,8 +115,8 @@ find_package(SFML 2.5 QUIET COMPONENTS graphics window system)
             #target_link_libraries(application ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
 	    #Units tests:
-#	    add_executable (mutableTest ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
-#            target_link_libraries(mutableTest ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+            add_executable (mutableTest ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
+            target_link_libraries(mutableTest ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
             add_executable (circularBodyTest ${TEST_DIR}/UnitTests/CircularBodyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
             target_link_libraries(circularBodyTest ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 	    add_executable (vec2dTest ${TEST_DIR}/UnitTests/Vec2dTest.cpp ${CACHE_SOURCES})
