@@ -39,7 +39,7 @@
 ##Q2.2 Quelles méthodes vous semble t-il judicieux de déclarer comme const?
 
 - La méthode drawOn doit être déclarée constante car elle ne doit pas modifier les attributs de l'instance courante. 
-- Les méthodes reset, addBacterium et addNutriments ne sont pas const car elles modifient le vecteur de pointeur. 
+- Les méthodes reset, addBacterium et addNutriments ne sont pas const car elles modifient le vecteur de pointeurs. 
 - La méthode update n'a pas à priori besoin d'être déclarée const car elle pourraient elle aussi influencer le vecteur de pointeur, selon comme on décide de la modifier par la suite.
 
 *************************************************
@@ -76,40 +76,56 @@
 
 - Pour améliorer la lisibilité du code: la fonction des variables initialisées avec ce type sera évidente à chaque fois. 
 - Cela peut aussi permettre de rajouter une sécurité en contraignant l'argument d'une méthode ou d'une fonction à être du type Quantity, et ainsi ne pas mélanger différentes variables.
-
+- Si on décide de changer le type de Quantity et de le rendre int ou uint, par exemple, il suffira de le changer une fois dans Types, et on n'aura pas besoin de chercher toutes les utilisationss.
 
 
 *************************************************
 ##Q2.9     quelle méthode doit-elle être ajoutée à la classe Lab pour permettre l'ajout de nutriments à l'assiette de Petri ? Quelle méthode existante doit être modifiée pour permettre le dessin des sources de nutriments nouvellement ajoutées?
 
-- comment permettre à Nutriment::update de connaître la température de l'assiette de Petri ?
-
+- Pour ajouterr des nutriments à l'assiette de petri, on fait simplement un appel à la méthode addNutriments de l'assiette de petri du lab. 
+- Dans la méthode `petriDish::drawOn` on passe un appel 
 
 *************************************************
 ##Q2.10 comment permettre à Nutriment::update de connaître la température de l'assiette de Petri ?
 
-- en appelant dans Application la méthode getTemperature, et en utilisant la température ainsi trouvée en paramètre de la méthode update
+- On fait un appel, par la méthode Application::getAppEnv au laboratoire courant, dans lequel on cherche la méthode petriDish::getTemperature de l'assiette de Petri. 
 
 
 
 *************************************************
 ##Q2.11 Quelles méthodes de Lab et de PetriDish faut-il modifier et comment pour que la croissance des nutriments deviennent visible lors de l'exécution du test graphique ?
 
-- il faut que Lab::update appelle PetriDish::update de son attribut PetriDish. Et il faut que PetriDish::update appelle à son tour la méthode Nutriment::update pour chacun des nutriments pointés dans son vector de pointeurs. 
+- il faut que Lab::update appelle la méthode PetriDish::update de son attribut PetriDish. Et il faut que PetriDish::update appelle à son tour la méthode Nutriment::update pour chacun des nutriments pointés dans son vector de pointeurs. 
 
 
 *************************************************
 ##Q2.12 Quelles méthodes devez vous ajouter et dans quelles classes pour que appuyer sur 'PgUp' ou 'PgDn' permette respectivement d'augmenter ou diminuer la température de l'assiette? Quelles méthode(s) devez vous également ajouter et à quelle(s) classe(s) pour que les touches 'R' et 'C' permettent aussi (en plus de ce qu'elles font) de réinitialiser l'attribut température?
 
-?
-?
-
+- Pour que les touches 'PgUp' ou 'PgDn'fonctionnent, il faut coder des méthodes `increaseTemperature()` et `decreaseTemperature()` dans les classes Lab (ici, elle ne fera qu'un appel à la méthode de petriDish) et petriDish (incrémentera ou décrémentera la température d'une valeur delta). 
+- Pour les touches 'R' et 'C', on code une méthode `petriDish::resetTemp()` qui ramène la température à sa valeur par défaut (et `Lab::resetTemp()` qui appel cette méthode). On ajoute dans la méthode `reset` de l'assiette de Petri un appel à `resetTemp()` par logique de réinitialisation, et pour la touche 'C', on fait un appel à la méthode `resetTemp()` du laboratoire courant. 
 
 
 *************************************************
 ##Q3.1     Quelles classes de votre conception actuelle serait-il bon de faire hériter des sous-classes <t>Updatable<t> et <t>Drawable<t>? Quel plus cela amène t-il à la conception ?
 
-- les classes Lab, Nutriments et PetriDish ont intérêt à être défini comme des sous-classes de ces classes-ci. Ceci permet de s'assurer que les classes contiennent une méthode update et drawOn const valide (puisque ce sont des classes abstraites), et cela améliore la compréhension du code (on sait directement que les classes doivent pouvoir être déssinées et actualisées). Cela permet également de rendre toutes les méthodes drawOn et update virtuelles.
+- Les classes Lab, Nutriments et PetriDish ont intérêt à être définies comme des sous-classes de ces classes-ci. Ceci permet de s'assurer que les classes contiennent une méthode update et drawOn const valide (puisque ce sont des classes abstraites), et cela améliore la compréhension du code (on sait directement que les classes doivent pouvoir être déssinées et actualisées). Cela permet également de rendre toutes les méthodes drawOn et update virtuelles.
+
+
+*************************************************
+##Q3.2     Qu'implique cette contrainte au niveau des définitions de drawOn et update?
+
+- Ces 2 méthodes ne sont pas redéfinies dans les sous classes. Le changement tient au choix des paramètres dans `appConfig()`.
+
+*************************************************
+##Q3.3     Comment doit-être codée la méthode getConfig dans la hiérarchie de classes pour satisfaire cette contrainte ?
+
+- On fera varier le chemin renvoyé entre les paramètres des NutrimentsA ou NutrimentsB. On utilise donc le polymorphisme en rendant `getConfig()` virtuelle pure, et qui en fonction de la classe de l'objet pointé par `*this` (dans `drawOn` et `update`), renverra soit à la méthode `NutrimentA::getConfig()` et `NutrimentB::getConfig()`.
+
+
+*************************************************
+##Q3.4     Comment doit-être codée la méthode getConfig dans la hiérarchie de classes pour satisfaire cette contrainte ?
+
+- Le polymorphisme permet de choisir le "classeur" de paramètres appropriés pour chaque type de Nutriments, en fonction de la classe de l'objet pointé dans le vecteur de l'assiette de Petri. 
 
 
 *************************************************

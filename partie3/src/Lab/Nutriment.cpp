@@ -28,7 +28,7 @@ void Nutriment::setQuantity(Quantity const& newQt){
     rayon=nbNutriments;
 }
 
-void Nutriment::drawOn(sf::RenderTarget& target) {
+void Nutriment::drawOn(sf::RenderTarget& target) const{
     auto const& texture = getAppTexture(getConfig()["texture"].toString());
     auto nutrimentSprite = buildSprite(position, rayon, texture);
     // adapte la taille du Sprite au rayon du nutriment:

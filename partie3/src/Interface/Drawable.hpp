@@ -19,7 +19,7 @@ class Drawable
 public:
     virtual ~Drawable() = default;
 
-    virtual void drawOn(sf::RenderTarget& target) = 0;
+    virtual void drawOn(sf::RenderTarget& target) const = 0;
 };
 
 #endif // INFOSV_DRAWABLE_HPP

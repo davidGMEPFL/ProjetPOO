@@ -5,6 +5,6 @@ NutrimentA::NutrimentA(const Quantity& nbNutriments,const Vec2d& position):
     Nutriment(nbNutriments,position)
 {}
 
-j::Value const NutrimentA::getConfig(){
+j::Value NutrimentA::getConfig() const{
     return getAppConfig()["nutriments"]["A"];
 }

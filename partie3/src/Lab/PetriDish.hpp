@@ -30,7 +30,7 @@ public:
     void decreaseTemperature();
     void resetTemp();
 
-    void drawOn(sf::RenderTarget& targetWindow);
+    void drawOn(sf::RenderTarget& targetWindow) const;
 
     void reset();
 

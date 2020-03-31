@@ -5,7 +5,7 @@ Lab::Lab():
     Petri(getApp().getCentre(),0.5*.95*getApp().getLabSize().x)
 {}
 
-void Lab::drawOn(sf::RenderTarget& targetWindow) {
+void Lab::drawOn(sf::RenderTarget& targetWindow) const{
     Petri.drawOn(targetWindow);
 }
 
