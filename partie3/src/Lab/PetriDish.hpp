@@ -10,6 +10,7 @@
 
 class PetriDish: public CircularBody, public Updatable, public Drawable
 {
+protected:
     std::vector<Nutriment*> Nut;
     std::vector<Bacterium*> Bact;
     double Temp;
@@ -22,6 +23,7 @@ public:
 
     //Methodes
     bool addBacterium(Bacterium*);
+    Nutriment* getNutrimentColliding(CircularBody const& body);
     bool addNutriment(Nutriment*);
 
     void update(sf::Time dt);

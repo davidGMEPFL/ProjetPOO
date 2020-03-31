@@ -11,7 +11,7 @@ void MutableColor::mutate(){
 }
 
 
-sf::Color MutableColor::get() {
+sf::Color MutableColor::get() const {
     return { static_cast<sf::Uint8>(RGBA[0].get() * 255),
              static_cast<sf::Uint8>(RGBA[1].get() * 255),
              static_cast<sf::Uint8>(RGBA[2].get() * 255),

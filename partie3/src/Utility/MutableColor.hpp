@@ -14,7 +14,7 @@ public:
     MutableColor(j::Value const& config);
 
     void mutate();
-    sf::Color get();
+    sf::Color get() const;
 };
 
 

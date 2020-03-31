@@ -55,3 +55,6 @@ void Nutriment::update(sf::Time dt){
     rayon=nbNutriments;
 }
 
+bool Nutriment::testEpuise(){
+    return nbNutriments==0.;
+}

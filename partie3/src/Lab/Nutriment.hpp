@@ -13,7 +13,12 @@ public:
 
     Quantity takeQuantity(Quantity);
     void setQuantity(Quantity const&);
+
+
     void drawOn(sf::RenderTarget& target) const;
+
     void update(sf::Time dt);
+    bool testEpuise();
+
     virtual j::Value getConfig() const =0;
 };

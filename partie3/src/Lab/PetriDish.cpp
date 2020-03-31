@@ -8,11 +8,20 @@ PetriDish::PetriDish(Vec2d position,double rayon):
 {}
 
 //Methodes
-bool PetriDish::addBacterium(Bacterium*){
+bool PetriDish::addBacterium(Bacterium* bact){
     //permettra de peupler l'assiette
     //bool sert à savoir si l'on a réussit à placer la bactérie
-    return true;
+    if(contains(*bact)) Bact.push_back(bact);
+    return contains(*bact);
 }
+Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body){
+    for(auto const nut : Nut) {
+        if (nut->isColliding(body))
+            return nut;
+    }
+    return nullptr;
+}
+
 bool PetriDish::addNutriment(Nutriment* nut){
     //place des nutriments dans l'assiette
     //bool sert à savoir si l'on a réussit à placer le nutriment
@@ -36,7 +45,17 @@ void PetriDish::resetTemp(){
 
 void PetriDish::update(sf::Time dt){
     //fait évoluer toutes les bactéries de l'assiette à chaque pas de temps
-    for (auto& objet : Nut) objet->update(dt);
+    for (auto& objet : Nut) {
+        objet->update(dt);
+        if(objet->testEpuise())objet=nullptr;
+    }
+    Nut.erase(std::remove(Nut.begin(), Nut.end(), nullptr), Nut.end());
+
+    for (auto& objet : Bact) {
+        objet->update(dt);
+        if(objet->testMort()) objet=nullptr;
+    }
+    Bact.erase(std::remove(Bact.begin(), Bact.end(), nullptr), Bact.end());
 }
 void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
     //dessine sur une fenêtre graphique le contour de l'assiette

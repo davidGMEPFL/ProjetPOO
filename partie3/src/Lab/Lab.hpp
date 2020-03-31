@@ -1,6 +1,7 @@
 #pragma once
 #include "PetriDish.hpp"
 #include "Nutriment.hpp"
+#include "Bacterium.hpp"
 #include "CircularBody.hpp"
 #include <SFML/Graphics.hpp>
 #include "Interface/Updatable.hpp"
@@ -20,10 +21,13 @@ public:
     bool contains(const CircularBody&);
 
     bool addNutriment(Nutriment*);
+    bool addBacterium(Bacterium*);
+    bool doesCollideWithDish(CircularBody const& body);
 
 // Gestion de la température de l'assiette de Petri
     double getTemperature();
     void increaseTemperature();
     void decreaseTemperature();
     void resetTemp();
+    Nutriment* getNutrimentColliding(CircularBody const& body);
 };

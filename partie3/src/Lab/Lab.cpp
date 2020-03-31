@@ -24,6 +24,9 @@ bool Lab::contains(const CircularBody& autre){
 bool Lab::addNutriment(Nutriment* nut){
     return Petri.addNutriment(nut);
 }
+bool Lab::addBacterium(Bacterium* nut){
+    return Petri.addBacterium(nut);
+}
 
 
 
@@ -39,4 +42,13 @@ void Lab::decreaseTemperature(){
 }
 void Lab::resetTemp(){
     Petri.resetTemp();
+}
+
+
+
+bool Lab::doesCollideWithDish(CircularBody const& body){
+    return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
+}
+Nutriment* Lab::getNutrimentColliding(CircularBody const& body){
+    return Petri.getNutrimentColliding(body);
 }
