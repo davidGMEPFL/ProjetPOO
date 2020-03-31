@@ -24,7 +24,8 @@ protected:
     CircularBody(const CircularBody&);         // Constructeur de copie
 
     void setPosition(const Vec2d&);
-    void setRadius(const double&);};
+    void setRadius(const double&);
+};
 
 std::ostream& operator<<(std::ostream&,const CircularBody&);
 
