@@ -17,8 +17,8 @@ public:
 	MockBacterium(Vec2d const& position)
 		: Bacterium(DEFAULT_ENERGY, position, Vec2d::fromRandomAngle(),
 					DEFAULT_RADIUS,
-					getAppConfig()["simple bacterium"]["color"])
-		{
+                    getAppConfig()["simple bacterium"]["color"])
+        {
 		}
 	
 	j::Value& getConfig() const {

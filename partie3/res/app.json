@@ -12,7 +12,7 @@
     },
     "generator" : {
         "nutriment" : {
-            "delay" : 15,
+            "delay" : 5,
             "prob" : 0.5
         }
     },
@@ -118,7 +118,7 @@
             "min" : 50
         },
         "meal" : {
-            "delay" : 0.5,
+            "delay" : 2,
             "max" : 10
         },
         "radius" : {
@@ -363,7 +363,7 @@
         "antialiasing level" : 4,
         "title" : "INFOSV Simulation",
         "simulation" : {
-	    "width":500,
+            "width":500,
             "height":500
          },
         "stats" : { "width" : 200 }

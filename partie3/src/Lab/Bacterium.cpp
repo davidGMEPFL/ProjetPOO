@@ -13,7 +13,7 @@ void Bacterium::drawOn(sf::RenderTarget& target) const{
 
     if (isDebugOn()){
         auto const text = buildText(std::to_string(int(energie)),position + Vec2d(0,-100),
-                                    getAppFont(),18,sf::Color::Black);
+                                    getAppFont(),18,sf::Color::Red);
         target.draw(text);
     }
 }

@@ -94,7 +94,7 @@ find_package(SFML 2.5 QUIET COMPONENTS graphics window system)
 #      target_link_libraries(simpleBactTest sfml-graphics sfml-window sfml-system)
 #      bacteriaTest target only valid in step 3
       add_executable (bacteriaTest  ${TEST_DIR}/GraphicalTests/BacteriaTest.cpp ${SOURCES_GFX})
-#      target_link_libraries(bacteria Test sfml-graphics sfml-window sfml-system)
+      target_link_libraries(bacteriaTest sfml-graphics sfml-window sfml-system)
       add_executable (nutrimentTest  ${TEST_DIR}/GraphicalTests/NutrimentTest.cpp ${SOURCES_GFX})
       target_link_libraries(nutrimentTest sfml-graphics sfml-window sfml-system)
       

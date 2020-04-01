@@ -13,7 +13,7 @@ MutableNumber::MutableNumber(const double& valeur_, const double& proba_,
 
 MutableNumber::MutableNumber(j::Value const& config)
     : proba_mutation(config["rate"].toDouble()),
-      if_borne_inf(config["clamp min"].toDouble()), if_borne_sup(config["clamp max"].toDouble()),
+      if_borne_inf(config["clamp min"].toBool()), if_borne_sup(config["clamp max"].toBool()),
       borne_inf(config["min"].toDouble()), borne_sup(config["max"].toDouble()),
       ecart_type(config["sigma"].toDouble())
 {

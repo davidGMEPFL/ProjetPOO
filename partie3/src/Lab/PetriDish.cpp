@@ -64,6 +64,7 @@ void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
     auto border = buildAnnulus(position, rayon, couleur, epaisseur);
     targetWindow.draw(border);
     for (auto& nutr : Nut) nutr->drawOn(targetWindow);
+    for (auto& bac : Bact) bac->drawOn(targetWindow);
 }
 void PetriDish::reset(){
     //supprime toutes les nutriments et toutes les bactéries de l'assiette
