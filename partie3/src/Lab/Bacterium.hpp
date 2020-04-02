@@ -10,6 +10,7 @@
 
 class Bacterium: public Drawable, public Updatable, public CircularBody
 {
+protected:
     MutableColor couleur;
     Vec2d direction;
     bool etat;

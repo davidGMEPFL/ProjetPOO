@@ -1,7 +1,6 @@
 #include "Bacterium.hpp"
 #include "Application.hpp"
 
-
 Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur)
     : CircularBody(position,rayon), energie(energie), direction(direction),
       couleur(couleur), abstinence(false), TimeLastMeal(sf::Time::Zero)

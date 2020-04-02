@@ -9,7 +9,7 @@ MutableNumber::MutableNumber(const double& valeur_, const double& proba_,
       if_borne_inf(if_borne_inf_), if_borne_sup(if_borne_sup_),
       borne_inf(borneinf), borne_sup(bornesup),
       ecart_type(sigma)
-{    set(valeur_);}
+{   set(valeur_) ;}
 
 MutableNumber::MutableNumber(j::Value const& config)
     : proba_mutation(config["rate"].toDouble()),
