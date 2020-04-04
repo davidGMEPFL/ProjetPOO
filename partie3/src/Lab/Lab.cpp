@@ -45,10 +45,28 @@ void Lab::resetTemp(){
 }
 
 
+double Lab::getGradientExponent(){
+    return Petri.getGradientExponent();
+}
+void Lab::increaseGradientExponent(){
+    Petri.increaseGradientExponent();
+}
+void Lab::decreaseGradientExponent(){
+    Petri.decreaseGradientExponent();
+}
+void Lab::resetGradientExponent(){
+    Petri.resetGradientExponent();
+}
+
 
 bool Lab::doesCollideWithDish(CircularBody const& body){
     return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
 }
 Nutriment* Lab::getNutrimentColliding(CircularBody const& body){
     return Petri.getNutrimentColliding(body);
+}
+
+
+double Lab::getPositionScore(const Vec2d& pos){
+    return Petri.getPositionScore(pos);
 }

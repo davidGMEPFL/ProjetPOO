@@ -6,6 +6,8 @@ class SimpleBacterium: public Bacterium, public DiffEqFunction
 {
     double t;
     double rotation;
+    double ancien_score;
+    double TimerTumble;
 public:
     SimpleBacterium(Vec2d);
     j::Value& getConfig() const;
@@ -13,13 +15,7 @@ public:
     Vec2d f(Vec2d position, Vec2d speed) const override;
     Vec2d getSpeedVector();
     void drawOn(sf::RenderTarget&) const override;
-    Bacterium* clone() const;
+    Bacterium* clone() const override;
     void update(sf::Time dt);
+    void basculement();
 };
-
-
-
-//class EquaSimpBact : public DiffEqFunction{
-//public:
-//    Vec2d f(Vec2d position, Vec2d speed) const override;
-//}

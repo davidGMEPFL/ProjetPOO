@@ -18,6 +18,7 @@ public:
                                  const bool& if_borne_sup_=false,const double& bornesup=0.0);
 
     MutableNumber(j::Value const&);
+    MutableNumber()=default;
 
     double get() const ;
     void set(double value) ;

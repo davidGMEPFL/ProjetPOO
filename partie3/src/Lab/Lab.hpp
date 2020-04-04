@@ -29,5 +29,20 @@ public:
     void increaseTemperature();
     void decreaseTemperature();
     void resetTemp();
+
+
+    double getGradientExponent();
+    void increaseGradientExponent();
+    void decreaseGradientExponent();
+    void resetGradientExponent();
+
+
+
+
     Nutriment* getNutrimentColliding(CircularBody const& body);
+
+
+    double getPositionScore(const Vec2d&);
+
+
 };

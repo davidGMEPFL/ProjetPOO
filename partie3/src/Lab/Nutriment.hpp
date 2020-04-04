@@ -7,12 +7,16 @@
 #include "Interface/Drawable.hpp"
 
 class Nutriment : public CircularBody, public Updatable, public Drawable {
+protected:
     Quantity nbNutriments;
 public:
     Nutriment(const Quantity&,const Vec2d&);
 
     Quantity takeQuantity(Quantity);
     void setQuantity(Quantity const&);
+
+
+    double getScoreNutriment(const Vec2d&);
 
 
     void drawOn(sf::RenderTarget& target) const;

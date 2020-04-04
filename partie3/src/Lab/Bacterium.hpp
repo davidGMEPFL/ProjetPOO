@@ -37,4 +37,7 @@ public:
     sf::Time getTempsDelay();
     double EnergieDepl();
     double mealMax();
+
+    void addProperty(const std::string&, MutableNumber);
+    MutableNumber& getProperty(const std::string&);
 };

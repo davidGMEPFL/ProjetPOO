@@ -43,7 +43,7 @@ void Nutriment::drawOn(sf::RenderTarget& target) const{
 }
 
 void Nutriment::update(sf::Time dt){
-    double temp(getAppEnv().Petri.getTemperature());
+    double temp(getAppEnv().getTemperature());
     auto const& speed=getConfig()["growth"]["speed"].toDouble();
     auto const& minTemp=getConfig()["growth"]["min temperature"].toDouble();
     auto const& maxTemp=getConfig()["growth"]["max temperature"].toDouble();
@@ -57,4 +57,9 @@ void Nutriment::update(sf::Time dt){
 
 bool Nutriment::testEpuise(){
     return nbNutriments==0.;
+}
+
+double Nutriment::getScoreNutriment(const Vec2d& pos){
+    double puissance(getAppEnv().getGradientExponent());
+    return nbNutriments/pow(distance(position, pos), puissance);
 }

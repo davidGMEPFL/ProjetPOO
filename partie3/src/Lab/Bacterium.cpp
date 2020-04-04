@@ -1,6 +1,8 @@
 #include "Bacterium.hpp"
 #include "Application.hpp"
 
+using namespace std;
+
 Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur)
     : CircularBody(position,rayon), energie(energie), direction(direction),
       couleur(couleur), abstinence(false), TimeLastMeal(sf::Time::Zero)
@@ -37,16 +39,19 @@ bool Bacterium::testMort(){
 }
 
 
-double Bacterium::getMinEnDiv(){
-    return getConfig()["energy"]["division"].toDouble();
+double Bacterium::getMinEnDiv(){    return getConfig()["energy"]["division"].toDouble();
 }
-sf::Time Bacterium::getTempsDelay(){
-    return sf::seconds(getConfig()["meal"]["delay"].toDouble());
+sf::Time Bacterium::getTempsDelay(){    return sf::seconds(getConfig()["meal"]["delay"].toDouble());
 }
-double Bacterium::EnergieDepl(){
-    return getConfig()["energy"]["consumption factor"].toDouble();
+double Bacterium::EnergieDepl(){    return getConfig()["energy"]["consumption factor"].toDouble();
 }
-double Bacterium::mealMax(){
-    return getConfig()["meal"]["max"].toDouble();
+double Bacterium::mealMax(){    return getConfig()["meal"]["max"].toDouble();
 }
 
+void Bacterium::addProperty(const string& key, MutableNumber valeur){
+    Params[key]=valeur;
+}
+
+MutableNumber& Bacterium::getProperty(const string& key){
+    return Params[key];
+}
