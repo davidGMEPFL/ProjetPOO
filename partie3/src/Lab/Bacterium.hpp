@@ -20,9 +20,11 @@ protected:
     sf::Time TimeLastMeal;
 
 public:
+    static std::vector<Bacterium*> vecteur;
+
     Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur);
     virtual void move(sf::Time dt)=0;
-    virtual Bacterium* clone() const=0;
+    virtual Bacterium* clone()const=0;
 
     void drawOn(sf::RenderTarget&) const;
     void update(sf::Time dt);
@@ -37,6 +39,8 @@ public:
     sf::Time getTempsDelay();
     double EnergieDepl();
     double mealMax();
+
+    void mutate();
 
     void addProperty(const std::string&, MutableNumber);
     MutableNumber& getProperty(const std::string&);

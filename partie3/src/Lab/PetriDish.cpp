@@ -1,6 +1,7 @@
 #include "PetriDish.hpp"
 #include "Utility/Utility.hpp"
 #include "Application.hpp"
+#include "Bacterium.hpp"
 
 //Constructeur
 PetriDish::PetriDish(Vec2d position,double rayon):
@@ -78,6 +79,10 @@ void PetriDish::update(sf::Time dt){
         objet->update(dt);
         if(objet->testMort()) objet=nullptr;
     }
+//    append(Bacterium::vecteur,Bact);
+//    for (auto& objet : Bacterium::vecteur)
+//        delete objet;
+//    Bacterium::vecteur.clear();
     Bact.erase(std::remove(Bact.begin(), Bact.end(), nullptr), Bact.end());
 }
 void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
@@ -94,6 +99,9 @@ void PetriDish::reset(){
     for (auto& objet : Nut)
         delete objet;
     Nut.clear();
+    for (auto& objet : Bact)
+        delete objet;
+    Bact.clear();
     resetTemp();
     resetGradientExponent();
 }
@@ -110,3 +118,5 @@ double PetriDish::getPositionScore(const Vec2d& pos){
 PetriDish::~PetriDish(){
     reset();
 }
+
+std::vector<Bacterium*> Bacterium::vecteur;

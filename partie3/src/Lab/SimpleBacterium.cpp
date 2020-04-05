@@ -65,8 +65,10 @@ Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
 }
 
 Bacterium* SimpleBacterium::clone() const{
-
-        return nullptr;
+    Bacterium* ptr=new SimpleBacterium( *this);
+    ptr->mutate();
+    vecteur.push_back(ptr);
+        return ptr;
 }
 
 void SimpleBacterium::update(sf::Time dt){
@@ -111,12 +113,19 @@ void SimpleBacterium::update(sf::Time dt){
             TimeLastMeal > getTempsDelay() && !abstinence){
         TimeLastMeal=sf::Time::Zero;
         energie+=NutrProxi->takeQuantity(15);
+
+
+        // Division bactérie
+        if(energie>getMinEnDiv()) {
+            energie/=2;
+            clone();
+            direction*=(-1);
+        }
     }
 
     t+=3* dt.asSeconds(); //Variable pour le mouvement de la flagelle
 
-    // Division bactérie
-    if(energie>getMinEnDiv()) clone();
+
 
 }
 

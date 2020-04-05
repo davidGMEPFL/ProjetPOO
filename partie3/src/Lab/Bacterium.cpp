@@ -4,8 +4,8 @@
 using namespace std;
 
 Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur)
-    : CircularBody(position,rayon), energie(energie), direction(direction),
-      couleur(couleur), abstinence(false), TimeLastMeal(sf::Time::Zero)
+    : CircularBody(position,rayon), couleur(couleur), direction(direction), energie(energie),
+      abstinence(false), TimeLastMeal(sf::Time::Zero)
 {}
 
 void Bacterium::drawOn(sf::RenderTarget& target) const{
@@ -38,6 +38,15 @@ bool Bacterium::testMort(){
     return energie<=0;
 }
 
+void Bacterium::mutate(){
+    couleur.mutate();
+    std::map<std::string, MutableNumber>::iterator it = Params.begin();
+    while (it != Params.end())
+        {
+            it->second.mutate();
+            it++;
+        }
+}
 
 double Bacterium::getMinEnDiv(){    return getConfig()["energy"]["division"].toDouble();
 }

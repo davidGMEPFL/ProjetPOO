@@ -12,7 +12,7 @@
     },
     "generator" : {
         "nutriment" : {
-            "delay" : 7,
+            "delay" : 3,
             "prob" : 0.5
         }
     },
