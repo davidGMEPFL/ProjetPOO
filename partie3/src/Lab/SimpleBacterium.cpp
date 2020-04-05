@@ -81,7 +81,6 @@ void SimpleBacterium::update(sf::Time dt){
     Vec2d tempRand;
 
     if(bernoulli(p)){
-        //        int N(getConfig()["tumble"]["algo"]["best of N"]);
         for (int i(0); i<getConfig()["tumble"]["algo"]["best of N"].toDouble(); ++i){
             tempRand=Vec2d::fromRandomAngle();
             if(getAppEnv().getPositionScore(position+tempRand)>
@@ -124,8 +123,5 @@ void SimpleBacterium::update(sf::Time dt){
     }
 
     t+=3* dt.asSeconds(); //Variable pour le mouvement de la flagelle
-
-
-
 }
 

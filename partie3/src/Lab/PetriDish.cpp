@@ -79,10 +79,11 @@ void PetriDish::update(sf::Time dt){
         objet->update(dt);
         if(objet->testMort()) objet=nullptr;
     }
-//    append(Bacterium::vecteur,Bact);
-//    for (auto& objet : Bacterium::vecteur)
-//        delete objet;
-//    Bacterium::vecteur.clear();
+    if(!Bacterium::vecteur.empty()){
+        append(Bacterium::vecteur,Bact);
+        Bacterium::vecteur.clear();
+    }
+    Bacterium::vecteur.erase(std::remove(Bacterium::vecteur.begin(), Bacterium::vecteur.end(), nullptr), Bacterium::vecteur.end());
     Bact.erase(std::remove(Bact.begin(), Bact.end(), nullptr), Bact.end());
 }
 void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
@@ -91,7 +92,8 @@ void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
     double epaisseur(5);
     auto border = buildAnnulus(position, rayon, couleur, epaisseur);
     targetWindow.draw(border);
-    for (auto& nutr : Nut) nutr->drawOn(targetWindow);
+    for
+            (auto& nutr : Nut) nutr->drawOn(targetWindow);
     for (auto& bac : Bact) bac->drawOn(targetWindow);
 }
 void PetriDish::reset(){
