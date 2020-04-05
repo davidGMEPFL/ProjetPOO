@@ -12,7 +12,6 @@
 *************************************************
 ##10.03 (mardi)
 
-
 - lecture de l'énonce
 - suivi de l'énoncé étape par étape pour créer la classe CircularBody.
 - Soucis mineur de définition de prototypes. 
@@ -29,15 +28,40 @@
 ## 18.03 (mercredi)
 
 - Programmation <tt>Nutriment</tt> et suite des classes <tt>PetriDish</tt>, <tt>Lab</tt> 
-- Des problèmes divers ont requis la journée entière pour cette étape (problèmes d'entêtes, faute d'orthographe, problèmes conceptuels...)
-
+- Des problèmes divers ont requis la journée entière pour cette étape : problèmes d'entêtes, fautes d'orthographe, problèmes conceptuels...
 
 *************************************************
 ##19.03 (jeudi)
 
-- Quelques problèmes mineurs posés sur le forum général (certaines choses n'étaient pas très clair dans l'énoncé), réglés rapidement
+- Quelques problèmes mineurs posés sur le forum général (certaines choses n'étaient pas très claires dans l'énoncé), réglés rapidement
+
+*************************************************
+## 23.03 (lundi)
+
+- l'ordinateur de David a complètement planté, emportant tout le travail effectué depuis l'étape 1 (et la possibilité de programmer)
 
 *************************************************
 ## 24.03 (mardi)
 
-- Programmation  
+- journée consacrée à la programmation de l'étape 2
+- les classes <tt>Nutriment</tt>, <tt>PetriDish</tt>, <tt>Lab</tt> sont recréées
+- après résolution de divers problèmes, tous les Tests sont passés
+- réponses aux questions
+
+*************************************************
+## 26.03 (jeudi)
+
+- début de programmation de l'étape 3.1
+
+*************************************************
+## 31.03 (mardi)
+
+- journée consacrée à la programmation de la fin de l'étape 3.1 et de l'étape 3.2
+- problèmes multiples survenus : création des constructeurs et initialisation, utilisation de tableau array, 
+  fonctions non reconnues, types de variables qui ne matchent pas...
+- tous les Tests sont passés + réponses aux questions
+
+*************************************************
+## 01.04 (jeudi)
+
+- étape 3.3 codée dans la journée 
