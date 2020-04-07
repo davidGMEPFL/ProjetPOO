@@ -20,6 +20,7 @@ public:
     void reset();
     bool contains(const CircularBody&);
 
+
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*);
     bool doesCollideWithDish(CircularBody const& body);
@@ -30,19 +31,15 @@ public:
     void decreaseTemperature();
     void resetTemp();
 
-
+    double getPositionScore(const Vec2d&);
+// Gestion de l'exposant du gradient pour l'assiette de Petri
     double getGradientExponent();
     void increaseGradientExponent();
     void decreaseGradientExponent();
     void resetGradientExponent();
 
 
-
-
     Nutriment* getNutrimentColliding(CircularBody const& body);
-
-
-    double getPositionScore(const Vec2d&);
 
 
 };

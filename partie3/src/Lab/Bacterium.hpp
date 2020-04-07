@@ -13,16 +13,17 @@ class Bacterium: public Drawable, public Updatable, public CircularBody
 protected:
     MutableColor couleur;
     Vec2d direction;
-    bool etat;
-    Quantity energie;
     bool abstinence;
+    Quantity energie;
     std::map<std::string, MutableNumber> Params;
     sf::Time TimeLastMeal;
 
 public:
+    //Vecteur temporaire de pointeurs vers bactéries clonées
     static std::vector<Bacterium*> vecteur;
 
     Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur);
+
     virtual void move(sf::Time dt)=0;
     virtual Bacterium* clone()const=0;
 
@@ -33,12 +34,11 @@ public:
 
     virtual j::Value& getConfig() const =0;
 
-    bool doesCollideWithDish(CircularBody const& body);
-
-    double getMinEnDiv();
-    sf::Time getTempsDelay();
-    double EnergieDepl();
-    double mealMax();
+    //Getters utilitaires
+    double getMinEnDiv(); //énergie minimale nécessaire à la division
+    sf::Time getTempsDelay(); //temps d'attente entre deux consommations de nutriments
+    double EnergieDepl();//énergie dépensée à chaque pas de déplacement
+    double mealMax(); //quantité maximale qu'elle peut consommer
 
     void mutate();
 

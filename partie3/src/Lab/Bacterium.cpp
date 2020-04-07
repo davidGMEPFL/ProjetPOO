@@ -4,8 +4,8 @@
 using namespace std;
 
 Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur)
-    : CircularBody(position,rayon), couleur(couleur), direction(direction), energie(energie),
-      abstinence(false), TimeLastMeal(sf::Time::Zero)
+    : CircularBody(position,rayon), couleur(couleur), direction(direction),abstinence(false),
+        energie(energie), TimeLastMeal(sf::Time::Zero)
 {}
 
 void Bacterium::drawOn(sf::RenderTarget& target) const{
@@ -31,6 +31,7 @@ void Bacterium::update(sf::Time dt){
         energie+=NutrProxi->takeQuantity(mealMax());
     }
 }
+
 void Bacterium::consumeEnergy(Quantity qt){
     energie-=qt;
 }
@@ -48,6 +49,7 @@ void Bacterium::mutate(){
         }
 }
 
+//Getters utilitaires
 double Bacterium::getMinEnDiv(){    return getConfig()["energy"]["division"].toDouble();
 }
 sf::Time Bacterium::getTempsDelay(){    return sf::seconds(getConfig()["meal"]["delay"].toDouble());

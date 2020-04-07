@@ -531,7 +531,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
         case sf::Keyboard::PageDown: // increase current control
 
 				switch(mCurrentControl){
-					case TEMPERATURE :
+                    case TEMPERATURE :
                         mLab->decreaseTemperature();
 						break;
 					case GRADIENT :

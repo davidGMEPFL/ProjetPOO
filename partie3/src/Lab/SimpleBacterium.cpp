@@ -8,12 +8,13 @@
 #include "Utility/Constants.hpp"
 //#include "Utility/MutableNumber.hpp"
 
-SimpleBacterium::SimpleBacterium(Vec2d position)
+SimpleBacterium::SimpleBacterium(const Vec2d & position)
     : Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
       position ,  Vec2d::fromRandomAngle() ,
       uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
       getConfig()["color"]),
-      t(uniform(0.,PI)), rotation(direction.angle()), TimerTumble(0)
+      t(uniform(0.,PI)), rotation(direction.angle()), TimerTumble(0),
+      ancien_score(getAppEnv().getPositionScore(position-direction))
 {      Params["speed"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]);
        Params["tumble better"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]);
        Params["tumble worse"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]);}
@@ -23,9 +24,9 @@ j::Value& SimpleBacterium::getConfig() const{
 }
 
 void SimpleBacterium::move(sf::Time dt){
-    DiffEqResult Res(stepDiffEq(position, getSpeedVector(), dt,  *this));
-    consumeEnergy((position-Res.position).length()*EnergieDepl());
-    position=Res.position; direction=Res.speed/8;
+    DiffEqResult Result(stepDiffEq(position, getSpeedVector(), dt,  *this));
+    consumeEnergy((position-Result.position).length()*EnergieDepl());
+    position=Result.position;
 }
 
 void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
@@ -40,9 +41,10 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
 
     auto set_of_points = sf::VertexArray(sf::LinesStrip);
     float x,y;
-    // ajout de points à l'ensemble:
+    // ajout depoints à l'ensemble:
     for (int i(0); i<30;i++){
-        x = static_cast<float>(-i * rayon / 10.0 -rayon);
+        x = static_cast<float>(-i * rayon / 10.0 -rayon); //décalage du début de la flagelle,
+            //pour que la sinusoïde démarre à la surface du corps de la bactérie
         y = static_cast<float>(rayon * sin(t) * sin(2 * i / 10.0));
         set_of_points.append({{x, y}, couleur.get()});
     }
@@ -57,7 +59,7 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
 }
 
 Vec2d SimpleBacterium::getSpeedVector(){
-    return direction*8;
+    return direction*Params["speed"].get();
 }
 
 Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
@@ -75,8 +77,8 @@ void SimpleBacterium::update(sf::Time dt){
     //Basculement
     TimerTumble+=dt.asSeconds();
     double lambda, score(getAppEnv().getPositionScore(position));
-    if (score>=ancien_score) lambda=Params["tumble better"].get();
-    else lambda=Params["tumble worse"].get();
+    if (score>=ancien_score) lambda=/*5*/ Params["tumble better"].get();
+    else lambda= /*.5*/Params["tumble worse"].get();
     double p = 1 - exp(-TimerTumble/lambda);
     Vec2d tempRand;
 
@@ -87,8 +89,8 @@ void SimpleBacterium::update(sf::Time dt){
                     getAppEnv().getPositionScore(position+direction))
                 direction=tempRand;
         }
+        TimerTumble=0;
     }
-    TimerTumble=0;
     ancien_score=score;
 
     //Déplacement bactéries
@@ -103,6 +105,9 @@ void SimpleBacterium::update(sf::Time dt){
 
     dalpha = std::copysign(dalpha, angleDiff); // on tourne dans la direction indiquée par angleDiff
     rotation += dalpha; // angle de rotation mis à jour
+
+    //Variable pour le mouvement de la flagelle
+    t+=3* dt.asSeconds();
 
 
     // Bacterie mange des nutriments
@@ -121,7 +126,4 @@ void SimpleBacterium::update(sf::Time dt){
             direction*=(-1);
         }
     }
-
-    t+=3* dt.asSeconds(); //Variable pour le mouvement de la flagelle
 }
-

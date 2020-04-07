@@ -25,6 +25,7 @@ double MutableNumber::get() const {
 }
 
 void MutableNumber::set(double value) {
+    //Plafonnement
     if(if_borne_inf && value < borne_inf) {
         value=borne_inf;
     }
@@ -40,7 +41,6 @@ void MutableNumber::mutate() {
         const double& nb_tire =  normal(0, ecart_type*ecart_type);
         set(valeur+nb_tire);
     }
-
 }
 
 MutableNumber MutableNumber::probability(double initialValue,
