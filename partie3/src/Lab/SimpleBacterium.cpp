@@ -13,11 +13,11 @@ SimpleBacterium::SimpleBacterium(const Vec2d & position)
       position ,  Vec2d::fromRandomAngle() ,
       uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
       getConfig()["color"]),
-      t(uniform(0.,PI)), rotation(direction.angle()), TimerTumble(0),
-      ancien_score(getAppEnv().getPositionScore(position-direction))
-{      Params["speed"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]);
-       Params["tumble better"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]);
-       Params["tumble worse"]=MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]);}
+      t(uniform(0.,PI)), rotation(direction.angle()),
+      ancien_score(getAppEnv().getPositionScore(position-direction)), TimerTumble(0)
+{      addProperty("speed",MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]));
+       addProperty("tumble better",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]));
+       addProperty("tumble worse",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]));}
 
 j::Value& SimpleBacterium::getConfig() const{
     return getAppConfig()["simple bacterium"];
@@ -59,7 +59,12 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
 }
 
 Vec2d SimpleBacterium::getSpeedVector(){
-    return direction*Params["speed"].get();
+    try{
+        return direction*getProperty("speed").get();
+    }
+    catch(std::out_of_range const&){
+        return direction;
+    }
 }
 
 Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
@@ -77,8 +82,8 @@ void SimpleBacterium::update(sf::Time dt){
     //Basculement
     TimerTumble+=dt.asSeconds();
     double lambda, score(getAppEnv().getPositionScore(position));
-    if (score>=ancien_score) lambda=/*5*/ Params["tumble better"].get();
-    else lambda= /*.5*/Params["tumble worse"].get();
+    if (score>=ancien_score) lambda=/*5*/ getProperty("tumble better").get();
+    else lambda= /*.5*/getProperty("tumble worse").get();
     double p = 1 - exp(-TimerTumble/lambda);
     Vec2d tempRand;
 
