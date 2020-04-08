@@ -62,8 +62,8 @@ Vec2d SimpleBacterium::getSpeedVector(){
     try{
         return direction*getProperty("speed").get();
     }
-    catch(std::out_of_range const&){
-        return direction;
+    catch(std::out_of_range const& mess){
+        std::cerr<<mess<<endl;
     }
 }
 
