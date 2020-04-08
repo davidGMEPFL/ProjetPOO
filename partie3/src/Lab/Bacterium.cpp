@@ -64,5 +64,10 @@ void Bacterium::addProperty(const string& key, MutableNumber valeur){
 }
 
 MutableNumber& Bacterium::getProperty(const string& key){
-    return Params[key];
+    auto it = Params.find(key);
+    if (it != Params.end()) {
+        return it->second;
+    } else {
+        throw std::out_of_range("unknown mutable property :" + key);
+    }
 }
