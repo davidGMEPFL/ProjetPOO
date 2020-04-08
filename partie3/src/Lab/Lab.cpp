@@ -24,8 +24,8 @@ bool Lab::contains(const CircularBody& autre){
 bool Lab::addNutriment(Nutriment* nut){
     return Petri.addNutriment(nut);
 }
-bool Lab::addBacterium(Bacterium* nut){
-    return Petri.addBacterium(nut);
+bool Lab::addBacterium(Bacterium* bact){
+    return Petri.addBacterium(bact);
 }
 
 

@@ -36,6 +36,7 @@ public:
     bool addNutriment(Nutriment*);
 
     void update(sf::Time dt);
+    
     double getTemperature();
     void increaseTemperature();
     void decreaseTemperature();

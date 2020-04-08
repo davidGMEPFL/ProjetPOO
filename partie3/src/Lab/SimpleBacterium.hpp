@@ -9,7 +9,7 @@ class SimpleBacterium: public Bacterium, public DiffEqFunction
     double ancien_score;
     double TimerTumble;
 public:
-    SimpleBacterium(Vec2d);
+    SimpleBacterium(const Vec2d &);
     j::Value& getConfig() const;
     void move(sf::Time dt) override;
     Vec2d f(Vec2d position, Vec2d speed) const override;

@@ -5,12 +5,15 @@
 
 //Constructeur
 PetriDish::PetriDish(Vec2d position,double rayon):
-    CircularBody(position,rayon),Temp(getAppConfig()["petri dish"]["temperature"]["default"].toDouble()), puissance((getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2)
+    CircularBody(position,rayon),
+    Temp(getAppConfig()["petri dish"]["temperature"]["default"].toDouble()),
+    puissance((getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+
+  getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2)
 {}
 
 //Methodes
 bool PetriDish::addBacterium(Bacterium* bact){
-    //permettra de peupler l'assiette
+    //permet de peupler l'assiette
     //bool sert à savoir si l'on a réussit à placer la bactérie
     if(contains(*bact)) Bact.push_back(bact);
     return contains(*bact);
@@ -63,7 +66,8 @@ void PetriDish::decreaseGradientExponent(){
         puissance=getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble();
 }
 void PetriDish::resetGradientExponent(){
-    puissance=(getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2;
+    puissance=(getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+
+            getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2;
 }
 
 
