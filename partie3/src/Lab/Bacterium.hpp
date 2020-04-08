@@ -42,6 +42,7 @@ public:
 
     void mutate();
 
+
     void addProperty(const std::string&, MutableNumber);
     MutableNumber& getProperty(const std::string&);
 };
