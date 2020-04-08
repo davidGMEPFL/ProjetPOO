@@ -129,15 +129,89 @@
 - Dans la méthode Lab::update, on rajoute un appel à la méthode update de l'attribut de NutrimentGenerator.
 
 *************************************************
-##Q3.6     ?????????????
+##Q3.6     Quelles méthodes parmi celles suggérées pour un MutableNumber devront procéder au plafonnage de la valeur entre la borne inférieure et la borne supérieure ? Comment éviter les duplications de code si ce traitement est amené à se répéter à plusieurs endroits ?
 
+- Les méthodes qui devront procéder au plafonnage sont les constructeurs de la classe MutableNumber, ainsi que la méthode reset().
+  Pour éviter la duplication de code, on fait appel à "reset()" afin de plafonner les valeurs dans les constructeurs.
 
 *************************************************
 ##Q3.7     Comment faut-il procéder pour que ces méthodes puissent être invoquées sans passer par la création d'une instance de MutableNumber ?
 
+- Une façon d'avoir accès à des méthodes sans créer d'objet MutableNumber serait l'utilisation de méthodes de classes, signalées par le mot "static" : ces méthodes seront donc statiques.
+
+*************************************************
+##Q3.8     Au vu de ce qui précède, comment proposez-vous de modéliser la classe Bacterium (héritage, attributs, méthodes , ...) ? 
+
+- La classe Bacterium héritera des classes CircularBody, Uptadable et Drawable : elle aura pour caractéristiques une couleur, une direction, des paramètres, un état, une énergie. Elle aura pour méthode un constructeur, un bool "testMort", "clone", "drawOn" et "update".
+
+*************************************************
+##Q3.9    Quelles méthodes parmi celles suggérées pour une Bacterium devront vraisemblablement être virtuelles/virtuelles pures ?
+
+- Les méthodes nécessitant d'être présentes dans les sous-classes de Bacterium, et donc virtuelles pures, seraient les méthodes "clone()" et "move()" qui doiventt être définies de façon spécifique.
+
+*************************************************
+##Q3.10    La méthode getConfig est-elle virtuelle pure selon vous ?    
+
+- Dans la mesure où Bacterium est une classe abstraite, il n'y a pas d'utilisation de cette méthode en dehors d'une sous-classe. Chaque sous-classe devra alors avoir sa propre défintion de "getConfig" : la méthode devra donc être virtuelle pure.
+ 
+*************************************************
+##Q3.11    Comment retrouvez-vous la couleur SFML de la bactérie à partir de son attribut de type MutableColor ?
+
+- La méthode "MutableColor::get()" nous donne la couleur SFML de l'attribut <couleur> de la classe Bacterium.
+ 
+*************************************************
+##Q3.12   Le fait qu'aucune méthode de déplacement concrète n'existe encore est-elle un frein à l'écriture de la méthode update ? 
+
+- La méthode "move()" étant virtuelle pure, l'écriture de "update()" ne recquiert pas d'être au préalable générale et définie.
+
+*************************************************
+##Q3.13   La classe PetriDish ne donne pas d'accès à sa collection de nutriments, comment procéder dans ce cas pour coder Lab::getNutrimentColliding(CircularBody const& body) ? 
+
+- Pour y avoir accès, on code une méthode "Nutriment* PetriDish::getNutrimentColliding" qui procède avec des itérations sur le vecteur contenant les pointeurs sur les nutriments. Elle cherche le nutriment qui sera au contact de la bactérie (par un appel à "isColliding"), et le cas échéant le retourne nullptr.
+
+*************************************************
+##Q3.14   Quelle méthode de la classe PetriDish doit être modifiée pour permettre la simulation de l'évolution des bactéries ? Comment doit-elle être modifiée ? 
+
+- Il s'agit de la méthode "update" qui gère l'évolution des bactéries : au sein de celle-ci on fera donc un appel aux méthodes "update".
+
+*************************************************
+##Q3.15   Que devez-vous modifier et dans quelle classe pour faire en sorte que les bactéries et sources de nutriments de votre simulation meurent/disparaissent si leur énergie/quantité devient nulle ?
+
+- Dans la classe PetriDish, c'est par la méthode "update()" que l'on peut ajouter cette fonctionnalité : par les tests 'testMort' et 'testEpuise', on vérifie le nombre de nutriments et la quantité d'énergie des bactéries. Dans les cas où ils nuls, la commande de suppression est alors activée.
+
+*************************************************
+##Q3.16   Comment vous proposez d'utiliser cette classe pour doter une bactérie simple d'une méthode qui calcule la force f régissant son déplacement ? 
+
+- Pour permettre à une bactérie simple l'utilisation de cette force f, on définit la classe SimpleBacterium comme sous-classe de DiffEqFunction, dont elle hérite la méthode virtuelle f que l'on définit. On peut alors utiliser notre instance de SimpleBacterium en argument de stepDiffEq qui retourne une structure.
+
+*************************************************
+##Q3.17  Où déclarer et initialiser le temps t ?
+
+- On déclare t comme un attribut de SimpleBacterium, initialisé aléatoirement dans le constructeur de la classe. Il est updaté dans la méthode "update" comme cité dans l'énoncé.
+
+*************************************************
+##Q3.18   Comment mémoriser l'angle de direction et à quel endroit du code l'initialiser et le mettre à jour si l'on considère que toutes les bactéries ont une direction et un angle de direction ?
+
+- On ajoute un attribut correspondant à l'angle de rotation des flagelles des bactéries. Il sera alors initialisé dans le constructeur de la classe, tel qu'il soit dans la même direction que le déplacement de la bactérie.
+
+*************************************************
+##Q3.19   Comment mémoriser l'angle de direction et à quel endroit du code l'initialiser et le mettre à jour si l'on considère que toutes les bactéries ont une direction et un angle de direction ?
+
+- Il faut ajouter comme attribut la <puissance>, ainsi que la méthode "getPositionScore" qui va faire me cumul des scores des nutriments en fonction de la position.
+
+*************************************************
+##Q3.20   Quel(s) attributs suggérez-vous d'ajouter à la représentation des bactéries (simples ou "tout court") pour permettre la mise en oeuvre cet algorithme ? Comment initialiser ces attributs et à quels endroits devez-vous les mettre à jour ?
+
+- Des attributs <TimerTumble> et <ancien_score> pourraient être ajoutés à la classe : ils sont initialisés dans le constructeur. Ils seront alors modifiés dans la méthode "update()" de chaque bactérie.
+
+*************************************************
+##Q3.21   Dans quelle classe proposez-vous d'ajouter la méthode de mutation ?
+
+- La méthode "mutate()" de mutation des bactéries peut être ajoutée à la classe Bacterium qui possède les attributs suceptibles de muter. 
+
+*************************************************
+##Q3.21   Dans quelle classe proposez-vous d'ajouter la méthode de mutation ?
+
 - 
 
 
-
-*************************************************
-##Q2.6     ?????????????

@@ -35,6 +35,7 @@ public:
 
     bool doesCollideWithDish(CircularBody const& body);
 
+    // getters utilitaires
     double getMinEnDiv();
     sf::Time getTempsDelay();
     double EnergieDepl();
