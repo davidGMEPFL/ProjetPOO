@@ -6,6 +6,7 @@
 //#include "SFML/Graphics.hpp"
 //#include "Utility/Utility.hpp"
 #include "Utility/Constants.hpp"
+#include <iostream>
 //#include "Utility/MutableNumber.hpp"
 
 SimpleBacterium::SimpleBacterium(const Vec2d & position)
