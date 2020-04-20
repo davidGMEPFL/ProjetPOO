@@ -1,4 +1,4 @@
-#include "Twitchingbacterium.hpp"
+#include "TwitchingBacterium.hpp"
 #include "Random/Random.hpp"
 #include "Application.hpp"
 #include "Utility/Utility.hpp"
@@ -11,7 +11,7 @@ TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
       getConfig()["color"]),
 
       grapin(position, (uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()))/4),
-      longueur_tentacule(0.0), direction_tentacule(direction),
+      longueur_tentacule(0.0)/*, direction_tentacule(direction)*/,
       ancien_score(getAppEnv().getPositionScore(position-direction)), TimerTumble(0)
 {     addProperty("tentacle length", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["length"]));
       addProperty("tentacle speed", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["speed"]));
@@ -23,10 +23,10 @@ j::Value& TwitchingBacterium::getConfig() const{
 }
 
 void TwitchingBacterium::moveGrip(const Vec2d& delta){
-    if(distance(grapin.getPosition(),position)+delta.length() <=MaxLength()){
+    if(distance(grapin.getPosition(),position)+delta.length() <=getProperty("tentacle length").get()){
       grapin.move(delta);
     } else {
-      grapin.setPosition(position+direction_tentacule*MaxLength());
+      grapin.setPosition(position+delta.normalised()*getProperty("tentacle length").get());
     }
 }
 
@@ -53,14 +53,14 @@ Bacterium* TwitchingBacterium::clone() const{
 }
 
 void TwitchingBacterium::move(sf::Time dt){
-    longueur_tentacule  = distance(grapin.getPosition(),position);
-    double longueur_max = getConfig()["twitching bacterium"]["tentacle"]["length"].toDouble();
-    direction_tentacule = (grapin.getPosition()-position).normalised();
-    double vitesse_tentacule (getConfig()["twitching bacterium"]["tentacle"]["speed"].toDouble());
-    Vec2d tempRand;
-    Quantity Qt_deploi  (EnergieTentac()*vitesse_tentacule*dt.asSeconds());
-    Quantity Qt_depla   (EnergieDepl()*vitesse_tentacule*dt.asSeconds()*
-                         getConfig()["twitching bacterium"]["tentacle"]["speed factor"].toDouble());
+//    longueur_tentacule  = distance(grapin.getPosition(),position);
+//    double longueur_max = getConfig()["tentacle"]["length"].toDouble();
+////    direction_tentacule = (grapin.getPosition()-position).normalised();
+//    double vitesse_tentacule (getConfig()["tentacle"]["speed"].toDouble());
+//    Vec2d tempRand;
+//    Quantity Qt_deploi  (EnergieTentac()*vitesse_tentacule*dt.asSeconds());
+//    Quantity Qt_depla   (EnergieDepl()*vitesse_tentacule*dt.asSeconds()*
+//                         getConfig()["tentacle"]["speed factor"].toDouble());
 
 //    switch (etat) {
 //         case IDLE : //IDLE
@@ -108,10 +108,9 @@ void TwitchingBacterium::move(sf::Time dt){
 }
 
 void TwitchingBacterium::update(sf::Time dt){
-    while(!testMort()) {
-          move(dt);
-          Bacterium::update(dt);
-    }
+    move(dt);
+    Bacterium::update(dt);
+
 }
 
 //getters
@@ -123,6 +122,7 @@ double TwitchingBacterium::EnergieTentac() const{
     return getConfig()["energy"]["consumption factor"]["tentacle"].toDouble();
 }
 
-double TwitchingBacterium::MaxLength() const{
-    return getConfig()["twitching bacterium"]["tentacle"]["length"].toDouble();
+
+Vec2d TwitchingBacterium::direction_tentacule() const {
+    return (grapin.getPosition()-position).normalised();
 }

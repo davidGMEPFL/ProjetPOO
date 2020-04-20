@@ -8,7 +8,7 @@ class TwitchingBacterium : public Bacterium
 private:
     Grip grapin;
     double longueur_tentacule;
-    Vec2d direction_tentacule;
+//    Vec2d direction_tentacule;
     //int etat;
     enum etat{IDLE=1, WAIT_TO_DEPLOY=2, DEPLOY=3, ATTRACT=4,RETRACT=5,EAT=6};
     double ancien_score;
@@ -29,7 +29,9 @@ public:
 
     double EnergieDepl() const; //getters utiles
     double EnergieTentac() const;
-    double MaxLength() const ;
+
+
+    Vec2d direction_tentacule() const;
 };
 
 
