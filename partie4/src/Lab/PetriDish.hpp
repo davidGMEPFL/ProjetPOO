@@ -18,13 +18,15 @@ protected:
     double puissance;
 
 public:
+    std::vector<Bacterium*> vecteur_clones;//Vecteur temporaire de pointeurs vers bactéries clonées
+
     // Constructeurs
     PetriDish(Vec2d position,double rayon);
     PetriDish& operator=(const PetriDish&) = delete;
     PetriDish(PetriDish const&) = delete;
 
     //Methodes
-    bool addBacterium(Bacterium*);
+    bool addBacterium(Bacterium*,bool const&);
     Nutriment* getNutrimentColliding(CircularBody const& body);
 
     double getPositionScore(const Vec2d&);

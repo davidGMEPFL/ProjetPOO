@@ -21,14 +21,18 @@ void Bacterium::drawOn(sf::RenderTarget& target) const{
 
 
 void Bacterium::update(sf::Time dt){
-    move(dt);
+    // Bacterie mange des nutriments
     TimeLastMeal+=dt;
-    if(getAppEnv().doesCollideWithDish(*this)) direction=-direction;
     Nutriment* NutrProxi(nullptr);
-    if ( (NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
+    if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
             TimeLastMeal > getTempsDelay() && !abstinence){
         TimeLastMeal=sf::Time::Zero;
-        energie+=NutrProxi->takeQuantity(mealMax());
+        energie+=NutrProxi->takeQuantity(15);
+
+
+        // Division bactérie
+            division();
+
     }
 }
 
@@ -49,14 +53,26 @@ void Bacterium::mutate(){
         }
 }
 
+void Bacterium::division() {
+    if(energie>getMinEnDiv()) {
+        energie/=2;
+        clone();
+        direction*=(-1);
+    }
+}
+
 //Getters utilitaires
-double Bacterium::getMinEnDiv(){    return getConfig()["energy"]["division"].toDouble();
+double Bacterium::getMinEnDiv() const {
+    return getConfig()["energy"]["division"].toDouble();
 }
-sf::Time Bacterium::getTempsDelay(){    return sf::seconds(getConfig()["meal"]["delay"].toDouble());
+sf::Time Bacterium::getTempsDelay() const {
+    return sf::seconds(getConfig()["meal"]["delay"].toDouble());
 }
-double Bacterium::EnergieDepl(){    return getConfig()["energy"]["consumption factor"].toDouble();
+double Bacterium::EnergieDepl() const {
+    return getConfig()["energy"]["consumption factor"].toDouble();
 }
-double Bacterium::mealMax(){    return getConfig()["meal"]["max"].toDouble();
+double Bacterium::mealMax() const {
+    return getConfig()["meal"]["max"].toDouble();
 }
 
 void Bacterium::addProperty(const string& key, MutableNumber valeur){

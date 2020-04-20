@@ -12,11 +12,14 @@ PetriDish::PetriDish(Vec2d position,double rayon):
 {}
 
 //Methodes
-bool PetriDish::addBacterium(Bacterium* bact){
+bool PetriDish::addBacterium(Bacterium* bact,bool const& newBorn){
+    if(!newBorn){
     //permet de peupler l'assiette
     //bool sert à savoir si l'on a réussit à placer la bactérie
-    if(contains(*bact)) Bact.push_back(bact);
+    if(contains(*bact)) Bact.push_back(bact);}
+    else vecteur_clones.push_back(bact);
     return contains(*bact);
+
 }
 Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body){
     for(auto const nut : Nut) {
@@ -83,11 +86,11 @@ void PetriDish::update(sf::Time dt){
         objet->update(dt);
         if(objet->testMort()) objet=nullptr;
     }
-    if(!Bacterium::vecteur.empty()){
-        append(Bacterium::vecteur,Bact);
-        Bacterium::vecteur.clear();
+    if(!vecteur_clones.empty()){
+        append(vecteur_clones,Bact);
+        vecteur_clones.clear();
     }
-    Bacterium::vecteur.erase(std::remove(Bacterium::vecteur.begin(), Bacterium::vecteur.end(), nullptr), Bacterium::vecteur.end());
+    vecteur_clones.erase(std::remove(vecteur_clones.begin(), vecteur_clones.end(), nullptr), vecteur_clones.end());
     Bact.erase(std::remove(Bact.begin(), Bact.end(), nullptr), Bact.end());
 }
 void PetriDish::drawOn(sf::RenderTarget& targetWindow) const {
@@ -125,4 +128,3 @@ PetriDish::~PetriDish(){
     reset();
 }
 
-std::vector<Bacterium*> Bacterium::vecteur;

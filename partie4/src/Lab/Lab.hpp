@@ -22,8 +22,9 @@ public:
 
 
     bool addNutriment(Nutriment*);
-    bool addBacterium(Bacterium*);
+    bool addBacterium(Bacterium*,bool const& newBorn=false);
     bool doesCollideWithDish(CircularBody const& body);
+
 
 // Gestion de la température de l'assiette de Petri
     double getTemperature();
@@ -37,6 +38,8 @@ public:
     void increaseGradientExponent();
     void decreaseGradientExponent();
     void resetGradientExponent();
+
+
 
 
     Nutriment* getNutrimentColliding(CircularBody const& body);

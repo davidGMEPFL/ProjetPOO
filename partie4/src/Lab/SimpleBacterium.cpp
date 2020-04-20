@@ -31,14 +31,7 @@ void SimpleBacterium::move(sf::Time dt){
 }
 
 void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
-    auto const circle = buildCircle(position, rayon, couleur.get());
-    target.draw(circle);
-
-    if (isDebugOn()){
-        auto const text = buildText(std::to_string(int(energie)),position + Vec2d(0,-50),
-                                    getAppFont(),18,sf::Color::Red);
-        target.draw(text);
-    }
+    Bacterium::drawOn(target);
 
     auto set_of_points = sf::VertexArray(sf::LinesStrip);
     float x,y;
@@ -60,12 +53,12 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
 }
 
 Vec2d SimpleBacterium::getSpeedVector(){
-    try{
+   // try{
         return direction*getProperty("speed").get();
-    }
-    catch(std::out_of_range const& mess){
-        std::cerr<<mess<<endl;
-    }
+  //  }
+  //  catch(std::out_of_range const& mess){
+  //     std::cerr<<mess<<endl;
+  //  }
 }
 
 Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
@@ -75,11 +68,13 @@ Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
 Bacterium* SimpleBacterium::clone() const{
     Bacterium* ptr=new SimpleBacterium( *this);
     ptr->mutate();
-    vecteur.push_back(ptr);
-        return ptr;
+    getAppEnv().addBacterium(ptr, true);
+    return ptr;
 }
 
 void SimpleBacterium::update(sf::Time dt){
+
+    Bacterium::update(dt); //point communs
     //Basculement
     TimerTumble+=dt.asSeconds();
     double lambda, score(getAppEnv().getPositionScore(position));
@@ -100,7 +95,6 @@ void SimpleBacterium::update(sf::Time dt){
     ancien_score=score;
 
     //Déplacement bactéries
-    move(dt);
     if(getAppEnv().doesCollideWithDish(*this)) direction=-direction;
 
     // Rotation Flagelle
@@ -116,20 +110,5 @@ void SimpleBacterium::update(sf::Time dt){
     t+=3* dt.asSeconds();
 
 
-    // Bacterie mange des nutriments
-    TimeLastMeal+=dt;
-    Nutriment* NutrProxi(nullptr);
-    if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
-            TimeLastMeal > getTempsDelay() && !abstinence){
-        TimeLastMeal=sf::Time::Zero;
-        energie+=NutrProxi->takeQuantity(15);
 
-
-        // Division bactérie
-        if(energie>getMinEnDiv()) {
-            energie/=2;
-            clone();
-            direction*=(-1);
-        }
-    }
 }

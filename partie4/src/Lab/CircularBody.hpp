@@ -17,14 +17,14 @@ public:
     bool operator&(const CircularBody&) const;
     bool operator>(const Vec2d&) const;
 
+    void setPosition(const Vec2d&);
+    void setRadius(const double&);
+
     CircularBody(const Vec2d&, const double&); // Constructeur
     CircularBody(const CircularBody&);         // Constructeur de copie
 protected:
     Vec2d position;
     double rayon;
-
-    void setPosition(const Vec2d&);
-    void setRadius(const double&);
 };
 
 std::ostream& operator<<(std::ostream&,const CircularBody&);

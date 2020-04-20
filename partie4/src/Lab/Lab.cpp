@@ -24,11 +24,9 @@ bool Lab::contains(const CircularBody& autre){
 bool Lab::addNutriment(Nutriment* nut){
     return Petri.addNutriment(nut);
 }
-bool Lab::addBacterium(Bacterium* bact){
-    return Petri.addBacterium(bact);
+bool Lab::addBacterium(Bacterium* bact, bool const& newBorn){
+    return Petri.addBacterium(bact,newBorn);
 }
-
-
 
 
 double Lab::getTemperature(){
