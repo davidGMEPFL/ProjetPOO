@@ -65,7 +65,7 @@ void TwitchingBacterium::move(sf::Time dt){
     case WAIT_TO_DEPLOY:{
         //Basculement
         Vec2d tempRand;
-        for (int i(0); i<20; ++i){
+        for (int i(0); i<40; ++i){
             tempRand=Vec2d::fromRandomAngle();
             if(getAppEnv().getPositionScore(position+tempRand)>
                     getAppEnv().getPositionScore(position+direction))
@@ -88,7 +88,7 @@ void TwitchingBacterium::move(sf::Time dt){
         if(getAppEnv().getNutrimentColliding(*this)!=nullptr) { etat=EAT ;
         break;}
 //        else { etat=RETRACT ;}
-        CircularBody::move(direction*vitesse_tentacule*dt.asSeconds()*
+        CircularBody::move(direction_tentacule()*vitesse_tentacule*dt.asSeconds()*
                            getConfig()["speed factor"].toDouble());
         consumeEnergy(Qt_depla);
         if(getAppEnv().getNutrimentColliding(grapin)==nullptr) etat=RETRACT;
@@ -98,8 +98,7 @@ void TwitchingBacterium::move(sf::Time dt){
     case RETRACT:{
         if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) { etat=ATTRACT ;
         break;}
-        Vec2d distDepl=(position-grapin.getPosition()).normalised()*vitesse_tentacule*dt.asSeconds();
-        moveGrip(distDepl);
+        moveGrip((position-grapin.getPosition()).normalised()*vitesse_tentacule*dt.asSeconds());
             //déplacement grapin dans sens inverse
         consumeEnergy(Qt_deploi);
         if(longueur_tentacule <= rayon) etat=IDLE;
@@ -108,9 +107,13 @@ void TwitchingBacterium::move(sf::Time dt){
 
     case EAT:{
         Bacterium::update(dt);
-        if(getAppEnv().getNutrimentColliding(grapin)==nullptr){
+        if(longueur_tentacule>rayon){
+            moveGrip((position-grapin.getPosition()).normalised()*vitesse_tentacule*dt.asSeconds());
+                //déplacement grapin dans sens inverse
+            consumeEnergy(Qt_deploi);
+        }
+        if(getAppEnv().getNutrimentColliding(*this)==nullptr && longueur_tentacule<=rayon){
             etat=IDLE;
-
         }
         break;
     }
