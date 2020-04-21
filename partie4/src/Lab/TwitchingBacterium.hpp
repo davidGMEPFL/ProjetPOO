@@ -8,16 +8,16 @@ class TwitchingBacterium : public Bacterium
 private:
     Grip grapin;
     double longueur_tentacule;
-//    Vec2d direction_tentacule;
+    //Vec2d direction_tentacule;
     //int etat;
-    enum etat{IDLE=1, WAIT_TO_DEPLOY=2, DEPLOY=3, ATTRACT=4,RETRACT=5,EAT=6};
-    double ancien_score;
-    double TimerTumble;
+    enum etat{IDLE=0, WAIT_TO_DEPLOY=1, DEPLOY=2, ATTRACT=3, RETRACT=4, EAT=5};
 
 public:
     TwitchingBacterium(const Vec2d&);
 
     j::Value& getConfig() const;
+
+    enum Etats{};
 
     void moveGrip(const Vec2d& delta);
 
