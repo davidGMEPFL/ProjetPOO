@@ -18,11 +18,11 @@ TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
 
 
 void TwitchingBacterium::moveGrip(const Vec2d& delta){
-    if(distance(grapin.getPosition(),position)+delta.length() <=getProperty("tentacle length").get()){
+    /*if(distance(grapin.getPosition(),position)+delta.length() <=getProperty("tentacle length").get())*/{
         grapin.move(delta);
-    } else {
+    } /*else {
         grapin.setPosition(position+delta.normalised()*getProperty("tentacle length").get());
-    }
+    }*/
 }
 
 
@@ -36,11 +36,10 @@ void TwitchingBacterium::drawOn(sf::RenderTarget& target) const{
 }
 
 
-
 Bacterium* TwitchingBacterium::clone() const{
     TwitchingBacterium* ptr=new TwitchingBacterium(*this);
     ptr->mutate();
-    ptr->position+=Vec2d(0.0,8.0);          //décalage du centre du clone
+    ptr->position+=Vec2d(8.0,8.0);          //décalage du centre du clone
     ptr->grapin.setPosition(ptr->position); // tentacule rétracté
     ptr->moveGrip(Vec2d(1.0, -7.0));        // décalage orientation tentacule
     getAppEnv().addBacterium(ptr, true);
@@ -79,32 +78,39 @@ void TwitchingBacterium::move(sf::Time dt){
     case DEPLOY:{
         moveGrip(direction*vitesse_tentacule*dt.asSeconds());
         consumeEnergy(Qt_deploi);
-        if(((longueur_tentacule==longueur_max) and (getAppEnv().getNutrimentColliding(grapin)==nullptr)) or getAppEnv().doesCollideWithDish(grapin)) {
-            etat=RETRACT;
-        } else {  etat=ATTRACT; }
+        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) etat=ATTRACT;
+        else if((longueur_tentacule>=longueur_max)  or getAppEnv().doesCollideWithDish(grapin)) {
+            etat=RETRACT;}
         break;
     }
 
     case ATTRACT:{
+        if(getAppEnv().getNutrimentColliding(*this)!=nullptr) { etat=EAT ;
+        break;}
+//        else { etat=RETRACT ;}
         CircularBody::move(direction*vitesse_tentacule*dt.asSeconds()*
                            getConfig()["speed factor"].toDouble());
         consumeEnergy(Qt_depla);
-        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) { etat=EAT ;} else { etat=RETRACT ;}
+        if(getAppEnv().getNutrimentColliding(grapin)==nullptr) etat=RETRACT;
         break;
     }
 
     case RETRACT:{
-        do { moveGrip(((position-grapin.getPosition()).normalised())*vitesse_tentacule*dt.asSeconds());
+        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) { etat=ATTRACT ;
+        break;}
+        Vec2d distDepl=(position-grapin.getPosition()).normalised()*vitesse_tentacule*dt.asSeconds();
+        moveGrip(distDepl);
             //déplacement grapin dans sens inverse
-            consumeEnergy(Qt_deploi);
-        } while(longueur_tentacule > rayon); // longueur min tentac atteinte
-        etat=IDLE;                          //retourne à case 0 IDLE
+        consumeEnergy(Qt_deploi);
+        if(longueur_tentacule <= rayon) etat=IDLE;
         break;
     }
 
     case EAT:{
-        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr){
+        Bacterium::update(dt);
+        if(getAppEnv().getNutrimentColliding(grapin)==nullptr){
             etat=IDLE;
+
         }
         break;
     }
@@ -113,7 +119,7 @@ void TwitchingBacterium::move(sf::Time dt){
 
 void TwitchingBacterium::update(sf::Time dt){
     move(dt);
-    Bacterium::update(dt);
+//    Bacterium::update(dt);
 
 }
 

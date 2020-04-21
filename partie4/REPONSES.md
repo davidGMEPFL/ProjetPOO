@@ -211,31 +211,46 @@
 
 *************************************************
 
-[Question Q4.1] Quel(s) lien(s) d'héritage proposez-vous de mettre en place pour intégrer les TwitchingBacterium à l'architecture existante ?
+##Q3.22  Dans quelle classe proposez-vous d'ajouter ces méthodes ?
+
+- C'est la classe `Bacterium` qui possède l'attribut "vecteur de paramètres". C'est donc dans cette classe qu'on ajoute ces méthodes d'accès aux vecteurs.
+
+*************************************************
+
+##Q3.23  Où choisissez-vous de placer la méthode de division d'une bactérie ?
+
+- La méthode étant la même pour toute les bactéries, elle est placée simplement dans la classe `Bacterium` et elle appelera la méthode `clone` de façon polymorphique.
+
+*************************************************
+
+##Q4.1 Quel(s) lien(s) d'héritage proposez-vous de mettre en place pour intégrer les TwitchingBacterium à l'architecture existante ?
 
 -TwitchingBacterium serait une sous-classe de Bacterium, de même qu’une SimpleBacterium : elle héritera des classes CircularBody, Updatable et Drawable.
 
 *************************************************
 
-[Question Q4.2] Comment proposez-vous d'accéder aux paramètres caractérisant ce type de bactéries (comme la longueur maximale de son tentacule ou sa vitesse d'extension) ?
+##Q4.2 Comment proposez-vous d'accéder aux paramètres caractérisant ce type de bactéries (comme la longueur maximale de son tentacule ou sa vitesse d'extension) ?
 
 -A la manière de SimpleBacterium, on introduit une méthode   "getConfig()"  qui retournera les valeurs associées aux étiquettes de ["twitchingbacterium "] dans app.jason .
 
 *************************************************
 
-[Question Q4.3] Quelles méthodes déjà présentes dans la hiérarchie de classes des bactéries devrez-vous impérativement redéfinir dans TwitchingBacterium ?
+##Q4.3 Quelles méthodes déjà présentes dans la hiérarchie de classes des bactéries devrez-vous impérativement redéfinir dans TwitchingBacterium ?
 
 -Les méthodes virtuelles pures  "getConfig() " et  "clone()"  doivent être adaptées dans la sous-classe TwitchingBacterium, par définition. 
- Par la présence du tentacule, les méthodes "drawOn()", "updatable ()", "move()" et "mutate() " devront être redéfinies pour s’adapter aux nouvelles fonctionnalités de ces bactéries.
+ Par la présence du tentacule, les méthodes "drawOn()", "update()", et "move()" devront être redéfinies pour s’adapter aux nouvelles fonctionnalités de ces bactéries.
 
 *************************************************
 
-[Question Q4.4]  Quel «getters» proposez-vous d'ajouter/redéfinir à/dans votre classe pour retrouver ces valeurs lorsque nécessaires ?
+##Q4.4  Quel «getters» proposez-vous d'ajouter/redéfinir à/dans votre classe pour retrouver ces valeurs lorsque nécessaires ?
 
 -Le getter donnant accès à l’énergie consumée par le déplacement étant déjà existant dans Bacterium (EnergieDepl()), il suffira de le modifier. 
  Pour avoir accès à l’énergie utilisée par un déploiement de tentacule, on crée un getter dans la classe (EnergieTentac()), qui fera appel à  "getConfig()".
 
 *************************************************
- [Question Q4.5] Un type énuméré peut être une bonne solution pour répertorier les différents états cités plus haut. Comment proposeriez-vous d'en utiliser un pour mettre en oeuvre l'algorithme de mouvement ?
+##Q4.5 Un type énuméré peut être une bonne solution pour répertorier les différents états cités plus haut. Comment proposeriez-vous d'en utiliser un pour mettre en oeuvre l'algorithme de mouvement ?
+
+- En créant une liste d'énumaration avec les différents états, on peut créer un paramètre qui donnera au switch (de la machine d'état) l'instruction pour aller dans le bon état. Ce paramètre sera modifié à l'intérieur de la machine d'état, càd dans les différents `case` du switch.
+
 
 

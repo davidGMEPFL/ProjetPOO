@@ -48,7 +48,7 @@ void GripTest::onEvent(sf::Event event, sf::RenderWindow&)
 
         case sf::Keyboard::T:
 			MockTwitching* twitching(new MockTwitching(getCursorPositionInView()));
-			twitching->moveGrip(Vec2d(5,5)*twitching->getRadius());
+//			twitching->moveGrip(Vec2d(5,5)*twitching->getRadius());
             getEnv().addBacterium(twitching);
             break;
         }

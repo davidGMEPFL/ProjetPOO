@@ -28,11 +28,8 @@ void Bacterium::update(sf::Time dt){
             TimeLastMeal > getTempsDelay() && !abstinence){
         TimeLastMeal=sf::Time::Zero;
         energie+=NutrProxi->takeQuantity(15);
-
-
         // Division bactérie
             division();
-
     }
 }
 
@@ -87,3 +84,5 @@ MutableNumber& Bacterium::getProperty(const string& key){
         throw std::out_of_range("unknown mutable property :" + key);
     }
 }
+
+Bacterium::~Bacterium(){}

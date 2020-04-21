@@ -43,4 +43,6 @@ public:
 
     void addProperty(const std::string&, MutableNumber);
     MutableNumber& getProperty(const std::string&);
+
+    virtual ~Bacterium();
 };
