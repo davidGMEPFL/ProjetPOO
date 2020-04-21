@@ -3,6 +3,8 @@
 #include "Grip.hpp"
 #include <string>
 
+enum Etats{IDLE, WAIT_TO_DEPLOY, DEPLOY, ATTRACT, RETRACT, EAT};
+
 class TwitchingBacterium : public Bacterium
 {
 private:
@@ -10,14 +12,12 @@ private:
     double longueur_tentacule;
     //Vec2d direction_tentacule;
     //int etat;
-    enum etat{IDLE=0, WAIT_TO_DEPLOY=1, DEPLOY=2, ATTRACT=3, RETRACT=4, EAT=5};
+    Etats etat{};
 
 public:
     TwitchingBacterium(const Vec2d&);
 
     j::Value& getConfig() const;
-
-    enum Etats{};
 
     void moveGrip(const Vec2d& delta);
 
