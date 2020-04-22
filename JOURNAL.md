@@ -20,7 +20,6 @@
 *************************************************
 ## 17.03 (mardi)
 
-
 - programmation des classes <tt>PetriDish</tt>, <tt>Lab</tt> 
 - réponses aux questions jusqu'au Test 2.
 
@@ -62,6 +61,47 @@
 - tous les Tests sont passés + réponses aux questions
 
 *************************************************
-## 01.04 (jeudi)
+## 02.04 (jeudi)
 
 - étape 3.3 codée dans la journée 
+
+*************************************************
+## 05.04 (dimanche)
+
+- Tests de l'étape 3.3 sont passés
+- utilisation de Git désormais pour faciliter le travail à distance
+
+*************************************************
+## 06.04 (lundi)
+
+- programmation de l'étape 3.4
+- plusieurs problèmes se sont posés : conception du déplacement des bactéries par la force f, attache des 
+  flagelles sur la surface des bactéries, utilisation des radians, gestion d'une erreur dans méthode...
+
+*************************************************
+## 07.04 (mardi)
+
+- conception de clone(), division() et du vecteur de clones un peu différente de ce qui est suggéré 
+  mais qui semble fonctionner
+- Tests de l'étapes 3.4 sont passés + réponses aux questions
+
+*************************************************
+## 010.04 (vendredi)
+
+- début programmation étape 4.1
+- remise en question de la façon de cloner les bactéries et changement de son code
+- problème au niveau du tentacule d'un clone qui n'est pas rétracté
+
+*************************************************
+## 16.04 (jeudi)
+
+- Test 13 passé 
+- conception de la méthode move() : des concepts peu vus tels que la machine à état, l'énumération ou 
+  le switch semblent nécessaires
+- plusieurs problèmes se posent et l'on regarde sur le forum des solutions au crash de test
+
+*************************************************
+## 21.04 (mardi)
+
+- méthode move() beaucoup plus fonctionnelle : Test 14 passé (quelques détails à améliorer)
+- réponses aux questions
