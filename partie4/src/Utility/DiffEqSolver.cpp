@@ -34,9 +34,9 @@ DiffEqResult stepDiffEq(Vec2d position, Vec2d speed, sf::Time dt, DiffEqFunction
         // clang-format on
     }
 
-		default:
-			return { position , speed };
-			
-			
+    default:
+        return { position, speed };
+
+
     } // switch algo
 }

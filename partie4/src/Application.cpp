@@ -44,7 +44,7 @@ std::string configFileRelativePath(int argc, char const** argv)
     if (argc >= 2) {
         return RES_LOCATION + argv[1];
     } else {
-			return RES_LOCATION + DEFAULT_CFG;
+        return RES_LOCATION + DEFAULT_CFG;
     }
 }
 
@@ -54,7 +54,7 @@ std::string configFileRelativePath(int argc, char const** argv)
 
 Vec2d getWindowSize()
 {
-	auto width = getShortConfig().window_simulation_width + getShortConfig().window_stats_width;;
+    auto width = getShortConfig().window_simulation_width + getShortConfig().window_stats_width;;
     auto height = getShortConfig().window_simulation_height + getShortConfig().window_stats_width;
     return { width, height };
 }
@@ -62,7 +62,7 @@ Vec2d getWindowSize()
 Vec2d getSimulationSize()
 {
     auto width = getShortConfig().window_simulation_width;
-	auto height = getShortConfig().window_simulation_height;
+    auto height = getShortConfig().window_simulation_height;
     return { width, height };
 }
 
@@ -73,19 +73,19 @@ Vec2d getSimulationPosition()
 
 Vec2d getStatsSize()
 {
-	auto width = getShortConfig().window_simulation_width + getShortConfig().window_stats_width;
-	auto height = getShortConfig().window_simulation_height/2;
+    auto width = getShortConfig().window_simulation_width + getShortConfig().window_stats_width;
+    auto height = getShortConfig().window_simulation_height/2;
     return { width, height };
 }
 Vec2d getControlSize()
 {
-	auto width = getShortConfig().window_simulation_width;
-	auto height = getShortConfig().window_simulation_height/3;
+    auto width = getShortConfig().window_simulation_width;
+    auto height = getShortConfig().window_simulation_height/3;
     return { width, height };
 }
 Vec2d getStatsPosition()
 {
-	return { 0 , getShortConfig().window_simulation_height};
+    return { 0, getShortConfig().window_simulation_height};
 }
 
 Vec2d getControlPosition()
@@ -102,7 +102,7 @@ Vec2d getHelpSize()
 Vec2d getHelpPosition()
 {
     return { getShortConfig().window_simulation_width,
-			getShortConfig().window_simulation_height/3 };
+             getShortConfig().window_simulation_height/3 };
 }
 /*!
  * @brief Create a view with the given properties
@@ -129,19 +129,19 @@ sf::View setupView(Vec2d const& viewSize,
 } // anonymous
 
 Application::Application(int argc, char const** argv)
-: mAppDirectory(applicationDirectory(argc, argv))
-, mCfgFile(configFileRelativePath(argc, argv))
+    : mAppDirectory(applicationDirectory(argc, argv))
+    , mCfgFile(configFileRelativePath(argc, argv))
 //, mJSONRead(mAppDirectory + mCfgFile)
-, mConfig(new Config(mAppDirectory + mCfgFile))
+    , mConfig(new Config(mAppDirectory + mCfgFile))
 //, mStats(nullptr)
-, mCurrentGraphId(-1)
-, mLab(nullptr)
-, mPaused(false)  
-, mIsResetting(false)
-, mIsDragging(false)
-  // TODO: make it more general
-,mCurrentControl(TEMPERATURE)
-,isStatsOn(false)
+    , mCurrentGraphId(-1)
+    , mLab(nullptr)
+    , mPaused(false)
+    , mIsResetting(false)
+    , mIsDragging(false)
+      // TODO: make it more general
+    ,mCurrentControl(TEMPERATURE)
+    ,isStatsOn(false)
 {
     // Set global singleton
     assert(currentApp == nullptr);
@@ -153,22 +153,22 @@ Application::Application(int argc, char const** argv)
     if (!mFont.loadFromFile(mAppDirectory + FONT_LOCATION)) {
         std::cerr << "Couldn't load " << FONT_LOCATION << std::endl;
     }
-	// prepare simulation background
-	mLabBackground = sf::RectangleShape();
+    // prepare simulation background
+    mLabBackground = sf::RectangleShape();
     mLabBackground.setSize(getLabSize());
     //simulationBackground.setFillColor(sf::Color::Black);
-	mLabBackground.setOutlineColor(sf::Color::Black);
+    mLabBackground.setOutlineColor(sf::Color::Black);
     mLabBackground.setOutlineThickness(5);
     mLabBackground.setTexture(&getAppTexture(getShortConfig().simulation_background));
 
-	mSimulationBackground = mLabBackground;
+    mSimulationBackground = mLabBackground;
 }
 
 Application::~Application()
 {
     // Destroy lab and stats, in reverse order
     delete mLab;
-	delete mConfig;
+    delete mConfig;
 //	delete mStats;
 
     // Release textures
@@ -202,15 +202,15 @@ void Application::run()
     statsBackground.setSize(getStatsSize());
     statsBackground.setFillColor(sf::Color::Black);
 
-   // Create the control background (grey board)
+    // Create the control background (grey board)
     auto controlBackground = sf::RectangleShape();
     controlBackground.setSize(getControlSize());
     controlBackground.setFillColor(sf::Color(128, 128, 128));
 
-   // Create the control background (grey board)
+    // Create the control background (grey board)
     auto helpBackground = sf::RectangleShape();
     helpBackground.setSize(getHelpSize());
-    helpBackground.setFillColor(sf::Color(128, 128, 128));	
+    helpBackground.setFillColor(sf::Color(128, 128, 128));
 
     // Use a clock to track time
     sf::Clock clk;
@@ -218,7 +218,7 @@ void Application::run()
     // FPS counter
     sf::Clock fpsClk;
     int frameCount = 0;
-	int nbCycles = 10;
+    int nbCycles = 10;
     // Main loop
     while (mRenderWindow.isOpen()) {
         // Handle events
@@ -229,7 +229,7 @@ void Application::run()
 
 
         // Update logics
-		
+
         float timeFactor = getShortConfig().simulation_time_factor;
         auto elapsedTime = clk.restart() * timeFactor; // Always reset the clock!
 
@@ -244,16 +244,16 @@ void Application::run()
             while (elapsedTime > sf::Time::Zero) {
                 auto dt = std::min(elapsedTime, maxDt);
                 elapsedTime -= dt;
-				getEnv().update(dt);
+                getEnv().update(dt);
                 onUpdate(dt);
-				--nbCycles;
+                --nbCycles;
 
             }
         }
 
-		render(mSimulationBackground, statsBackground, controlBackground,
-			   helpBackground);
-		++frameCount;
+        render(mSimulationBackground, statsBackground, controlBackground,
+               helpBackground);
+        ++frameCount;
 
         // In case we were resetting the simulation
         mIsResetting = false;
@@ -307,7 +307,7 @@ sf::Texture& Application::getTexture(std::string const& name)
         sf::Texture* newTexture = new sf::Texture;
         if (newTexture->loadFromFile(getResPath() + name)) {
             // The texture was correctly loaded so we save it
-			newTexture->setRepeated(true); 
+            newTexture->setRepeated(true);
             mTextures[name] = newTexture;
             // And return the texture
             return *newTexture;
@@ -321,25 +321,26 @@ sf::Texture& Application::getTexture(std::string const& name)
     }
 }
 
-void Application::initHelpBox() {
-	std::ifstream ifs(getHelpTextFile());
-	std::stringstream ss;
+void Application::initHelpBox()
+{
+    std::ifstream ifs(getHelpTextFile());
+    std::stringstream ss;
     ss << ifs.rdbuf();
 
-	helpText = buildText(ss.str(),
-						 Vec2d(20,20),
-						 getAppFont(),
-						 12,
-						 sf::Color::Black);
+    helpText = buildText(ss.str(),
+                         Vec2d(20,20),
+                         getAppFont(),
+                         12,
+                         sf::Color::Black);
     helpBox = getTextBox(helpText);
     //helpBox.scale(1.1,1.1);
 }
 
 std::string Application::getHelpTextFile() const
 {
-	return RES_LOCATION + "help.txt";
+    return RES_LOCATION + "help.txt";
 }
-	
+
 std::string Application::getResPath() const
 {
     return mAppDirectory + RES_LOCATION;
@@ -348,9 +349,9 @@ std::string Application::getResPath() const
 Vec2d Application::getLabSize() const
 {
     // Not the same as getSimulationSize!
-	// TODO: improve
-	double size(getShortConfig().simulation_size);
-	return { size, size };
+    // TODO: improve
+    double size(getShortConfig().simulation_size);
+    return { size, size };
 }
 
 Vec2d Application::getCentre() const
@@ -361,17 +362,17 @@ Vec2d Application::getCentre() const
 void Application::onRun()
 {
     // By default nothing is done here
-	chooseBackground();
+    chooseBackground();
 }
 
 void Application::chooseBackground()
 {
 
-		mSimulationBackground = mLabBackground;
-		mSimulationBackground.setTexture(&getAppTexture(isDebugOn() ?
-														getShortConfig().simulation_debug_background :
-														getShortConfig().simulation_background)
-										 , true);
+    mSimulationBackground = mLabBackground;
+    mSimulationBackground.setTexture(&getAppTexture(isDebugOn() ?
+                                     getShortConfig().simulation_debug_background :
+                                     getShortConfig().simulation_background)
+                                     , true);
 }
 
 void Application::onEvent(sf::Event, sf::RenderWindow&)
@@ -381,7 +382,7 @@ void Application::onEvent(sf::Event, sf::RenderWindow&)
 
 void Application::onSimulationStart()
 {
-	initHelpBox();
+    initHelpBox();
     // By default nothing else is done here
 }
 
@@ -430,32 +431,32 @@ void Application::createViews()
     //   |                      |   | <- mCommandsHelpFrame
     //   |                      |   |
     //   ----------------------------
-	//   |                          | <- mStatsFrame
-	//   ----------------------------
+    //   |                          | <- mStatsFrame
+    //   ----------------------------
 
-	/*
+    /*
     mSimulationView = setupView(getWorldSize(),
                                 getSimulationPosition(), getSimulationSize(),
                                 mRenderWindow.getSize());
-	*/
-	mLabView = setupView(getLabSize(),
-                                getSimulationPosition(), getSimulationSize(),
-                                mRenderWindow.getSize());
-	
+    */
+    mLabView = setupView(getLabSize(),
+                         getSimulationPosition(), getSimulationSize(),
+                         mRenderWindow.getSize());
+
     mStatsView = setupView(getStatsSize(),
                            getStatsPosition(), getStatsSize(),
                            mRenderWindow.getSize());
 
     mHelpView = setupView(getHelpSize(),
-                        getHelpPosition(), getHelpSize(),
-                        mRenderWindow.getSize());
+                          getHelpPosition(), getHelpSize(),
+                          mRenderWindow.getSize());
 
-	mControlView = setupView(getControlSize(),
-                        getControlPosition(), getControlSize(),
-                        mRenderWindow.getSize());
+    mControlView = setupView(getControlSize(),
+                             getControlPosition(), getControlSize(),
+                             mRenderWindow.getSize());
 
 
-	mSimulationView = mLabView;
+    mSimulationView = mLabView;
 }
 
 void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
@@ -473,7 +474,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
         // Toggle debug mode
         case sf::Keyboard::D:
-			switchDebug();
+            switchDebug();
             break;
 
         // Exit simulation
@@ -482,7 +483,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             break;
 
         case sf::Keyboard::C:
-			delete mConfig;
+            delete mConfig;
             mConfig = new Config(mAppDirectory + mCfgFile); // reconstruct
             break;
 
@@ -493,15 +494,15 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 
         // Reset the simulation
         case sf::Keyboard::R:
-		
-				
-				mIsResetting = true;
-				getEnv().reset();
-				onSimulationStart();
-				createViews();
-				mSimulationBackground= mLabBackground;
-				mSimulationView = mLabView;
-				chooseBackground();
+
+
+            mIsResetting = true;
+            getEnv().reset();
+            onSimulationStart();
+            createViews();
+            mSimulationBackground= mLabBackground;
+            mSimulationView = mLabView;
+            chooseBackground();
             break;
 
         // Reset the simulation
@@ -518,42 +519,42 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
             mSimulationView.move(0, 100);
             break;
         case sf::Keyboard::Tab: // next control
-        
-			mCurrentControl = static_cast<Control>((mCurrentControl + 1) % Control::NB_CONTROLS);
 
-			break;
-			
+            mCurrentControl = static_cast<Control>((mCurrentControl + 1) % Control::NB_CONTROLS);
+
+            break;
+
         case sf::Keyboard::PageDown: // increase current control
 
-				switch(mCurrentControl){
-					case TEMPERATURE :
-						mLab->decreaseTemperature();
-						break;
-					case GRADIENT :
-						mLab->decreaseGradientExponent();
-						break;
-					case STATS:
-//						mStats->previous(); 
-						break;
-					default:
-						break;
-				}
-				break;
+            switch(mCurrentControl) {
+            case TEMPERATURE :
+                mLab->decreaseTemperature();
+                break;
+            case GRADIENT :
+                mLab->decreaseGradientExponent();
+                break;
+            case STATS:
+//						mStats->previous();
+                break;
+            default:
+                break;
+            }
+            break;
         case sf::Keyboard::PageUp: // decrease current control
-				switch(mCurrentControl){
-					case TEMPERATURE :
-						mLab->increaseTemperature();
-						break;
-					case GRADIENT :
-						mLab->increaseGradientExponent();
-						break;
-					case STATS:
+            switch(mCurrentControl) {
+            case TEMPERATURE :
+                mLab->increaseTemperature();
+                break;
+            case GRADIENT :
+                mLab->increaseGradientExponent();
+                break;
+            case STATS:
 //						mStats->next();
-						break;
-					default:
-						break;
-				}
-				break;
+                break;
+            default:
+                break;
+            }
+            break;
         default:
             onEvent(event, window);
             break;
@@ -561,7 +562,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
         break;
 
 
-    // Handle zoom for SFML 2.3+ and older versions as well
+        // Handle zoom for SFML 2.3+ and older versions as well
 #if SFML_VERSION_MAJOR >= 2 && (SFML_VERSION_MINOR > 3 || (SFML_VERSION_MINOR == 3 && SFML_VERSION_PATCH >= 2))
     case sf::Event::MouseWheelScrolled:
         if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
@@ -632,9 +633,9 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 }
 
 void Application::render(sf::Drawable const& simulationBackground,
-						 sf::Drawable const& statsBackground, 
-						 sf::Drawable const& controlBackground,
-						 sf::Drawable const& helpBackground)
+                         sf::Drawable const& statsBackground,
+                         sf::Drawable const& controlBackground,
+                         sf::Drawable const& helpBackground)
 {
     mRenderWindow.clear();
 
@@ -643,21 +644,21 @@ void Application::render(sf::Drawable const& simulationBackground,
     mRenderWindow.setView(mSimulationView);
     mRenderWindow.draw(simulationBackground);
 
-	getEnv().drawOn(mRenderWindow);
-	// Render the command help 
-	mRenderWindow.setView(mHelpView);
-	mRenderWindow.draw(helpBackground);
-	drawOnHelp(mRenderWindow);
-	// Render the controls
-	mRenderWindow.setView(mControlView);
-	mRenderWindow.draw(controlBackground);
-	drawControls(mRenderWindow);
+    getEnv().drawOn(mRenderWindow);
+    // Render the command help
+    mRenderWindow.setView(mHelpView);
+    mRenderWindow.draw(helpBackground);
+    drawOnHelp(mRenderWindow);
+    // Render the controls
+    mRenderWindow.setView(mControlView);
+    mRenderWindow.draw(controlBackground);
+    drawControls(mRenderWindow);
 
 
-	// Render the stats
-	mRenderWindow.setView(mStatsView);
-	mRenderWindow.draw(statsBackground);
-	
+    // Render the stats
+    mRenderWindow.setView(mStatsView);
+    mRenderWindow.draw(statsBackground);
+
     // Finally, publish everything onto the screen
     mRenderWindow.display();
 
@@ -711,18 +712,18 @@ void Application::dragView(sf::Vector2i const& srcPixel, sf::Vector2i const& des
 
 void Application::updateSimulationView()
 {
-	// by default nothing to do
+    // by default nothing to do
 }
 
 void Application::switchDebug()
 {
-	getShortConfig().switchDebug();
-	chooseBackground();
+    getShortConfig().switchDebug();
+    chooseBackground();
 }
 
 void Application::drawOnHelp(sf::RenderWindow& window) const
 {
-	window.draw(helpText);
+    window.draw(helpText);
 //	window.draw(helpBox);
 }
 
@@ -762,7 +763,7 @@ sf::Texture& getAppTexture(std::string const& name)
 
 void Application::setStats(bool isStatsOn)
 {
-	this->isStatsOn = isStatsOn;
+    this->isStatsOn = isStatsOn;
 }
 
 bool isDebugOn()
@@ -770,89 +771,90 @@ bool isDebugOn()
     return getShortConfig().getDebug();
 }
 
-void Application::drawControls(sf::RenderWindow& target) {
-	auto const LEGEND_MARGIN(10);
-	auto lastLegendY(LEGEND_MARGIN);
-	auto const FONT_SIZE = 15;
-	//drawTitle(target, sf::Color::Red, LEGEND_MARGIN, lastLegendY, FONT_SIZE);
-	lastLegendY += FONT_SIZE + 4;
-	for (size_t ctrl(TEMPERATURE); ctrl <NB_CONTROLS; ++ctrl){
-		drawOneControl(target, static_cast<Control>(ctrl), LEGEND_MARGIN, lastLegendY, FONT_SIZE);
-		lastLegendY += FONT_SIZE + 4;
-	}
+void Application::drawControls(sf::RenderWindow& target)
+{
+    auto const LEGEND_MARGIN(10);
+    auto lastLegendY(LEGEND_MARGIN);
+    auto const FONT_SIZE = 15;
+    //drawTitle(target, sf::Color::Red, LEGEND_MARGIN, lastLegendY, FONT_SIZE);
+    lastLegendY += FONT_SIZE + 4;
+    for (size_t ctrl(TEMPERATURE); ctrl <NB_CONTROLS; ++ctrl) {
+        drawOneControl(target, static_cast<Control>(ctrl), LEGEND_MARGIN, lastLegendY, FONT_SIZE);
+        lastLegendY += FONT_SIZE + 4;
+    }
 }
 
 void Application::drawTitle(sf::RenderWindow& target
-								 , sf::Color color
-								 , size_t xcoord
-								 , size_t ycoord
-								 , size_t font_size
-							) 
+                            , sf::Color color
+                            , size_t xcoord
+                            , size_t ycoord
+                            , size_t font_size
+                           )
 {
-	/*
-	std::stringstream tmpStream;
-	auto text = s::CURRENTSUBST + " : ";
+    /*
+    std::stringstream tmpStream;
+    auto text = s::CURRENTSUBST + " : ";
 
-	// TODO: add in Utility
-	switch(mLab->getCurrentSubst()){
-		case GLUCOSE:
-			text+= "Glucose";
-			break;
-		case BROMOPYRUVATE:
-			text+= "Bromo";
-			break;
-		case VGEF:
-			text+= "VGEF";
-			break;
-		default:
-			text += "None";
-	}
-	
-	auto legend = sf::Text(text, getAppFont(), font_size);
-	legend.setPosition(xcoord, ycoord);
-#if SFML_VERSION_MAJOR >= 2 && SFML_VERSION_MINOR >= 4
-	legend.setFillColor(color);
-#else
-	legend.setColor(color);
-#endif
-	target.draw(legend);
-	*/
+    // TODO: add in Utility
+    switch(mLab->getCurrentSubst()){
+    	case GLUCOSE:
+    		text+= "Glucose";
+    		break;
+    	case BROMOPYRUVATE:
+    		text+= "Bromo";
+    		break;
+    	case VGEF:
+    		text+= "VGEF";
+    		break;
+    	default:
+    		text += "None";
+    }
+
+    auto legend = sf::Text(text, getAppFont(), font_size);
+    legend.setPosition(xcoord, ycoord);
+    #if SFML_VERSION_MAJOR >= 2 && SFML_VERSION_MINOR >= 4
+    legend.setFillColor(color);
+    #else
+    legend.setColor(color);
+    #endif
+    target.draw(legend);
+    */
 }
 void Application::drawOneControl(sf::RenderWindow& target
-								 , Control control
-								 , size_t xcoord
-								 , size_t ycoord
-								 , size_t font_size
-								 ) 
+                                 , Control control
+                                 , size_t xcoord
+                                 , size_t ycoord
+                                 , size_t font_size
+                                )
 {
-	// pourl'affichage de double voir le projet 1718
-	sf::Color color (mCurrentControl == control ? sf::Color::Red : sf::Color::White);
-	std::string text("");
-	switch (control) {
-		case TEMPERATURE :
-			text = "Temperature : ";
-			text += to_nice_string(mLab->getTemperature());
-			break;
-		case GRADIENT :
-			text = "Gradient exponent : ";
-			text += to_nice_string(mLab->getGradientExponent());
-			break;
-		case STATS :
-			text = "Current stat : none";
-			break;
-		default:
-			/* nothing to do */
-			break;
-	}
-	
-	
-	auto legend = sf::Text(text, getAppFont(), font_size);
-	legend.setPosition(xcoord, ycoord);
+    // pourl'affichage de double voir le projet 1718
+    sf::Color color (mCurrentControl == control ? sf::Color::Red : sf::Color::White);
+    std::string text("");
+    switch (control) {
+    case TEMPERATURE :
+        text = "Temperature : ";
+        text += to_nice_string(mLab->getTemperature());
+        break;
+    case GRADIENT :
+        text = "Gradient exponent : ";
+        text += to_nice_string(mLab->getGradientExponent());
+        break;
+    case STATS :
+        text = "Current stat : none";
+        break;
+    default:
+        /* nothing to do */
+        break;
+    }
+
+
+    auto legend = sf::Text(text, getAppFont(), font_size);
+    legend.setPosition(xcoord, ycoord);
 #if SFML_VERSION_MAJOR >= 2 && SFML_VERSION_MINOR >= 4
-	legend.setFillColor(color);
+    legend.setFillColor(color);
 #else
-	legend.setColor(color);
+    legend.setColor(color);
 #endif
-	target.draw(legend);
+    target.draw(legend);
 }
 

@@ -2,6 +2,7 @@
 #include "CircularBody.hpp"
 #include "Bacterium.hpp"
 #include "Nutriment.hpp"
+#include "Swarm.hpp"
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Utility/Vec2d.hpp"
@@ -14,8 +15,10 @@ class PetriDish: public CircularBody, public Updatable, public Drawable
 protected:
     std::vector<Nutriment*> Nut;
     std::vector<Bacterium*> Bact;
+    std::vector<Swarm*> troupe;
     double Temp;
     double puissance;
+
 
 public:
     std::vector<Bacterium*> vecteur_clones;//Vecteur temporaire de pointeurs vers bactéries clonées
@@ -26,8 +29,14 @@ public:
     PetriDish(PetriDish const&) = delete;
 
     //Methodes
+    bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const&);
+
+    void addSwarm(Swarm*);
+
+
     Nutriment* getNutrimentColliding(CircularBody const& body);
+
 
     double getPositionScore(const Vec2d&);
     double getGradientExponent();
@@ -35,10 +44,10 @@ public:
     void decreaseGradientExponent();
     void resetGradientExponent();
 
-    bool addNutriment(Nutriment*);
+
 
     void update(sf::Time dt);
-    
+
     double getTemperature();
     void increaseTemperature();
     void decreaseTemperature();

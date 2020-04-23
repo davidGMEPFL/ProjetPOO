@@ -5,14 +5,15 @@ using namespace std;
 
 Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur)
     : CircularBody(position,rayon), couleur(couleur), direction(direction),abstinence(false),
-        energie(energie), TimeLastMeal(sf::Time::Zero)
+      energie(energie), TimeLastMeal(sf::Time::Zero)
 {}
 
-void Bacterium::drawOn(sf::RenderTarget& target) const{
+void Bacterium::drawOn(sf::RenderTarget& target) const
+{
     auto const circle = buildCircle(position, rayon, couleur.get());
     target.draw(circle);
 
-    if (isDebugOn()){
+    if (isDebugOn()) {
         auto const text = buildText(std::to_string(int(energie)),position + Vec2d(0,-100),
                                     getAppFont(),18,sf::Color::Red);
         target.draw(text);
@@ -20,37 +21,42 @@ void Bacterium::drawOn(sf::RenderTarget& target) const{
 }
 
 
-void Bacterium::update(sf::Time dt){
+void Bacterium::update(sf::Time dt)
+{
+    move(dt);
     // Bacterie mange des nutriments
     TimeLastMeal+=dt;
     Nutriment* NutrProxi(nullptr);
     if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
-            TimeLastMeal > getTempsDelay() && !abstinence){
+        TimeLastMeal > getTempsDelay() && !abstinence) {
         TimeLastMeal=sf::Time::Zero;
         energie+=NutrProxi->takeQuantity(15);
         // Division bactérie
-            division();
+        division();
     }
 }
 
-void Bacterium::consumeEnergy(Quantity qt){
+void Bacterium::consumeEnergy(Quantity qt)
+{
     energie-=qt;
 }
-bool Bacterium::testMort(){
+bool Bacterium::testMort()
+{
     return energie<=0;
 }
 
-void Bacterium::mutate(){
+void Bacterium::mutate()
+{
     couleur.mutate();
     std::map<std::string, MutableNumber>::iterator it = Params.begin();
-    while (it != Params.end())
-        {
-            it->second.mutate();
-            it++;
-        }
+    while (it != Params.end()) {
+        it->second.mutate();
+        it++;
+    }
 }
 
-void Bacterium::division() {
+void Bacterium::division()
+{
     if(energie>getMinEnDiv()) {
         energie/=2;
         clone();
@@ -59,24 +65,30 @@ void Bacterium::division() {
 }
 
 //Getters utilitaires
-double Bacterium::getMinEnDiv() const {
+double Bacterium::getMinEnDiv() const
+{
     return getConfig()["energy"]["division"].toDouble();
 }
-sf::Time Bacterium::getTempsDelay() const {
+sf::Time Bacterium::getTempsDelay() const
+{
     return sf::seconds(getConfig()["meal"]["delay"].toDouble());
 }
-double Bacterium::EnergieDepl() const {
+double Bacterium::EnergieDepl() const
+{
     return getConfig()["energy"]["consumption factor"].toDouble();
 }
-double Bacterium::mealMax() const {
+double Bacterium::mealMax() const
+{
     return getConfig()["meal"]["max"].toDouble();
 }
 
-void Bacterium::addProperty(const string& key, MutableNumber valeur){
+void Bacterium::addProperty(const string& key, MutableNumber valeur)
+{
     Params[key]=valeur;
 }
 
-MutableNumber& Bacterium::getProperty(const string& key){
+MutableNumber& Bacterium::getProperty(const string& key)
+{
     auto it = Params.find(key);
     if (it != Params.end()) {
         return it->second;
@@ -85,4 +97,4 @@ MutableNumber& Bacterium::getProperty(const string& key){
     }
 }
 
-Bacterium::~Bacterium(){}
+Bacterium::~Bacterium() {}

@@ -11,34 +11,39 @@
 
 SimpleBacterium::SimpleBacterium(const Vec2d & position)
     : Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
-      position ,  Vec2d::fromRandomAngle() ,
-      uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
-      getConfig()["color"]),
+                position,  Vec2d::fromRandomAngle(),
+                uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
+                getConfig()["color"]),
       t(uniform(0.,PI)), rotation(direction.angle()),
       ancien_score(getAppEnv().getPositionScore(position-direction)), TimerTumble(0)
-{      addProperty("speed",MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]));
-       addProperty("tumble better",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]));
-       addProperty("tumble worse",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]));}
+{
+    addProperty("speed",MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]));
+    addProperty("tumble better",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]));
+    addProperty("tumble worse",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]));
+}
 
-j::Value& SimpleBacterium::getConfig() const{
+j::Value& SimpleBacterium::getConfig() const
+{
     return getAppConfig()["simple bacterium"];
 }
 
-void SimpleBacterium::move(sf::Time dt){
+void SimpleBacterium::move(sf::Time dt)
+{
     DiffEqResult Result(stepDiffEq(position, getSpeedVector(), dt,  *this));
     consumeEnergy((position-Result.position).length()*EnergieDepl());
     position=Result.position;
 }
 
-void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
+void SimpleBacterium::drawOn(sf::RenderTarget& target) const
+{
     Bacterium::drawOn(target);
 
     auto set_of_points = sf::VertexArray(sf::LinesStrip);
     float x,y;
     // ajout depoints à l'ensemble:
-    for (int i(0); i<30;i++){
+    for (int i(0); i<30; i++) {
         x = static_cast<float>(-i * rayon / 10.0 -rayon); //décalage du début de la flagelle,
-            //pour que la sinusoïde démarre à la surface du corps de la bactérie
+        //pour que la sinusoïde démarre à la surface du corps de la bactérie
         y = static_cast<float>(rayon * sin(t) * sin(2 * i / 10.0));
         set_of_points.append({{x, y}, couleur.get()});
     }
@@ -52,27 +57,31 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const{
     //selon la matrice transform
 }
 
-Vec2d SimpleBacterium::getSpeedVector(){
-   // try{
-        return direction*getProperty("speed").get();
-  //  }
-  //  catch(std::out_of_range const& mess){
-  //     std::cerr<<mess<<endl;
-  //  }
+Vec2d SimpleBacterium::getSpeedVector()
+{
+    // try{
+    return direction*getProperty("speed").get();
+    //  }
+    //  catch(std::out_of_range const& mess){
+    //     std::cerr<<mess<<endl;
+    //  }
 }
 
-Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const{
+Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const
+{
     return Vec2d (0,0);
 }
 
-Bacterium* SimpleBacterium::clone() const{
+Bacterium* SimpleBacterium::clone() const
+{
     Bacterium* ptr=new SimpleBacterium( *this);
     ptr->mutate();
     getAppEnv().addBacterium(ptr, true);
     return ptr;
 }
 
-void SimpleBacterium::update(sf::Time dt){
+void SimpleBacterium::update(sf::Time dt)
+{
 
     Bacterium::update(dt); //point communs
     //Basculement
@@ -83,11 +92,11 @@ void SimpleBacterium::update(sf::Time dt){
     double p = 1 - exp(-TimerTumble/lambda);
     Vec2d tempRand;
 
-    if(bernoulli(p)){
-        for (int i(0); i<getConfig()["tumble"]["algo"]["best of N"].toDouble(); ++i){
+    if(bernoulli(p)) {
+        for (int i(0); i<getConfig()["tumble"]["algo"]["best of N"].toDouble(); ++i) {
             tempRand=Vec2d::fromRandomAngle();
             if(getAppEnv().getPositionScore(position+tempRand)>
-                    getAppEnv().getPositionScore(position+direction))
+               getAppEnv().getPositionScore(position+direction))
                 direction=tempRand;
         }
         TimerTumble=0;

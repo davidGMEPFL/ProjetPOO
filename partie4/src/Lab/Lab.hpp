@@ -2,6 +2,7 @@
 #include "PetriDish.hpp"
 #include "Nutriment.hpp"
 #include "Bacterium.hpp"
+#include "Swarm.hpp"
 #include "CircularBody.hpp"
 #include <SFML/Graphics.hpp>
 #include "Interface/Updatable.hpp"
@@ -10,7 +11,7 @@
 
 class Lab: public Updatable, public Drawable
 {
-public:
+private:
     PetriDish Petri;
     NutrimentGenerator Generator;
 public:
@@ -23,8 +24,12 @@ public:
 
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const& newBorn=false);
-    bool doesCollideWithDish(CircularBody const& body);
+    void addSwarm(Swarm*);
 
+
+    bool doesCollideWithDish(CircularBody const& body);
+    Nutriment* getNutrimentColliding(CircularBody const& body);
+    double getPositionScore(const Vec2d&);
 
 // Gestion de la température de l'assiette de Petri
     double getTemperature();
@@ -32,7 +37,7 @@ public:
     void decreaseTemperature();
     void resetTemp();
 
-    double getPositionScore(const Vec2d&);
+
 // Gestion de l'exposant du gradient pour l'assiette de Petri
     double getGradientExponent();
     void increaseGradientExponent();
@@ -40,9 +45,6 @@ public:
     void resetGradientExponent();
 
 
-
-
-    Nutriment* getNutrimentColliding(CircularBody const& body);
 
 
 };

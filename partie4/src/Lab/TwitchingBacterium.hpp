@@ -3,7 +3,7 @@
 #include "Grip.hpp"
 #include <string>
 
-enum Etats{IDLE, WAIT_TO_DEPLOY, DEPLOY, ATTRACT, RETRACT, EAT};
+enum Etats {IDLE, WAIT_TO_DEPLOY, DEPLOY, ATTRACT, RETRACT, EAT};
 
 class TwitchingBacterium : public Bacterium
 {
@@ -22,7 +22,7 @@ public:
     void moveGrip(const Vec2d& delta);
 
     void drawOn(sf::RenderTarget&) const override;
-    void update(sf::Time dt);
+//    void update(sf::Time dt);
     Bacterium* clone() const override;
     void move(sf::Time dt);
 

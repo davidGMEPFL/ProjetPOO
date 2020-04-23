@@ -15,8 +15,8 @@ private :
 public:
     //Constructeurs
     MutableNumber(const double& valeur_, const double& proba_, const double& sigma,
-                                 const bool&  if_borne_inf_=false, const double& borneinf=0.0,
-                                 const bool& if_borne_sup_=false,const double& bornesup=0.0);
+                  const bool&  if_borne_inf_=false, const double& borneinf=0.0,
+                  const bool& if_borne_sup_=false,const double& bornesup=0.0);
 
     MutableNumber(j::Value const&);
     MutableNumber()=default; //Constructeurs par défaut, utile pourr Bacterium::getProperty

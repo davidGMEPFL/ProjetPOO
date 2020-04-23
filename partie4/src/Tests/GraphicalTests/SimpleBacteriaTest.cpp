@@ -10,7 +10,7 @@ class SimpleBacteriaTest : public Application
 {
 public:
     SimpleBacteriaTest(int argc, char const** argv)
-    : Application(argc, argv)
+        : Application(argc, argv)
     {
     }
 
@@ -20,7 +20,7 @@ public:
 
     virtual void onEvent(sf::Event event, sf::RenderWindow& window) override final;
 
-	std::string getHelpTextFile() const override final;
+    std::string getHelpTextFile() const override final;
 };
 
 IMPLEMENT_MAIN(SimpleBacteriaTest);
@@ -29,7 +29,7 @@ void SimpleBacteriaTest::onRun()
 {
     // Basic setup
     Application::onRun();
-	setStats(false);
+    setStats(false);
 }
 
 void SimpleBacteriaTest::onEvent(sf::Event event, sf::RenderWindow&)
@@ -48,5 +48,5 @@ void SimpleBacteriaTest::onEvent(sf::Event event, sf::RenderWindow&)
 
 std::string SimpleBacteriaTest::getHelpTextFile() const
 {
-	return RES_LOCATION + "simple_bact_help.txt";
+    return RES_LOCATION + "simple_bact_help.txt";
 }

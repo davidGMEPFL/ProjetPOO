@@ -12,7 +12,7 @@ class NutrimentTest : public Application
 {
 public:
     NutrimentTest(int argc, char const** argv)
-    : Application(argc, argv)
+        : Application(argc, argv)
     {
     }
 
@@ -21,7 +21,7 @@ public:
     virtual void onRun() override final;
 
     virtual void onEvent(sf::Event event, sf::RenderWindow& window) override final;
-	std::string getHelpTextFile() const override final;
+    std::string getHelpTextFile() const override final;
 private:
     Nutriment* lastCreated = nullptr;
 };
@@ -32,12 +32,12 @@ void NutrimentTest::onRun()
 {
     // Basic setup
     Application::onRun();
-	setStats(false);
+    setStats(false);
 }
 
 void NutrimentTest::onEvent(sf::Event event, sf::RenderWindow&)
 {
-	constexpr int NUT_QTY(50);
+    constexpr int NUT_QTY(50);
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
         default:
@@ -64,5 +64,5 @@ void NutrimentTest::onEvent(sf::Event event, sf::RenderWindow&)
 
 std::string NutrimentTest::getHelpTextFile() const
 {
-	return RES_LOCATION + "nutriment_help_step3.txt";
+    return RES_LOCATION + "nutriment_help_step3.txt";
 }

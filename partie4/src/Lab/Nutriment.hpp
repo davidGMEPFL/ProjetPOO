@@ -6,7 +6,8 @@
 #include "Interface/Updatable.hpp"
 #include "Interface/Drawable.hpp"
 
-class Nutriment : public CircularBody, public Updatable, public Drawable {
+class Nutriment : public CircularBody, public Updatable, public Drawable
+{
 protected:
     Quantity nbNutriments;
 public:
