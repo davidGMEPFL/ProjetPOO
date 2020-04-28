@@ -15,7 +15,7 @@ class PetriDish: public CircularBody, public Updatable, public Drawable
 protected:
     std::vector<Nutriment*> Nut;
     std::vector<Bacterium*> Bact;
-    std::vector<Swarm*> troupe;
+    std::vector<Swarm*> mesTroupes;
     double Temp;
     double puissance;
 
@@ -28,32 +28,36 @@ public:
     PetriDish& operator=(const PetriDish&) = delete;
     PetriDish(PetriDish const&) = delete;
 
-    //Methodes
+    void update(sf::Time dt);
+    void drawOn(sf::RenderTarget& targetWindow) const;
+
+
+    //Methodes d'additions
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const&);
-
     void addSwarm(Swarm*);
+    Swarm* getSwarmWithId(std::string id) const;
 
 
-    Nutriment* getNutrimentColliding(CircularBody const& body);
 
 
-    double getPositionScore(const Vec2d&);
-    double getGradientExponent();
+
+    // Méthodes de calcul du score et d'alimentation
+    double getPositionScore(const Vec2d&) const;
+    double getGradientExponent() const;
     void increaseGradientExponent();
     void decreaseGradientExponent();
     void resetGradientExponent();
+    Nutriment* getNutrimentColliding(CircularBody const& body) const;
 
 
 
-    void update(sf::Time dt);
-
-    double getTemperature();
+    // Méthodes de température
+    double getTemperature() const;
     void increaseTemperature();
     void decreaseTemperature();
     void resetTemp();
 
-    void drawOn(sf::RenderTarget& targetWindow) const;
 
     void reset();
 

@@ -54,9 +54,9 @@ void SwarmBacteriaTest::onEvent(sf::Event event, sf::RenderWindow&)
     if (event.type == sf::Event::KeyPressed) {
         if (sf::Keyboard::Num1 <= event.key.code && event.key.code <= sf::Keyboard::Num2) {
             auto id = std::to_string(event.key.code - sf::Keyboard::Num0);
-//            auto swarm = getEnv().getSwarmWithId(id);
-//            assert(swarm != nullptr);
-//            getEnv().addBacterium(new SwarmBacterium(getCursorPositionInView(), swarm));
+            auto swarm = getEnv().getSwarmWithId(id);
+            assert(swarm != nullptr);
+            getEnv().addBacterium(new SwarmBacterium(getCursorPositionInView(), swarm));
         }
         // Add comtrole for swarm bacteria if needed
     }

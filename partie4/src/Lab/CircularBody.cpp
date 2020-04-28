@@ -12,7 +12,7 @@ double CircularBody::getRadius()const
 {
     return rayon;
 }
-Vec2d CircularBody::getPosition()const&
+Vec2d CircularBody::getPosition()const
 {
     return position;
 }

@@ -2,8 +2,11 @@
 #include "Interface/Updatable.hpp"
 #include "Utility/Vec2d.hpp"
 #include "SFML/Graphics.hpp"
+#include "Utility/MutableColor.hpp"
+#include "Bacterium.hpp"
 
 class SwarmBacterium;
+
 
 class Swarm: public Updatable
 {
@@ -15,14 +18,12 @@ public:
     Swarm(std::string const&);
     void update(sf::Time dt);
     j::Value& getConfig() const;
-    void addSwarmBacterium(SwarmBacterium*);
-
-//    void PopBact(SwarmBacterium*);
-
-    Vec2d getPosLeader();
-
-    sf::Color getColor();
+    void addSwarmBacterium(SwarmBacterium *);
+    void popBact(SwarmBacterium*);
 
 
+    Vec2d getPosLeader() const;
+    SwarmBacterium *getLeader() const;
+    std::string getId() const;
+    MutableColor getColor() const;
 };
-

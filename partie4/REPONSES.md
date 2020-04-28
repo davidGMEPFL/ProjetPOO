@@ -253,4 +253,46 @@
 - En créant une liste d'énumaration avec les différents états, on peut créer un paramètre qui donnera au switch (de la machine d'état) l'instruction pour aller dans le bon état. Ce paramètre sera modifié à l'intérieur de la machine d'état, càd dans les différents `case` du switch.
 
 
+*************************************************
+##Q4.6 Quelle(s) modification(s) faites-vous et à quelle(s) classe(s) pour intégrer cela ?
+
+- Dans la classe `PetriDish`, on ajoute un attribut vecteur de pointeurs sur des `Swarm`. Par ailleurs, dans la classe `Lab` on ajoute une méthode addSwarm qui fait appel à la méthode `PetriDish::addSwarm` qui permet d'ajouter un Swarm au vecteur des pointeurs. 
+
+
+*************************************************
+##Q4.7 Une SwarmBacterium doit disposer d'une force régissant son déplacement, exactement comme les bactéries simples. Quels liens mettez-vous en place pour modéliser cette force ? 
+
+- la classe `SwarmBacterium` hérite de la classe `DiffEqFunction`. On ajoute donc une méthode `f` à `SwarmBacterium` qui calculera la force sur les bactéries. 
+
+*************************************************
+##Q4.8 Au vu de ce qui précède, quelles méthodes déjà présentes dans la hiérarchie de classes des bactéries devrez-vous impérativement redéfinir dans SwarmBacterium ?
+
+- Puisque `SwarmBacterium` hérite de `Bacterium` il est donc nécessaire de rajouter les méthodes virtuelles pures de `Bacterium`: `move`, `clone` et `getConfig`. 
+
+*************************************************
+##Q4.9 Que devez-vous ajouter à votre code et où pour mettre en place cette fonctionnalité ?
+
+- On ajoute la méthode `Lab::getSwarmWithId` qui appelle une `PetriDish::getSwarmWithId` qui cherche le Swarm avec le bon id parmi le vecteur de pointeurs sur `Swarm`, et le retourne le bon pointeur
+
+
+*************************************************
+##Q4.10 Le destructeur de Swarm doit-il faire quelque chose selon vous ?
+
+- Etant donné qu'on gère déjà les bactéries (objets pointés) dans `PetriDish`, il ne reste à `Swarm` qu'à s'occuper des pointeurs eux-mêmes (qui sont ses attributs), ce qui est fait par défaut.
+
+
+
+*************************************************
+##Q4.11  Lorsqu'une SwarmBacterium meurt, elle ne doit plus être recensée dans son Swarm. Que devez-vous ajoutez à votre code et où pour que cette contrainte soit respectée ?
+
+- `PetriDish::update()` s'occupe de tester si la bactérie est morte. Quand c'est le cas, elle appelle le destructeur de `SwarmBacterium`, qui va appeler la méthode `Swarm::PopBack()` qui va supprimer le pointeur du `Swarm`. Enfin, `PetriDish::update()` supprime le pointeur dans `PetriDish`.
+
+
+
+
+
+
+
+
+
 

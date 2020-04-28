@@ -6,7 +6,7 @@ class CircularBody
 {
 public:
     double getRadius() const;
-    Vec2d getPosition() const&;
+    Vec2d getPosition() const;
 
     CircularBody& operator=(const CircularBody&);
     void move(const Vec2d&);

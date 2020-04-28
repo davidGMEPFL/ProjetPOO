@@ -3,7 +3,7 @@
     "simulation":{
       "time":{
          "factor":2,
-         "max dt":0.05,
+         "max dt":0.5,
 	  "fixed step" : 0.01
       },
 	"background" : "sand.png",
