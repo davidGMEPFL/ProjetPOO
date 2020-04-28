@@ -3,7 +3,7 @@
 #include "Application.hpp"
 
 
-SwarmBacterium::SwarmBacterium(const Vec2d & position, Swarm* saTroupe):
+SwarmBacterium::SwarmBacterium(const Vec2d& position, Swarm* saTroupe):
     Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
                     position,  Vec2d::fromRandomAngle(),
                     uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),

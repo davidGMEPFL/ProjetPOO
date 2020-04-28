@@ -31,6 +31,8 @@ public:
     Nutriment* getNutrimentColliding(CircularBody const& body);
     double getPositionScore(const Vec2d&);
 
+    std::string getSwarmWithId(std::string id) const;
+
 // Gestion de la température de l'assiette de Petri
     double getTemperature();
     void increaseTemperature();
@@ -43,8 +45,5 @@ public:
     void increaseGradientExponent();
     void decreaseGradientExponent();
     void resetGradientExponent();
-
-
-
 
 };

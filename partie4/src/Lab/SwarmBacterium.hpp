@@ -8,7 +8,7 @@ class SwarmBacterium : public Bacterium, public DiffEqFunction
 {
     bool estLeader;
 public:
-    SwarmBacterium(const Vec2d &, Swarm* );
+    SwarmBacterium(const Vec2d&, Swarm* );
     void move(sf::Time);
     Vec2d f(Vec2d position, Vec2d speed) const override;
     void drawOn(sf::RenderTarget& target) const override;

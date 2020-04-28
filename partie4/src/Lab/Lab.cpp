@@ -63,7 +63,9 @@ double Lab::getPositionScore(const Vec2d& pos)
 }
 
 
-
+std::string getSwarmWithId(std::string id) const {
+    Petri.getSwarmWithId;
+}
 
 
 
