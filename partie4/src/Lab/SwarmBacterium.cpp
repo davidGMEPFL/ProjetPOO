@@ -7,7 +7,7 @@ SwarmBacterium::SwarmBacterium(const Vec2d& position, Swarm* saTroupe):
     Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
                     position,  Vec2d::fromRandomAngle(),
                     uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
-                    saTroupe->getColor() /*getConfig()["color"]*/), SonSwarm(saTroupe)
+                    saTroupe->getColor()), SonSwarm(saTroupe)
 {
     addSwarmBacterium(this, saTroupe);
 }

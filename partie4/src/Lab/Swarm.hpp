@@ -17,6 +17,8 @@ class Swarm: public Updatable
 public:
     Swarm(std::string const&);
     void update(sf::Time dt);
+    void findLeader();
+
     j::Value& getConfig() const;
     void addSwarmBacterium(SwarmBacterium *);
     void popBact(SwarmBacterium*);
