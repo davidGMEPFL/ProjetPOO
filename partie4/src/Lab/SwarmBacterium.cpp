@@ -36,9 +36,10 @@ void SwarmBacterium::move(sf::Time dt){
         consumeEnergy(EnergieDepl()*getConfig()["speed"]["initial"].toDouble()*dt.asSeconds());
     }
     else{
-        DiffEqResult Result(stepDiffEq(position, direction*getConfig()["speed"]["initial"].toDouble()*dt.asSeconds(), dt,  *this));
+        DiffEqResult Result(stepDiffEq(position, direction*getConfig()["speed"]["initial"].toDouble(), dt, *this));
         consumeEnergy((position-Result.position).length()*EnergieDepl());
-        position=Result.position; direction=Result.speed/getConfig()["speed"]["initial"].toDouble();
+        position=Result.position;
+        direction=Result.speed.normalised();
     }
 }
 

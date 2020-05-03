@@ -281,7 +281,6 @@
 - Etant donné qu'on gère déjà les bactéries (objets pointés) dans `PetriDish`, il ne reste à `Swarm` qu'à s'occuper des pointeurs eux-mêmes (qui sont ses attributs), ce qui est fait par défaut.
 
 
-
 *************************************************
 ##Q4.11  Lorsqu'une SwarmBacterium meurt, elle ne doit plus être recensée dans son Swarm. Que devez-vous ajoutez à votre code et où pour que cette contrainte soit respectée ?
 

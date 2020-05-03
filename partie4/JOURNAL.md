@@ -105,3 +105,24 @@
 
 - méthode move() beaucoup plus fonctionnelle : Test 14 passé (quelques détails à améliorer)
 - réponses aux questions
+
+*************************************************
+## 24.04 (vendredi)
+
+- suppression de définition à part entière de update() dans <tt>TwitchingBacterium</tt>
+- Test 14 passé
+- début programmation étape 4.2
+
+*************************************************
+## 28.04 (mardi)
+
+- problèmes divers rencontrés : présence de const / auto&, erreur segmentation fault,
+  conception de méthodes au bon endroit...
+- question à l'assistant et au forum sur la gestion des pointeurs
+
+*************************************************
+## 30.04 (jeudi)
+
+- programmation complète de <tt>Swarm</tt> et <tt>SwarmBacterium</tt>
+- Test 15 et 16  passés
+- réponse aux questions
