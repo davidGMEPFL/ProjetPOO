@@ -9,13 +9,12 @@ Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
 
 Quantity Nutriment::takeQuantity(Quantity qtTaken)
 {
-    Quantity ret(nbNutriments);
+    Quantity ret(nbNutriments); //quantité nut dispo
     if((nbNutriments-=qtTaken)>=0) ret=qtTaken;
     else nbNutriments=0;
-
     // retournera la quantité qui a pu être prélevée
     rayon=nbNutriments;
-    return ret;
+    return ret; //quantité nut prélevée (soit qtTaken, soit nbNut)
 }
 
 void Nutriment::setQuantity(Quantity const& newQt)

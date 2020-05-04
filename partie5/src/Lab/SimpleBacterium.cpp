@@ -7,7 +7,9 @@
 //#include "Utility/Utility.hpp"
 #include "Utility/Constants.hpp"
 #include <iostream>
-//#include "Utility/MutableNumber.hpp"
+#include <Lab/NutrimentA.hpp>
+#include <Lab/NutrimentB.hpp>
+
 
 SimpleBacterium::SimpleBacterium(const Vec2d & position)
     : Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
@@ -118,6 +120,11 @@ void SimpleBacterium::update(sf::Time dt)
     //Variable pour le mouvement de la flagelle
     t+=3* dt.asSeconds();
 
+}
 
-
+Quantity SimpleBacterium::eatableQuantity(NutrimentA& nutriment){
+    return nutriment.eatenBy(*this);
+}
+Quantity SimpleBacterium::eatableQuantity(NutrimentB& nutriment) {
+    return nutriment.eatenBy(*this);
 }

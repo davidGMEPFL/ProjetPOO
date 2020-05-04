@@ -17,5 +17,9 @@ public:
     Bacterium* clone() const override;
     j::Value& getConfig() const;
 
+    Quantity eatableQuantity(NutrimentA& nutriment) override;
+    Quantity eatableQuantity(NutrimentB& nutriment) override;
+
+
     ~SwarmBacterium();
 };

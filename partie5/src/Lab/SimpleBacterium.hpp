@@ -18,4 +18,7 @@ public:
     Bacterium* clone() const override;
     void update(sf::Time dt);
     void basculement();
+
+    Quantity eatableQuantity(NutrimentA& nutriment) override;
+    Quantity eatableQuantity(NutrimentB& nutriment) override;
 };

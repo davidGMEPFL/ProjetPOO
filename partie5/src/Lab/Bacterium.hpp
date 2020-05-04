@@ -2,11 +2,17 @@
 #include "Interface/Drawable.hpp"
 #include "Interface/Updatable.hpp"
 #include "CircularBody.hpp"
+#include "NutrimentA.hpp"
+#include "NutrimentB.hpp"
 #include "Utility/MutableColor.hpp"
 #include "Utility/Vec2d.hpp"
 #include "Utility/Types.hpp"
 #include <vector>
 #include <string>
+
+class Nutriment;
+class NutrimentA;
+class NutrimentB;
 
 class Bacterium: public Drawable, public Updatable, public CircularBody
 {
@@ -26,6 +32,11 @@ public:
 
     void drawOn(sf::RenderTarget&) const;
     void update(sf::Time dt);
+
+    void eat(Nutriment& nutriment);    //gère consommation nutriments selon bactérie
+    virtual Quantity eatableQuantity(NutrimentA& nutriment) = 0; //permet polymorphisme sur nutriments
+    virtual Quantity eatableQuantity(NutrimentB& nutriment) = 0;
+
     void consumeEnergy(Quantity qt);
     bool testMort();
     void division();

@@ -3,6 +3,8 @@
 #include "Application.hpp"
 #include "Utility/Utility.hpp"
 #include <SFML/Graphics.hpp>
+#include <Lab/NutrimentA.hpp>
+#include <Lab/NutrimentB.hpp>
 
 TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
     : Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
@@ -135,6 +137,14 @@ void TwitchingBacterium::move(sf::Time dt)
 ////    Bacterium::update(dt);
 
 //}
+
+Quantity TwitchingBacterium::eatableQuantity(NutrimentA& nutriment){
+    return nutriment.eatenBy(*this);
+}
+
+Quantity TwitchingBacterium::eatableQuantity(NutrimentB& nutriment) {
+    return nutriment.eatenBy(*this);
+}
 
 
 j::Value& TwitchingBacterium::getConfig() const

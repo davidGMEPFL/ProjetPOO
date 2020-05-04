@@ -1,6 +1,8 @@
 #include "SwarmBacterium.hpp"
 #include "Random/Random.hpp"
 #include "Application.hpp"
+#include <Lab/NutrimentA.hpp>
+#include <Lab/NutrimentB.hpp>
 
 
 SwarmBacterium::SwarmBacterium(const Vec2d& position, Swarm* saTroupe):
@@ -67,6 +69,13 @@ void SwarmBacterium::drawOn(sf::RenderTarget& target) const{
     }
 }
 
+Quantity SwarmBacterium::eatableQuantity(NutrimentA& nutriment){
+    return nutriment.eatenBy(*this);
+}
+
+Quantity SwarmBacterium::eatableQuantity(NutrimentB& nutriment) {
+    return nutriment.eatenBy(*this);
+}
 
 
 
