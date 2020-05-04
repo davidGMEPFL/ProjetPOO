@@ -16,7 +16,7 @@ j::Value NutrimentA::getConfig() const
 
 
 Quantity NutrimentA::eatenBy(Bacterium &bact) {  //polymorphisme sur nutriments
-    bact.eatableQuantity(*this);
+    return bact.eatableQuantity(*this);
 }
 
 //qtité nutriment consommée : toujours qtité max consommable

@@ -3,6 +3,10 @@
 #include "Grip.hpp"
 #include <string>
 
+class NutrimentA;
+class NutrimentB;
+
+
 enum Etats {IDLE, WAIT_TO_DEPLOY, DEPLOY, ATTRACT, RETRACT, EAT};
 
 class TwitchingBacterium : public Bacterium

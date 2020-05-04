@@ -2,7 +2,11 @@
 #include "Bacterium.hpp"
 #include "Utility/DiffEqSolver.hpp"
 
-class SimpleBacterium: public Bacterium, public DiffEqFunction
+
+class NutrimentA;
+class NutrimentB;
+
+class SimpleBacterium : public Bacterium, public DiffEqFunction
 {
     double t;
     double rotation;

@@ -15,24 +15,24 @@ j::Value  NutrimentB::getConfig() const
 }
 
 Quantity NutrimentB::eatenBy(Bacterium &bact) {     //polymorphisme sur nutriments
-    bact.eatableQuantity(*this);
+    return bact.eatableQuantity(*this);
 }
 
 //qtité nutriment consommée selon type de bactérie
 Quantity NutrimentB::eatenBy(SimpleBacterium& bacterium)
 {
-    return takeQuantity(bacterium.mealMax()/bacterium.getConfig()["resistance factor"].toDouble());
-}   //difficilement conbsommable pour les Simple
+    return takeQuantity(bacterium.mealMax()/getConfig()["resistance factor"].toDouble());
+}   //difficilement consommable pour les Simple
 
 Quantity NutrimentB::eatenBy(TwitchingBacterium& bacterium)
 {
-    double factor1(getAppConfig()["nutriments"]["nutritive factor"].toDouble());
+    double factor1(getConfig()["nutritive factor"].toDouble());
     return factor1 * takeQuantity(bacterium.mealMax());
 }   //plus nutritifs pour les Twitching
 
 Quantity NutrimentB::eatenBy(SwarmBacterium& bacterium)
 {
-    double factor2(getAppConfig()["nutriments"]["poison factor"].toDouble());
+    double factor2(getConfig()["poison factor"].toDouble());
     return -factor2 * takeQuantity(bacterium.mealMax());
 }   //toxiques pour les Swarm
 

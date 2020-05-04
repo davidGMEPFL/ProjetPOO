@@ -26,25 +26,21 @@ void Bacterium::update(sf::Time dt)
     move(dt);
     // Bacterie mange des nutriments
     TimeLastMeal+=dt;
-    eat();
-    /*    Nutriment* NutrProxi(nullptr);
-    if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
-        TimeLastMeal > getTempsDelay() && !abstinence) {
-        TimeLastMeal=sf::Time::Zero;
-        energie+=NutrProxi->takeQuantity(15)*/;
-
-    // Division bactérie
-    division();
-}
-
-void Bacterium::eat(Nutriment& nutriment) { //on ne peut pas être polymorphique directement sur le paramètre
     Nutriment* NutrProxi(nullptr);
-    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
+
     if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
             TimeLastMeal > getTempsDelay() && !abstinence) {
         TimeLastMeal=sf::Time::Zero;
-        energie+=eaten;
+        eat(*NutrProxi);
+
+        // Division bactérie
+        division();
     }
+}
+
+void Bacterium::eat(Nutriment& nutriment) { //on ne peut pas être polymorphique directement sur le paramètre
+    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
+    energie+=eaten;
 }
 
 void Bacterium::consumeEnergy(Quantity qt)

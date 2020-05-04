@@ -2,8 +2,6 @@
 #include "Interface/Drawable.hpp"
 #include "Interface/Updatable.hpp"
 #include "CircularBody.hpp"
-#include "NutrimentA.hpp"
-#include "NutrimentB.hpp"
 #include "Utility/MutableColor.hpp"
 #include "Utility/Vec2d.hpp"
 #include "Utility/Types.hpp"

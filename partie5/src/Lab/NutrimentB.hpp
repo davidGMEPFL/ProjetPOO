@@ -3,7 +3,13 @@
 #include "Utility/Types.hpp"
 
 
-class NutrimentB: public Nutriment
+class Bacterium;
+class SimpleBacterium;
+class TwitchingBacterium;
+class SwarmBacterium;
+
+
+class NutrimentB : public Nutriment
 {
 public:
     NutrimentB(const Quantity&,const Vec2d&);

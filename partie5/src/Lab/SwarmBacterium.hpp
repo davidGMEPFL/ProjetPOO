@@ -4,6 +4,11 @@
 #include "Swarm.hpp"
 
 
+
+class NutrimentA;
+class NutrimentB;
+
+
 class SwarmBacterium : public Bacterium, public DiffEqFunction
 {
     Swarm* SonSwarm;

@@ -5,11 +5,11 @@
 #include "SFML/Graphics.hpp"
 #include "Interface/Updatable.hpp"
 #include "Interface/Drawable.hpp"
+#include "Bacterium.hpp"
 #include "SimpleBacterium.hpp"
 #include "TwitchingBacterium.hpp"
 #include "SwarmBacterium.hpp"
 
-class Bacterium;
 
 class Nutriment : public CircularBody, public Updatable, public Drawable
 {

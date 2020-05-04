@@ -77,8 +77,8 @@ find_package(SFML 2.5 QUIET COMPONENTS graphics window system)
       message(STATUS "Found SFML ${SFML_VERSION_MAJOR}.${SFML_VERSION_MINOR}.${SFML_VERSION_PATCH}")
       
       #main application:
-      #add_executable (application  ${TEST_DIR}/GraphicalTests/FinalApplication.cpp ${SOURCES_GFX})
-      #target_link_libraries(application sfml-graphics sfml-window sfml-system)
+      add_executable (application  ${TEST_DIR}/GraphicalTests/FinalApplication.cpp ${SOURCES_GFX})
+      target_link_libraries(application sfml-graphics sfml-window sfml-system)
 	
       #Units tests:
       add_executable (mutableTest  ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})
@@ -114,8 +114,8 @@ find_package(SFML 2.5 QUIET COMPONENTS graphics window system)
             include_directories(${SFML_INCLUDE_DIR})
 	    
 	    #main application:
-#            add_executable(application ${TEST_DIR}/GraphicalTests/FinalApplication.cpp ${SOURCES_GFX})
-#            target_link_libraries(application ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+            add_executable(application ${TEST_DIR}/GraphicalTests/FinalApplication.cpp ${SOURCES_GFX})
+            target_link_libraries(application ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 
 	    #Units tests:
 	    add_executable (mutableTest ${TEST_DIR}/UnitTests/MutablePropertyTest.cpp ${CB_SOURCES} ${CACHE_SOURCES})

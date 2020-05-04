@@ -3,7 +3,6 @@
 #include "Utility/Types.hpp"
 
 
-
 class NutrimentA: public Nutriment
 {
 public:
