@@ -247,7 +247,7 @@ void Application::run()
                 elapsedTime -= dt;
 				getEnv().update(dt);
 				// A DECOMMENTER
-//				getStats().update(dt);
+                getStats().update(dt);
                 onUpdate(dt);
 				--nbCycles;
 
@@ -503,8 +503,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 				
 				mIsResetting = true;
 				getEnv().reset();
-// A DECOMMENTER:
-//				getStats().reset();
+                getStats().reset();
 				onSimulationStart();
 				createViews();
 				mSimulationBackground= mLabBackground;
@@ -541,8 +540,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 						mLab->decreaseGradientExponent();
 						break;
 					case STATS:
-						// A DECOMMENTER
-//						mStats->previous(); 
+                        mStats->previous();
 						break;
 					default:
 						break;
@@ -557,8 +555,7 @@ void Application::handleEvent(sf::Event event, sf::RenderWindow& window)
 						mLab->increaseGradientExponent();
 						break;
 					case STATS:
-// A DECOMMENTER
-//						mStats->next();
+                        mStats->next();
 						break;
 					default:
 						break;
@@ -669,8 +666,7 @@ void Application::render(sf::Drawable const& simulationBackground,
 	mRenderWindow.draw(statsBackground);
 	if (isStatsOn)
 	{
-// A DECOMENTER
-		//getStats().drawOn(mRenderWindow);
+        getStats().drawOn(mRenderWindow);
 	}
 	
 	
@@ -828,8 +824,7 @@ void Application::drawOneControl(sf::RenderWindow& target
 			break;
 		case STATS :
 			text = "Current stat : ";
-			// A DECOMMENTER
-			//text += (isStatsOn ? mStats->getCurrentTitle() : "disabled");
+            text += (isStatsOn ? mStats->getCurrentTitle() : "disabled");
 			break;
 		default:
 			/* nothing to do */
@@ -852,7 +847,7 @@ void Application::addGraph(std::string const& title, std::vector<std::string> co
     if (series.size() > 0){
 		++mCurrentGraphId;
 		// A DECOMMENTER
-//    getStats().addGraph(mCurrentGraphId, title, series, min, max, getStatsSize() );
+    getStats().addGraph(mCurrentGraphId, title, series, min, max, getStatsSize() );
 	}
 }
 
@@ -865,5 +860,5 @@ Stats& Application::getStats()
 void Application::setActiveGraph(int id)
 {
 	// A DECOMMENTER
-	//getStats().setActive(id);
+    getStats().setActive(id);
 }
