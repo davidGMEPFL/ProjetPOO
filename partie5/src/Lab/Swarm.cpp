@@ -32,11 +32,12 @@ void Swarm::addSwarmBacterium(SwarmBacterium* Bact){
 
 
 void Swarm::popBact(SwarmBacterium* aDetruire){
+    bool estLeader(leader==aDetruire);
     for(auto& Bact : mesBacts){
         if(Bact==aDetruire) Bact=nullptr;
     }
     mesBacts.erase(std::remove(mesBacts.begin(), mesBacts.end(), nullptr), mesBacts.end());
-    findLeader();
+    if (estLeader) findLeader();
 }
 
 

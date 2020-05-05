@@ -61,7 +61,8 @@ j::Value& SwarmBacterium::getConfig() const
 
 void SwarmBacterium::drawOn(sf::RenderTarget& target) const{
     Bacterium::drawOn(target);
-    if(isDebugOn() && this==SonSwarm->getLeader()){
+    bool estLeader(this==SonSwarm->getLeader());
+    if(isDebugOn() && estLeader){
         sf::Color couleur(sf::Color::Red);
         double epaisseur(5);
         auto border = buildAnnulus(position, rayon, couleur, epaisseur);

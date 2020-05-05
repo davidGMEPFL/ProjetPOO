@@ -1,9 +1,9 @@
 #include "NutrimentA.hpp"
 #include "Application.hpp"
-#include<Lab/Bacterium.hpp>
-#include<Lab/TwitchingBacterium.hpp>
-#include<Lab/SwarmBacterium.hpp>
-#include<Lab/SimpleBacterium.hpp>
+//#include<Lab/Bacterium.hpp>
+//#include<Lab/TwitchingBacterium.hpp>
+//#include<Lab/SwarmBacterium.hpp>
+//#include<Lab/SimpleBacterium.hpp>
 
 NutrimentA::NutrimentA(const Quantity& nbNutriments,const Vec2d& position):
     Nutriment(nbNutriments,position)
