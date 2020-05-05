@@ -48,8 +48,7 @@ void PetriDish::drawOn(sf::RenderTarget& targetWindow) const
     double epaisseur(5);
     auto border = buildAnnulus(position, rayon, couleur, epaisseur);
     targetWindow.draw(border);
-    for
-    (auto& nutr : Nut) nutr->drawOn(targetWindow);
+    for (auto& nutr : Nut) nutr->drawOn(targetWindow);
     for (auto& bac : Bact) bac->drawOn(targetWindow);
 }
 
@@ -60,16 +59,19 @@ bool PetriDish::addNutriment(Nutriment* nut)
     //place des nutriments dans l'assiette
     //bool sert à savoir si l'on a réussit à placer le nutriment
     if(contains(*nut)) Nut.push_back(nut);
+    else delete nut;
     return contains(*nut);
 }
 
 bool PetriDish::addBacterium(Bacterium* bact,bool const& newBorn)
 {
-    if(!newBorn) {
-        //permet de peupler l'assiette
-        //bool sert à savoir si l'on a réussit à placer la bactérie
-        if(contains(*bact)) Bact.push_back(bact);
-    } else vecteur_clones.push_back(bact);
+    if(contains(*bact)){
+        if(!newBorn) {
+            //permet de peupler l'assiette
+            //bool sert à savoir si l'on a réussit à placer la bactérie
+            Bact.push_back(bact);
+        } else vecteur_clones.push_back(bact);}
+    else delete bact;
     return contains(*bact);
 }
 

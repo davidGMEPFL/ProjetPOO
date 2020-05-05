@@ -37,20 +37,17 @@ void CircularBody::move(const Vec2d& vec)
 bool CircularBody::contains(const CircularBody& other)const
 {
     if (other.rayon<=rayon) {
-        if (distance(position, other.position)<=abs(other.rayon-rayon)) return true;
-        else return false;
+        return (distance(position, other.position)<=std::abs(other.rayon-rayon));
     } else return false;
 }
 
 bool CircularBody::isColliding(const CircularBody& other)const
 {
-    if (distance(position,other.position)<=(rayon+other.rayon)) return true;
-    else return false;
+   return (distance(position,other.position)<=(rayon+other.rayon));
 }
 bool CircularBody::contains(const Vec2d& point)const
 {
-    if (distance(position,point)<rayon) return true;
-    else return false;
+    return (distance(position,point)<rayon);
 }
 bool CircularBody::operator>(const CircularBody& other)const
 {
