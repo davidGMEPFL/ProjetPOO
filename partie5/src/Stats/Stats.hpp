@@ -14,7 +14,7 @@ class Stats
 
 
 public:
-    void setActive(const int&);
+    void setActiveId(const int&);
     std::string getCurrentTitle();
     void next();
     void previous();
