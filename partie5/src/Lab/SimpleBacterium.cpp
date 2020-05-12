@@ -140,7 +140,9 @@ void SimpleBacterium::addToGraph(const std::string & titreGraph ,std::unordered_
 }
 
 
-
+void SimpleBacterium::getSpeed(std::vector<double>& Speed){
+    Speed.push_back(getProperty("speed").get());
+}
 
 
 

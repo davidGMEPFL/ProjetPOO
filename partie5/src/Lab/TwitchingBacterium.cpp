@@ -6,6 +6,8 @@
 #include <Lab/NutrimentA.hpp>
 #include <Lab/NutrimentB.hpp>
 
+using namespace std;
+
 TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
     : Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
                 position,  Vec2d::fromRandomAngle(),
@@ -171,10 +173,16 @@ Vec2d TwitchingBacterium::direction_tentacule() const
 
 
 void TwitchingBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
-    if (s::GENERAL==titreGraph){
-        ++GraphTemp[s::TWITCHING_BACTERIA];
-    }
-    if (s::TWITCHING_BACTERIA==titreGraph){
-        ++GraphTemp[s::TWITCHING_BACTERIA];
-    }
+    if (s::GENERAL==titreGraph) ++GraphTemp[s::TWITCHING_BACTERIA];
 }
+
+void TwitchingBacterium::getAdditional(std::vector<double> & TLength, std::vector<double> &TSpeed){
+    TLength.push_back(getProperty("tentacle length").get());
+    TSpeed.push_back(getProperty("tentacle speed").get());
+}
+
+void TwitchingBacterium::getSpeed(std::vector<double>& Speed){
+    Speed.push_back(getProperty("tentacle speed").get()*
+                    getConfig()["speed factor"].toDouble());
+}
+

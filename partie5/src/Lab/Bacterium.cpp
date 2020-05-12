@@ -105,4 +105,10 @@ MutableNumber& Bacterium::getProperty(const string& key)
     }
 }
 
+
+void Bacterium::getAdditional(vector<double>&, vector<double>&){
+
+}
+
+
 Bacterium::~Bacterium() {}

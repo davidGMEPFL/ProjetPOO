@@ -2,6 +2,9 @@
 #include "Utility/Utility.hpp"
 #include "Application.hpp"
 #include "Bacterium.hpp"
+#include <numeric>
+
+using namespace std;
 
 //Constructeur
 PetriDish::PetriDish(Vec2d position,double rayon):
@@ -176,33 +179,50 @@ double PetriDish::getPositionScore(const Vec2d& pos) const
 
 std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph){
     std::unordered_map<std::string, double> GraphTemp;
+
+    // General graph update
     if(s::GENERAL == titreGraph){
         GraphTemp[s::SIMPLE_BACTERIA] = 0;
         GraphTemp[s::SWARM_BACTERIA] = 0;
         GraphTemp[s::TWITCHING_BACTERIA] = 0;
         GraphTemp[s::NUTRIMENT_SOURCES] = 0;
-
         GraphTemp[s::DISH_TEMPERATURE]=Temp;
+
+        for(auto chaq : Bact) chaq->addToGraph(titreGraph, GraphTemp);
+        for(auto chaq : Nut)  chaq->addToGraph(titreGraph, GraphTemp);
+
     }
 
     if(s::NUTRIMENT_QUANTITY == titreGraph){
         GraphTemp[s::NUTRIMENT_QUANTITY] = 0;
+        for(auto chaq : Nut)  chaq->addToGraph(titreGraph, GraphTemp);
     }
 
     if(s::SIMPLE_BACTERIA == titreGraph){
         GraphTemp[s::SIMPLE_BACTERIA]=0;
     }
 
+    // Twitching Bacterium graph update
+    if(s::TWITCHING_BACTERIA == titreGraph){
+        vector<double> TentaculeLongueur;
+        vector<double> TentaculeVitesse;
 
-    for(auto chaq : Bact)
-        chaq->addToGraph(titreGraph, GraphTemp);
-    for(auto chaq : Nut)
-        chaq->addToGraph(titreGraph, GraphTemp);
+        for(auto chaq : Bact)  chaq->getAdditional(TentaculeLongueur,TentaculeVitesse);
+        GraphTemp[s::TENTACLE_LENGTH]=std::accumulate(TentaculeLongueur.begin(), TentaculeLongueur.end(), 0.0)/TentaculeLongueur.size();
+        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(TentaculeVitesse.begin(), TentaculeVitesse.end(), 0.0)/TentaculeVitesse.size();
+    }
 
+
+    if(s::BACTERIA == titreGraph){
+        vector<double> Speed;
+        for(auto chaq : Bact) chaq->getSpeed(Speed);
+
+        GraphTemp[s::SPEED]=std::accumulate(Speed.begin(), Speed.end(), 0.0)/Speed.size();
+        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(Speed.begin(), Speed.end(), 0.0)/Speed.size();
+    }
 
     return GraphTemp;
 }
-
 
 
 //Destructeur

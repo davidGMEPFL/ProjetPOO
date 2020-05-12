@@ -53,7 +53,12 @@ public:
     void addProperty(const std::string&, MutableNumber);
     MutableNumber& getProperty(const std::string&);
 
+
+    // Methods for getting data for the graphs
     virtual void addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp) = 0;
+    virtual void getAdditional(std::vector<double>&, std::vector<double>&);
+    virtual void getSpeed(std::vector<double>&)=0;
+
 
     virtual ~Bacterium();
 };

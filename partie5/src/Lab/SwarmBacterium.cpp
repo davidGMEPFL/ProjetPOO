@@ -89,6 +89,10 @@ void SwarmBacterium::addToGraph(const std::string & titreGraph , std::unordered_
 }
 
 
+void SwarmBacterium::getSpeed(std::vector<double>& Speed){
+    Speed.push_back(getConfig()["speed"]["initial"].toDouble());
+}
+
 
 SwarmBacterium::~SwarmBacterium(){
     SonSwarm->popBact(this);
