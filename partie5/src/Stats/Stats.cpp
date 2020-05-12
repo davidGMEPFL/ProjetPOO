@@ -1,31 +1,32 @@
 #include <Stats/Stats.hpp>
+#include <Application.hpp>
 
 using namespace std;
 // CLASSE A CODER
 
 
 Stats::Stats():
-    iter(Graphs.begin())
+    activeID(Graphs.begin())
 {}
 
 
 void Stats::setActiveId(const int& id){
-    iter= Graphs.find(id);
+    activeID= Graphs.find(id);
 }
 
 
 std::string Stats::getCurrentTitle(){
 //        return activeID.second;
-    return iter->second.first;
+    return activeID->second.first;
 }
 
 void Stats::next(){
-    ++iter;
-    if (Graphs.end() == iter) iter=Graphs.begin();
+    ++activeID;
+    if (Graphs.end() == activeID) activeID=Graphs.begin();
 }
 
 void Stats::previous(){
-    if (Graphs.begin() == iter)  iter = Graphs.end();
+    if (Graphs.begin() == activeID)  activeID = Graphs.end();
     --activeID;
 }
 
@@ -36,11 +37,16 @@ void Stats::reset(){
 }
 
 void Stats::update(sf::Time dt){
-
+    TimeLastUpdate+=dt;
+    if(TimeLastUpdate > sf::seconds(getAppConfig()["stats"]["refresh rate"].toDouble())) {
+        for (auto& unGraph : Graphs)
+            unGraph.second.second->updateData(TimeLastUpdate, getAppEnv().fetchData(unGraph.second.first));
+        TimeLastUpdate=sf::Time::Zero;
+    }
 }
 
 void Stats::drawOn(sf::RenderTarget& TargetWindow){
-    iter->second.second->drawOn(TargetWindow);
+    activeID->second.second->drawOn(TargetWindow);
 }
 
 
@@ -52,5 +58,5 @@ void Stats::addGraph(int idGraph, std::string const& titreGraph,
     Graphs[idGraph]=std::pair<std::string, std::unique_ptr<Graph>> (titreGraph, unique_ptr<Graph>(new Graph(sesLibelles, size,  min,  max)));
 //    Libelles[idGraph]=titreGraph;
 //    activeID=idGraph;
-    iter=Graphs.find(idGraph);
+    activeID=Graphs.find(idGraph);
 }

@@ -118,7 +118,7 @@ void SimpleBacterium::update(sf::Time dt)
     rotation += dalpha; // angle de rotation mis à jour
 
     //Variable pour le mouvement de la flagelle
-    t+=3* dt.asSeconds();
+    t += 3 * dt.asSeconds();
 
 }
 
@@ -128,3 +128,19 @@ Quantity SimpleBacterium::eatableQuantity(NutrimentA& nutriment){
 Quantity SimpleBacterium::eatableQuantity(NutrimentB& nutriment) {
     return nutriment.eatenBy(*this);
 }
+
+
+void SimpleBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
+    if (s::GENERAL==titreGraph){
+        ++GraphTemp[s::SIMPLE_BACTERIA];
+    }
+    if (s::SIMPLE_BACTERIA==titreGraph){
+        ++GraphTemp[s::SIMPLE_BACTERIA];
+    }
+}
+
+
+
+
+
+

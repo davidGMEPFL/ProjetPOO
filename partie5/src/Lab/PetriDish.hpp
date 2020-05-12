@@ -58,6 +58,9 @@ public:
     void decreaseTemperature();
     void resetTemp();
 
+    std::unordered_map<std::string, double> fetchData(const std::string &);
+
+
 
     void reset();
 

@@ -68,3 +68,14 @@ double Nutriment::getScoreNutriment(const Vec2d& pos)
     double puissance(getAppEnv().getGradientExponent());
     return nbNutriments/pow(distance(position, pos), puissance);
 }
+
+
+void Nutriment::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
+    if (s::GENERAL==titreGraph){
+        ++GraphTemp[s::NUTRIMENT_SOURCES];
+    }
+    else if (s::NUTRIMENT_QUANTITY==titreGraph){
+        GraphTemp[s::NUTRIMENT_QUANTITY] += nbNutriments;
+    }
+
+}

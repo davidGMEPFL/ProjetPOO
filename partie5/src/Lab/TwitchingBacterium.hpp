@@ -38,6 +38,8 @@ public:
     double EnergieDepl() const; //getters utiles
     double EnergieTentac() const;
     Vec2d direction_tentacule() const;
+
+    void addToGraph(const std::string & , std::unordered_map<std::string, double> &) override;
 };
 
 

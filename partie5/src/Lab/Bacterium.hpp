@@ -53,5 +53,7 @@ public:
     void addProperty(const std::string&, MutableNumber);
     MutableNumber& getProperty(const std::string&);
 
+    virtual void addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp) = 0;
+
     virtual ~Bacterium();
 };

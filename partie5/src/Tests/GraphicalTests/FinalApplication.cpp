@@ -22,7 +22,7 @@ void FinalApplication::onRun()
 	setStats(true);
     addGraph(s::GENERAL, { s::SIMPLE_BACTERIA, s::TWITCHING_BACTERIA, s::SWARM_BACTERIA, s::NUTRIMENT_SOURCES,s::DISH_TEMPERATURE}, 0, 150);
     addGraph(s::NUTRIMENT_QUANTITY, {s::NUTRIMENT_QUANTITY}, 0, 2000);
-    addGraph(s::SIMPLE_BACTERIA, { s::BETTER, s::WORSE}, 0, 10);
+//    addGraph(s::SIMPLE_BACTERIA, { s::BETTER, s::WORSE}, 0, 10);
 	//addGraph(s::TWITCHING_BACTERIA, { s::TENTACLE_LENGTH, s::TENTACLE_SPEED}, 0, 150);
 	//addGraph(s::BACTERIA, { s::SPEED}, 20, 50);
 	setActiveGraph(0);

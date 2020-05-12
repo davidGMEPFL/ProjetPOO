@@ -10,10 +10,11 @@ class Stats
 //    int index;
 
     std::map<int, std::pair<std::string, std::unique_ptr<Graph>>> Graphs;
-    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>>::iterator iter;
+    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>>::iterator activeID;
 //    std::map<std::string, std::unique_ptr<Graph>> Graphs;
-//    std::map<std::string, std::unique_ptr<Graph>>::iterator activeID;
-    int activeID;
+//    std::map<std::string, std::unique_ptr<Graph>>::iterator activeID
+    sf::Time TimeLastUpdate;
+
 
 public:
     Stats();

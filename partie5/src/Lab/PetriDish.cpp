@@ -174,6 +174,35 @@ double PetriDish::getPositionScore(const Vec2d& pos) const
     return score;
 }
 
+std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph){
+    std::unordered_map<std::string, double> GraphTemp;
+    if(s::GENERAL == titreGraph){
+        GraphTemp[s::SIMPLE_BACTERIA] = 0;
+        GraphTemp[s::SWARM_BACTERIA] = 0;
+        GraphTemp[s::TWITCHING_BACTERIA] = 0;
+        GraphTemp[s::NUTRIMENT_SOURCES] = 0;
+
+        GraphTemp[s::DISH_TEMPERATURE]=Temp;
+    }
+
+    if(s::NUTRIMENT_QUANTITY == titreGraph){
+        GraphTemp[s::NUTRIMENT_QUANTITY] = 0;
+    }
+
+    if(s::SIMPLE_BACTERIA == titreGraph){
+        GraphTemp[s::SIMPLE_BACTERIA]=0;
+    }
+
+
+    for(auto chaq : Bact)
+        chaq->addToGraph(titreGraph, GraphTemp);
+    for(auto chaq : Nut)
+        chaq->addToGraph(titreGraph, GraphTemp);
+
+
+    return GraphTemp;
+}
+
 
 
 //Destructeur

@@ -168,3 +168,13 @@ Vec2d TwitchingBacterium::direction_tentacule() const
 {
     return (grapin.getPosition()-position).normalised();
 }
+
+
+void TwitchingBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
+    if (s::GENERAL==titreGraph){
+        ++GraphTemp[s::TWITCHING_BACTERIA];
+    }
+    if (s::TWITCHING_BACTERIA==titreGraph){
+        ++GraphTemp[s::TWITCHING_BACTERIA];
+    }
+}

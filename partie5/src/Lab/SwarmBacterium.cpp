@@ -79,6 +79,16 @@ Quantity SwarmBacterium::eatableQuantity(NutrimentB& nutriment) {
 }
 
 
+void SwarmBacterium::addToGraph(const std::string & titreGraph , std::unordered_map<std::string, double>& GraphTemp){
+    if (s::GENERAL==titreGraph){
+        ++GraphTemp[s::SWARM_BACTERIA];
+    }
+    if (s::SWARM_BACTERIA==titreGraph){
+        ++GraphTemp[s::SWARM_BACTERIA];
+    }
+}
+
+
 
 SwarmBacterium::~SwarmBacterium(){
     SonSwarm->popBact(this);

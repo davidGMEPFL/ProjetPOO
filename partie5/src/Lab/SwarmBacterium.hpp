@@ -25,6 +25,7 @@ public:
     Quantity eatableQuantity(NutrimentA& nutriment) override;
     Quantity eatableQuantity(NutrimentB& nutriment) override;
 
+    void addToGraph(const std::string & ,std::unordered_map<std::string, double>&) override;
 
     ~SwarmBacterium();
 };

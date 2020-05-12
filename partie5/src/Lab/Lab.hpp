@@ -46,4 +46,8 @@ public:
     void decreaseGradientExponent();
     void resetGradientExponent();
 
+
+    std::unordered_map<std::string, double> fetchData(const std::string &);
+
+
 };

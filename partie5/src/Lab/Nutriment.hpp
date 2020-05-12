@@ -37,4 +37,7 @@ public:
     bool testEpuise();
 
     virtual j::Value getConfig() const =0;
+
+
+    void addToGraph(const std::string & ,std::unordered_map<std::string, double>&);
 };
