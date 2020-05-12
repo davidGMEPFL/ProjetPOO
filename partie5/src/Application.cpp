@@ -786,7 +786,7 @@ void Application::drawControls(sf::RenderWindow& target) {
 	auto const LEGEND_MARGIN(10);
 	auto lastLegendY(LEGEND_MARGIN);
 	auto const FONT_SIZE = 12;
-	//drawTitle(target, sf::Color::Red, LEGEND_MARGIN, lastLegendY, FONT_SIZE);
+    drawTitle(target, sf::Color::Red, LEGEND_MARGIN, lastLegendY, FONT_SIZE);
 	lastLegendY += FONT_SIZE + 4;
 	for (size_t ctrl(STATS); ctrl <NB_CONTROLS; ++ctrl){
 		drawOneControl(target, static_cast<Control>(ctrl), LEGEND_MARGIN, lastLegendY, FONT_SIZE);

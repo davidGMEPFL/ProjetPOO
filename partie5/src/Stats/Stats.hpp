@@ -1,6 +1,6 @@
 #pragma once
 #include <memory>
-#include <vector>
+#include <map>
 #include "Graph.hpp"
 
 class Stats 
@@ -10,13 +10,13 @@ class Stats
 //    int index;
 
     std::map<int, std::pair<std::string, std::unique_ptr<Graph>>> Graphs;
-//    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>>::iterator iter;
+    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>>::iterator iter;
 //    std::map<std::string, std::unique_ptr<Graph>> Graphs;
 //    std::map<std::string, std::unique_ptr<Graph>>::iterator activeID;
     int activeID;
 
 public:
-//    Stats();
+    Stats();
     void setActiveId(const int&);
     std::string getCurrentTitle();
     void next();
