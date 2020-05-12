@@ -5,15 +5,18 @@
 
 class Stats 
 {
-    std::vector<std::unique_ptr<Graph>> Graphs;
-    std::vector<std::string> Libelles;
+//    std::vector<std::unique_ptr<Graph>> Graphs;
+//    std::vector<std::string> Libelles;
 //    int index;
-    int activeID;
+
+    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>> Graphs;
+//    std::map<int, std::pair<std::string, std::unique_ptr<Graph>>>::iterator iter;
 //    std::map<std::string, std::unique_ptr<Graph>> Graphs;
 //    std::map<std::string, std::unique_ptr<Graph>>::iterator activeID;
-
+    int activeID;
 
 public:
+//    Stats();
     void setActiveId(const int&);
     std::string getCurrentTitle();
     void next();

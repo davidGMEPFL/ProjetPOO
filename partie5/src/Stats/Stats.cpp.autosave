@@ -26,6 +26,9 @@ void Stats::next(){
 }
 
 void Stats::previous(){
+    if (Graphs.begin()->first != activeID)
+    --activeID;
+    else activeID=Graphs.begin()->first;
     --activeID;
 }
 
