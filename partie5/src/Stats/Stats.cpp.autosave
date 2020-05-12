@@ -4,32 +4,31 @@ using namespace std;
 // CLASSE A CODER
 
 
-//Stats::Stats():
-//    activeID(Graphs.begin())
-//{}
+Stats::Stats():
+    iter(Graphs.begin())
+{}
 
 
 void Stats::setActiveId(const int& id){
-    activeID=id;
+    iter= Graphs.find(id)
 }
 
 
 std::string Stats::getCurrentTitle(){
 //        return activeID.second;
-    return Graphs[activeID].first;
+    return iter->second.first;
 }
 
 void Stats::next(){
-    if (Graphs.end()->first != activeID)
-    ++activeID;
-    else activeID=Graphs.begin()->first;
+    if (Graphs.end() != iter)
+    ++iter;
+    else iter=Graphs.begin();
 }
 
 void Stats::previous(){
-    if (Graphs.begin()->first != activeID)
+    if (Graphs.begin() != iter)
     --activeID;
-    else activeID=Graphs.begin()->first;
-    --activeID;
+    else iter = Graphs.end();
 }
 
 void Stats::reset(){
