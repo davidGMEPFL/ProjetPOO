@@ -3,6 +3,7 @@
 #include "Application.hpp"
 #include "Bacterium.hpp"
 #include <numeric>
+#include <iostream>
 
 using namespace std;
 
@@ -203,8 +204,8 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
         vector<double> Worse;
         for(auto chaq : Bact)  chaq->getDataSimple(Better, Worse);
 
-        GraphTemp[s::BETTER]=std::accumulate(Better.begin(), Better.end(), 0.0)/Better.size();
-        GraphTemp[s::WORSE]=std::accumulate(Worse.begin(), Worse.end(), 0.0)/Worse.size();
+        GraphTemp[s::BETTER]=(float)std::accumulate(Better.begin(), Better.end(), 0.0)/(float)Better.size();
+        GraphTemp[s::WORSE]=(float)std::accumulate(Worse.begin(), Worse.end(), 0.0)/(float)Worse.size();
     }
 
     // Twitching Bacterium graph update

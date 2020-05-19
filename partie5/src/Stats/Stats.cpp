@@ -2,7 +2,6 @@
 #include <Application.hpp>
 
 using namespace std;
-// CLASSE A CODER
 
 
 Stats::Stats():
@@ -31,9 +30,14 @@ void Stats::previous(){
 }
 
 void Stats::reset(){
+  //  TimeLastUpdate+=sf::Time::Zero;
     for (auto& telGraph: Graphs) {
-        telGraph.second.second.reset();
-    }
+        if(&telGraph != nullptr){
+            unique_ptr<Graph> ceGraph (new Graph(*telGraph.second.second));
+            ceGraph->reset();
+           // ceGraph->updateData(TimeLastUpdate, getAppEnv().fetchData(telGraph.second.first));
+        }
+ }  //la suppression des graphes nécessite de redonner des valeurs, pour empêcher un SegFault dans le drawOn
 }
 
 void Stats::update(sf::Time dt){
@@ -53,10 +57,6 @@ void Stats::drawOn(sf::RenderTarget& TargetWindow){
 void Stats::addGraph(int idGraph, std::string const& titreGraph,
                      std::vector<std::string> sesLibelles, double min, double max, Vec2d const& size){
     Graphs[idGraph].second.reset();
-//    if (Graphs.size()>idGraph)    Graphs[idGraph].reset();
-//    iterator iter(iterator Graphs.begin() + idGraph);
     Graphs[idGraph]=std::pair<std::string, std::unique_ptr<Graph>> (titreGraph, unique_ptr<Graph>(new Graph(sesLibelles, size,  min,  max)));
-//    Libelles[idGraph]=titreGraph;
-//    activeID=idGraph;
     activeID=Graphs.find(idGraph);
 }

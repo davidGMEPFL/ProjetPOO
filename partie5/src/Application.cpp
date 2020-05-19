@@ -267,7 +267,7 @@ void Application::run()
             auto dt = fpsClk.restart().asSeconds();
 
             auto fps = frameCount / dt;
-            std::cout << "FPS: " << fps << "\r" << std::flush;
+            std::cout << "FPS: " << fps << "\r"  << std::flush;
 
             frameCount = 0;
         }
