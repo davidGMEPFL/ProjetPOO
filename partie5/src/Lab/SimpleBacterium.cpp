@@ -72,7 +72,7 @@ Bacterium* SimpleBacterium::clone() const
 {
     Bacterium* ptr=new SimpleBacterium( *this);
     ptr->mutate();
-    getAppEnv().addBacterium(ptr, true);
+    getAppEnv().addBacterium(ptr, true); // ajoute le ptr vers le vecteur temporaire de nouvelles bact
     return ptr;
 }
 
@@ -83,8 +83,8 @@ void SimpleBacterium::update(sf::Time dt)
     //Basculement
     TimerTumble+=dt.asSeconds();
     double lambda, score(getAppEnv().getPositionScore(position));
-    if (score>=ancien_score) lambda=/*5*/ getProperty("tumble better").get();
-    else lambda= /*.5*/getProperty("tumble worse").get();
+    if (score>=ancien_score) lambda= getProperty("tumble better").get();
+    else lambda= getProperty("tumble worse").get();
     double p = 1 - exp(-TimerTumble/lambda);
     Vec2d tempRand;
 
