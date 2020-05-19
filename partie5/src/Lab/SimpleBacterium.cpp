@@ -59,14 +59,8 @@ void SimpleBacterium::drawOn(sf::RenderTarget& target) const
     //selon la matrice transform
 }
 
-Vec2d SimpleBacterium::getSpeedVector()
-{
-    // try{
+Vec2d SimpleBacterium::getSpeedVector(){
     return direction*getProperty("speed").get();
-    //  }
-    //  catch(std::out_of_range const& mess){
-    //     std::cerr<<mess<<endl;
-    //  }
 }
 
 Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const

@@ -30,14 +30,9 @@ void Stats::previous(){
 }
 
 void Stats::reset(){
-  //  TimeLastUpdate+=sf::Time::Zero;
     for (auto& telGraph: Graphs) {
-        if(&telGraph != nullptr){
-            unique_ptr<Graph> ceGraph (new Graph(*telGraph.second.second));
-            ceGraph->reset();
-           // ceGraph->updateData(TimeLastUpdate, getAppEnv().fetchData(telGraph.second.first));
-        }
- }  //la suppression des graphes nécessite de redonner des valeurs, pour empêcher un SegFault dans le drawOn
+        telGraph.second.second->reset();
+    }
 }
 
 void Stats::update(sf::Time dt){

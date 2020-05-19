@@ -113,8 +113,8 @@
         },
         "energy" : {
             "consumption factor" : 0.2,
-            "division" : 120,
-            "max" : 100,
+            "division" : 100,
+            "max" : 120,
             "min" : 50
         },
         "meal" : {
