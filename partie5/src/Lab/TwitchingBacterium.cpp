@@ -22,6 +22,13 @@ TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
 }
 
 
+
+j::Value& TwitchingBacterium::getConfig() const
+{
+    return getAppConfig()["twitching bacterium"];
+}
+
+
 void TwitchingBacterium::moveGrip(const Vec2d& delta)
 {
     /*if(distance(grapin.getPosition(),position)+delta.length() <=getProperty("tentacle length").get())*/{
@@ -34,12 +41,12 @@ void TwitchingBacterium::moveGrip(const Vec2d& delta)
 
 void TwitchingBacterium::drawOn(sf::RenderTarget& target) const
 {
-    Bacterium::drawOn(target);        // dessin bactérie
-    double epaisseur(2);              // dessin  segment
+    Bacterium::drawOn(target);       // dessin bactérie
+    double epaisseur(2);
     auto line = buildLine(position, grapin.getPosition(), couleur.get(), epaisseur);
-    target.draw(line);
+    target.draw(line);               // dessin  segment
     auto border = buildAnnulus(grapin.getPosition(), grapin.getRadius(), couleur.get(), 1);
-    target.draw(border);   //dessin grapin
+    target.draw(border);             //dessin grapin
 }
 
 
@@ -50,7 +57,7 @@ Bacterium* TwitchingBacterium::clone() const
     ptr->position+=Vec2d(8.0,8.0);          //décalage du centre du clone
     ptr->grapin.setPosition(ptr->position); // tentacule rétracté
     ptr->moveGrip(Vec2d(1.0, -7.0));        // décalage orientation tentacule
-    getAppEnv().addBacterium(ptr, true);
+    getAppEnv().addBacterium(ptr, true);    //ajout du clone dans le vecteur des new born
     return ptr;
 }
 
@@ -66,13 +73,12 @@ void TwitchingBacterium::move(sf::Time dt)
 
     switch(etat) {
     case IDLE : {
-        //grapin.setPosition(position);
         etat=WAIT_TO_DEPLOY;
         break;
     }
 
     case WAIT_TO_DEPLOY: {
-        //Basculement
+        //Choix aléatoire de direction
         Vec2d tempRand;
         for (int i(0); i<20; ++i) {
             tempRand=Vec2d::fromRandomAngle();
@@ -85,11 +91,13 @@ void TwitchingBacterium::move(sf::Time dt)
     }
 
     case DEPLOY: {
+        //Déplacement grapin selon direction choisie
         moveGrip(direction*vitesse_tentacule*dt.asSeconds());
         consumeEnergy(Qt_deploi);
-        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) etat=ATTRACT;
+        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) etat=ATTRACT; //grapin touche un nutriment
         else if((longueur_tentacule>=longueur_max)  or getAppEnv().doesCollideWithDish(grapin)) {
             etat=RETRACT;
+            //longueur max du tentacule atteinte sans avoir touché de nutriment ou bord touché
         }
         break;
     }
@@ -101,9 +109,10 @@ void TwitchingBacterium::move(sf::Time dt)
         }
 //        else { etat=RETRACT ;}
         CircularBody::move(direction_tentacule()*vitesse_tentacule*dt.asSeconds()*
-                           getConfig()["speed factor"].toDouble());
+                           getConfig()["speed factor"].toDouble()); //déplacement vers source nutriment
         consumeEnergy(Qt_depla);
         if(getAppEnv().getNutrimentColliding(grapin)==nullptr) etat=RETRACT;
+        //si le nutriment a disparu
         break;
     }
 
@@ -133,13 +142,8 @@ void TwitchingBacterium::move(sf::Time dt)
     }
 }
 
-//void TwitchingBacterium::update(sf::Time dt)
-//{
-//    move(dt);
-////    Bacterium::update(dt);
 
-//}
-
+//EAT spécifique :
 Quantity TwitchingBacterium::eatableQuantity(NutrimentA& nutriment){
     return nutriment.eatenBy(*this);
 }
@@ -149,12 +153,7 @@ Quantity TwitchingBacterium::eatableQuantity(NutrimentB& nutriment) {
 }
 
 
-j::Value& TwitchingBacterium::getConfig() const
-{
-    return getAppConfig()["twitching bacterium"];
-}
-
-//getters
+//GETTERS :
 double TwitchingBacterium::EnergieDepl() const
 {
     return getConfig()["energy"]["consumption factor"]["move"].toDouble();
@@ -165,24 +164,25 @@ double TwitchingBacterium::EnergieTentac() const
     return getConfig()["energy"]["consumption factor"]["tentacle"].toDouble();
 }
 
-
 Vec2d TwitchingBacterium::direction_tentacule() const
 {
     return (grapin.getPosition()-position).normalised();
 }
 
 
+//POUR GRAPHE :
+
 void TwitchingBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
     if (s::GENERAL==titreGraph) ++GraphTemp[s::TWITCHING_BACTERIA];
-}
+}  //si l'on est sur le graphe général, le courbe des Twitching s'ajoute
 
 void TwitchingBacterium::getDataTwitching(std::vector<double> & TLength, std::vector<double> &TSpeed){
     TLength.push_back(getProperty("tentacle length").get());
     TSpeed.push_back(getProperty("tentacle speed").get());
-}
+}   //collecte les longueurs de tentacule + sa vitesse
 
 void TwitchingBacterium::getSpeed(std::vector<double>& Speed){
     Speed.push_back(getProperty("tentacle speed").get()*
                     getConfig()["speed factor"].toDouble());
-}
+}  //collecte les vitesses
 

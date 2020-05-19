@@ -69,12 +69,11 @@ bool PetriDish::addNutriment(Nutriment* nut)
 
 bool PetriDish::addBacterium(Bacterium* bact,bool const& newBorn)
 {
-    if(contains(*bact)){
-        if(!newBorn) {
-            //permet de peupler l'assiette
-            //bool sert à savoir si l'on a réussit à placer la bactérie
+    if(contains(*bact)){  //bool sert à savoir si l'on a réussit à placer la bactérie
+        if(!newBorn) {   //pour bacteries non clones
             Bact.push_back(bact);
-        } else vecteur_clones.push_back(bact);}
+        } else vecteur_clones.push_back(bact);} //on ajoute les clones contenus dans le vecteur temporaire vecteur_clones,
+                                               //dans le vecteur des bactéries appartenant à l'assiette
     else delete bact;
     return contains(*bact);
 }

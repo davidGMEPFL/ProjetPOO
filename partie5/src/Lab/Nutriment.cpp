@@ -7,27 +7,28 @@ Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
     CircularBody(position,nbNutriments), nbNutriments(nbNutriments)
 {}
 
-Quantity Nutriment::takeQuantity(Quantity qtTaken)
+Quantity Nutriment::takeQuantity(Quantity qtTaken) // retournera la quantité qui a pu être prélevée
 {
     Quantity ret(nbNutriments); //quantité nut dispo
     if((nbNutriments-=qtTaken)>=0) ret=qtTaken;
-    else nbNutriments=0;
-    // retournera la quantité qui a pu être prélevée
+    else nbNutriments=0; //cas où plus à prélever que disponible
     rayon=nbNutriments;
-    return ret; //quantité nut prélevée (soit qtTaken, soit nbNut)
+    return ret; //quantité de nut prélevée (soit qtTaken, soit nbNut)
 }
 
-void Nutriment::setQuantity(Quantity const& newQt)
+void Nutriment::setQuantity(Quantity const& newQt) //permettant de mettre à jour la quantité
 {
-    /*    permettant de mettre à jour la quantité.
-     * Il ne devra pas être possible d'affecter une valeur négative à la quantité. Si on tente
-     * d'affecter une quantité négative, la source aura au final une quantité nulle.
-     * Vous veillerez à ce que le rayon s'adapte de façon appropriée;
-    */
-    if(newQt>0)this->nbNutriments=newQt;
-    else nbNutriments=0;
-    rayon=nbNutriments;
+    if(newQt>0){
+        this->nbNutriments=newQt;
+    } else { nbNutriments=0 ; } //source aura une quantité nulle si on affecte valeur négative
+    rayon=nbNutriments;        //rayon s'adapte de façon appropriée
 }
+
+bool Nutriment::testEpuise()
+{
+    return nbNutriments==0.;
+}
+
 
 void Nutriment::drawOn(sf::RenderTarget& target) const
 {
@@ -40,7 +41,7 @@ void Nutriment::drawOn(sf::RenderTarget& target) const
     if (isDebugOn()) {
         auto const text = buildText(std::to_string(int(nbNutriments)),position + Vec2d(0,-100),
                                     getAppFont(),18,sf::Color::Black);
-        target.draw(text);
+        target.draw(text); //dessin du nombre de nutriments
     }
 }
 
@@ -52,23 +53,20 @@ void Nutriment::update(sf::Time dt)
     auto const& maxTemp=getConfig()["growth"]["max temperature"].toDouble();
     auto const& maxVal=getConfig()["quantity"]["max"].toDouble();
 
+    //croissance du nutriment en fonction du temps
     auto growth = speed * dt.asSeconds();
+
+    //si bornes température respectées + quantité max nut respectée -> croissance
     if(minTemp<=temp && temp<=maxTemp && (nbNutriments+growth)<=2*maxVal) nbNutriments+=growth;
     if(!getAppEnv().contains(*this))nbNutriments-=growth;
-    rayon=nbNutriments;
+    rayon=nbNutriments; //adaptation rayon
 }
 
-bool Nutriment::testEpuise()
-{
-    return nbNutriments==0.;
-}
-
-double Nutriment::getScoreNutriment(const Vec2d& pos)
+double Nutriment::getScoreNutriment(const Vec2d& pos) //calcul du score d'un nutriment
 {
     double puissance(getAppEnv().getGradientExponent());
     return nbNutriments/pow(distance(position, pos), puissance);
 }
-
 
 void Nutriment::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
     if (s::GENERAL==titreGraph){

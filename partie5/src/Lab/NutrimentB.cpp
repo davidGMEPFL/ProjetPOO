@@ -14,11 +14,14 @@ j::Value  NutrimentB::getConfig() const
     return getAppConfig()["nutriments"]["B"];
 }
 
+// IMPACT DIFFERENCIE :
+
 Quantity NutrimentB::eatenBy(Bacterium &bact) {     //polymorphisme sur nutriments
     return bact.eatableQuantity(*this);
 }
 
-//qtité nutriment consommée selon type de bactérie
+// Qtité nutriment consommée selon type de bactérie :
+
 Quantity NutrimentB::eatenBy(SimpleBacterium& bacterium)
 {
     return takeQuantity(bacterium.mealMax()/getConfig()["resistance factor"].toDouble());

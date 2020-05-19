@@ -14,8 +14,6 @@ class TwitchingBacterium : public Bacterium
 private:
     Grip grapin;
     double longueur_tentacule;
-    //Vec2d direction_tentacule;
-    //int etat;
     Etats etat{};
 
 public:
@@ -26,19 +24,20 @@ public:
     void moveGrip(const Vec2d& delta);
 
     void drawOn(sf::RenderTarget&) const override;
-//  void update(sf::Time dt);
+
+    Bacterium* clone() const override;
+
+    void move(sf::Time dt);
 
     Quantity eatableQuantity(NutrimentA& nutriment) override;
     Quantity eatableQuantity(NutrimentB& nutriment) override;
 
-    Bacterium* clone() const override;
-    void move(sf::Time dt);
-
-
-    double EnergieDepl() const; //getters utiles
+    //getters utiles
+    double EnergieDepl() const;
     double EnergieTentac() const;
     Vec2d direction_tentacule() const;
 
+    //ajout des données pour le graphe
     void addToGraph(const std::string & , std::unordered_map<std::string, double> &) override;
     void getDataTwitching(std::vector<double>&, std::vector<double>&) override;
     void getSpeed(std::vector<double>&);

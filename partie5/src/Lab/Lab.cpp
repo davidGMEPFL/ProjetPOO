@@ -5,6 +5,7 @@ Lab::Lab():
     Petri(getApp().getCentre(),0.5*.95*getApp().getLabSize().x)
 {}
 
+
 void Lab::drawOn(sf::RenderTarget& targetWindow) const
 {
     Petri.drawOn(targetWindow);
@@ -28,7 +29,7 @@ bool Lab::contains(const CircularBody& autre)
 
 
 
-
+//AJOUT BACTERIES ET NUTRIMENTS :
 
 bool Lab::addNutriment(Nutriment* nut)
 {
@@ -45,8 +46,7 @@ void Lab::addSwarm(Swarm* LeSwarm)
 
 
 
-
-
+//test des collisions
 bool Lab::doesCollideWithDish(CircularBody const& body)
 {
     return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
@@ -56,7 +56,7 @@ Nutriment* Lab::getNutrimentColliding(CircularBody const& body)
     return Petri.getNutrimentColliding(body);
 }
 
-
+//somme tous les scores de l'environnement autour de la bacétrie dans Petri
 double Lab::getPositionScore(const Vec2d& pos)
 {
     return Petri.getPositionScore(pos);
@@ -68,7 +68,7 @@ Swarm* Lab::getSwarmWithId(std::string id) const {
 }
 
 
-
+// GESTION TEMP :
 double Lab::getTemperature()
 {
     return Petri.getTemperature();
@@ -86,7 +86,7 @@ void Lab::resetTemp()
     Petri.resetTemp();
 }
 
-
+// GESTION GRADIENT :
 double Lab::getGradientExponent()
 {
     return Petri.getGradientExponent();

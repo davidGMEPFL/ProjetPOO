@@ -4,26 +4,12 @@
 
 CircularBody::CircularBody(const Vec2d& position,const double& rayon)
     :position(position),rayon(rayon)    {}
-CircularBody::CircularBody(const CircularBody& cercle):
+
+CircularBody::CircularBody(const CircularBody& cercle): //autorise copie
     position(cercle.position),rayon(cercle.rayon) {}
 
 
-double CircularBody::getRadius()const
-{
-    return rayon;
-}
-Vec2d CircularBody::getPosition()const
-{
-    return position;
-}
-void CircularBody::setPosition(const Vec2d& position_)
-{
-    position=position_;
-}
-void CircularBody::setRadius(const double& rayon)
-{
-    this->rayon=rayon;
-}
+
 CircularBody& CircularBody::operator=(const CircularBody& cercle)
 {
     position=cercle.position;
@@ -49,6 +35,26 @@ bool CircularBody::contains(const Vec2d& point)const
 {
     return (distance(position,point)<rayon);
 }
+
+// GETTERS ET SETTERS
+double CircularBody::getRadius()const
+{
+    return rayon;
+}
+Vec2d CircularBody::getPosition()const
+{
+    return position;
+}
+void CircularBody::setPosition(const Vec2d& position_)
+{
+    position=position_;
+}
+void CircularBody::setRadius(const double& rayon)
+{
+    this->rayon=rayon;
+}
+
+//OPERATEURS
 bool CircularBody::operator>(const CircularBody& other)const
 {
     return contains(other);
@@ -69,8 +75,4 @@ std::ostream& operator<<(std::ostream& out,const CircularBody& cercle)
        <<cercle.getRadius()<<std::endl;
     return out;
 }
-
-//bool operator>(const Vec2d& point,const CircularBody& cercle){
-//    return !(cercle>point);
-//}
 
