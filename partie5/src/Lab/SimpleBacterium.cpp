@@ -144,5 +144,8 @@ void SimpleBacterium::getSpeed(std::vector<double>& Speed){
     Speed.push_back(getProperty("speed").get());
 }
 
-
+void SimpleBacterium::getDataSimple(std::vector<double>& Better, std::vector<double>& Worse){
+    Better.push_back(getProperty("tumble better").get());
+    Worse.push_back(getProperty("tumble worse").get());
+}
 

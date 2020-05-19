@@ -176,7 +176,7 @@ void TwitchingBacterium::addToGraph(const std::string & titreGraph ,std::unorder
     if (s::GENERAL==titreGraph) ++GraphTemp[s::TWITCHING_BACTERIA];
 }
 
-void TwitchingBacterium::getAdditional(std::vector<double> & TLength, std::vector<double> &TSpeed){
+void TwitchingBacterium::getDataTwitching(std::vector<double> & TLength, std::vector<double> &TSpeed){
     TLength.push_back(getProperty("tentacle length").get());
     TSpeed.push_back(getProperty("tentacle speed").get());
 }

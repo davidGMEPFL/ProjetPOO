@@ -28,4 +28,5 @@ public:
 
     void addToGraph(const std::string & , std::unordered_map<std::string, double> &) override;
     void getSpeed(std::vector<double>&);
+    void getDataSimple(std::vector<double>&, std::vector<double>&) override;
 };

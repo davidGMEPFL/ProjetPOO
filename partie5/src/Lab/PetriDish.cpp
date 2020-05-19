@@ -199,7 +199,12 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
     }
 
     if(s::SIMPLE_BACTERIA == titreGraph){
-        GraphTemp[s::SIMPLE_BACTERIA]=0;
+        vector<double> Better;
+        vector<double> Worse;
+        for(auto chaq : Bact)  chaq->getDataSimple(Better, Worse);
+
+        GraphTemp[s::BETTER]=std::accumulate(Better.begin(), Better.end(), 0.0)/Better.size();
+        GraphTemp[s::WORSE]=std::accumulate(Worse.begin(), Worse.end(), 0.0)/Worse.size();
     }
 
     // Twitching Bacterium graph update
@@ -207,7 +212,7 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
         vector<double> TentaculeLongueur;
         vector<double> TentaculeVitesse;
 
-        for(auto chaq : Bact)  chaq->getAdditional(TentaculeLongueur,TentaculeVitesse);
+        for(auto chaq : Bact)  chaq->getDataTwitching(TentaculeLongueur,TentaculeVitesse);
         GraphTemp[s::TENTACLE_LENGTH]=std::accumulate(TentaculeLongueur.begin(), TentaculeLongueur.end(), 0.0)/TentaculeLongueur.size();
         GraphTemp[s::TENTACLE_SPEED]=std::accumulate(TentaculeVitesse.begin(), TentaculeVitesse.end(), 0.0)/TentaculeVitesse.size();
     }

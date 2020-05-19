@@ -40,7 +40,7 @@ public:
     Vec2d direction_tentacule() const;
 
     void addToGraph(const std::string & , std::unordered_map<std::string, double> &) override;
-    void getAdditional(std::vector<double>&, std::vector<double>&) override;
+    void getDataTwitching(std::vector<double>&, std::vector<double>&) override;
     void getSpeed(std::vector<double>&);
 
 };

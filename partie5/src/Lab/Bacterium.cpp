@@ -106,9 +106,10 @@ MutableNumber& Bacterium::getProperty(const string& key)
 }
 
 
-void Bacterium::getAdditional(vector<double>&, vector<double>&){
-
+void Bacterium::getDataTwitching(vector<double>&, vector<double>&){
 }
 
+void Bacterium::getDataSimple(vector<double>&, vector<double>&){
+}
 
 Bacterium::~Bacterium() {}
