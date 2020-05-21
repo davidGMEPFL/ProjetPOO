@@ -12,7 +12,7 @@
 ##Q1.2 Quelle surcharge choisissez-vous pour les opérateurs qu'il vous a été demandé de coder (interne ou externe) et comment justifiez-vous ce choix ?
 
 - Tous les opérateurs de comparaisons sont surchargés de façon interne, puisqu'ils impliquent toujours une instance de la classe à gauche de l'opérateur, et qu'ils ne modifient pas la classe. Etant donné que la surcharge interne permet d'accéder directement aux attributs de la classe, sans passer par les getters et setters, on préfèrera la surchage interne.
-- L'opérateur d'affichage est codé par surcharge externe puisque on n'a pas accès à la classe ostream.  
+- L'opérateur d'affichage est codé par surcharge externe puisque on n'a pas accès à la classe ostream.
 
 
 *************************************************

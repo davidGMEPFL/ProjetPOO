@@ -2,6 +2,8 @@
 #include "Utility/Utility.hpp"
 #include <string>
 #include "Application.hpp"
+#include <math.h>
+
 
 Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
     CircularBody(position,nbNutriments), nbNutriments(nbNutriments)

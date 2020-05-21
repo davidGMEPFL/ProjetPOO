@@ -14,11 +14,11 @@ public:
     CircularBody(const CircularBody&);         // Constructeur de copie
     CircularBody& operator=(const CircularBody&); //opérateur d'affectation
 
-//Méthodes essentielles
+//Méthodes utilitaires
     void move(const Vec2d&);
     bool contains(const CircularBody&)const;
-    bool isColliding(const CircularBody&)const;
     bool contains(const Vec2d&)const;
+    bool isColliding(const CircularBody&)const;
 
 // Opérateurs
     bool operator>(const CircularBody&) const;
@@ -30,7 +30,6 @@ public:
     Vec2d getPosition() const;
     void setPosition(const Vec2d&);
     void setRadius(const double&);
-
 };
 
 std::ostream& operator<<(std::ostream&,const CircularBody&); //surchage externe

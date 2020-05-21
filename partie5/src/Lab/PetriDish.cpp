@@ -1,9 +1,8 @@
 #include "PetriDish.hpp"
 #include "Utility/Utility.hpp"
 #include "Application.hpp"
-#include "Bacterium.hpp"
+#include "Utility/Vec2d.hpp"
 #include <numeric>
-#include <iostream>
 
 using namespace std;
 
@@ -18,36 +17,42 @@ PetriDish::PetriDish(Vec2d position,double rayon):
 
 
 void PetriDish::update(sf::Time dt)
-{
-    //fait évoluer toutes les bactéries de l'assiette à chaque pas de temps
+{   /* Fait évoluer tout ce que contient  l'assiette à chaque pas de temps,
+    en appelant de façon polymorphique leur méthode update respective
+    La méthode appelle testEpuise et testMort pour vérifier si les objets doivent
+    être supprimés et modifie les vecteurs si nécessaire */
+
     for (auto& objet : Nut) {
         objet->update(dt);
-        if(objet->testEpuise()){
-            delete objet;
-            objet=nullptr;}
+        if(objet->testEpuise()){ // Verifie si le nombre de nutriments de nutriments est nul
+            delete objet;   // libère la mémoire de l'objet pointé (appelle destructeur)
+            objet=nullptr;} // nécessaire pour enlever le pointeur du vecteur
     }
-    Nut.erase(std::remove(Nut.begin(), Nut.end(), nullptr), Nut.end());
+    Nut.erase(std::remove(Nut.begin(), Nut.end(), nullptr), Nut.end()); // permet d'enlever tous les
+                                                                    // nullptr du vecteur de pointeurs
 
-    for(auto& troupe : mesTroupes){
+    for(auto& troupe : mesTroupes){ // un swarm ne peut pas mourrir donc pas de gestion nécessaire
         troupe->update(dt);
     }
 
     for (auto& objet : Bact) {
         objet->update(dt);
-        if(objet->testMort()) {
+        if(objet->testMort()) { // Verifie si l'energie de la bactérie est trop faible (<=0)
             delete objet;
             objet=nullptr;}
     }
-    if(!vecteur_clones.empty()) {
-        append(vecteur_clones,Bact);
-        vecteur_clones.clear();
+    if(!vecteur_clones.empty()) { // si le vecteur de clones n'est pas vide
+        append(vecteur_clones,Bact); // Ajoute les pointeurs sur les clones au vecteur de pointeurs
+        vecteur_clones.clear(); // Empêched d'ajouter les clones plus d'une fois
     }
-    vecteur_clones.erase(std::remove(vecteur_clones.begin(), vecteur_clones.end(), nullptr), vecteur_clones.end());
+    vecteur_clones.erase(std::remove(vecteur_clones.begin(), vecteur_clones.end(), nullptr),
+                         vecteur_clones.end());
     Bact.erase(std::remove(Bact.begin(), Bact.end(), nullptr), Bact.end());
 }
 void PetriDish::drawOn(sf::RenderTarget& targetWindow) const
-{
-    //dessine sur une fenêtre graphique le contour de l'assiette
+{   /*Dessine sur une fenêtre graphique le contour de l'assiette
+    Fait appel aux méthodes de dessin de ses attibuts déssinables
+    de façon polymorphique*/
     sf::Color couleur(sf::Color::Black);
     double epaisseur(5);
     auto border = buildAnnulus(position, rayon, couleur, epaisseur);
@@ -57,32 +62,37 @@ void PetriDish::drawOn(sf::RenderTarget& targetWindow) const
 }
 
 
-//Methodes
+//Methodes d'ajout d'objets dans l'assiette
 bool PetriDish::addNutriment(Nutriment* nut)
-{
-    //place des nutriments dans l'assiette
-    //bool sert à savoir si l'on a réussit à placer le nutriment
-    if(contains(*nut)) Nut.push_back(nut);
-    else delete nut;
-    return contains(*nut);
+{   /* Place des nutriments à l'intérieur de l'assiette
+    en les ajoutant au vecteurs des nutriments
+    Si le nutriment est à l'extérieur, il est détruit
+    Le retour permet de savoir si l'on a réussit à placer le nutriment*/
+    bool testContain(contains(*nut));
+    if(testContain)     Nut.push_back(nut);
+    else    delete nut;
+    return testContain;
 }
-
 bool PetriDish::addBacterium(Bacterium* bact,bool const& newBorn)
-{
-    if(contains(*bact)){  //bool sert à savoir si l'on a réussit à placer la bactérie
-        if(!newBorn) {   //pour bacteries non clones
-            Bact.push_back(bact);
-        } else vecteur_clones.push_back(bact);} //on ajoute les clones contenus dans le vecteur temporaire vecteur_clones,
-                                               //dans le vecteur des bactéries appartenant à l'assiette
-    else delete bact;
-    return contains(*bact);
+{   /* Place des bactéries à l'intérieur de l'assiette
+    Si la bactérie est à l'extérieur, elle est détruite
+    Les bactéries issues de clonage (newBorn) sont placées dans le vecteur temporaire
+    les autres dans le vecteur des bactéries
+    Le retour permet de savoir si l'on a réussit à placer la bactérie*/
+    if(contains(*bact)){
+        if(!newBorn) {
+            Bact.push_back(bact); //pour bacteries non clones
+        } else vecteur_clones.push_back(bact); //clones ajoutés dans le vecteur temporaire vecteur_clones,
+        return true;}
+    else { delete bact;
+        return false;   }
 }
-
 void PetriDish::addSwarm(Swarm* LeSwamp){
     mesTroupes.push_back(LeSwamp);
 }
-
-Swarm* PetriDish::getSwarmWithId(std::string id) const {
+Swarm* PetriDish::getSwarmWithId(std::string id) const
+{   /*Retourne le pointeur vers le swarm avec identificateur correspondant
+    sinon, retourne un nullptr*/
     for(auto troupe : mesTroupes){
         if(troupe->getId()==id) return troupe;
     }
@@ -91,8 +101,63 @@ Swarm* PetriDish::getSwarmWithId(std::string id) const {
 
 
 
-Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body) const
+
+
+// Gestion de la température
+double PetriDish::getTemperature() const
 {
+    return Temp;
+}
+void PetriDish::increaseTemperature()
+{   // Augmente la température de "Delta" puis vérifie si la nouvelle n'est pas trop élevée
+    Temp+=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
+    if(Temp> getAppConfig()["petri dish"]["temperature"]["max"].toDouble())
+        Temp=getAppConfig()["petri dish"]["temperature"]["max"].toDouble();
+}
+void PetriDish::decreaseTemperature()
+{   // Diminue la température de "Delta" puis vérifie si la nouvelle n'est pas trop faible
+    Temp-=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
+    if(Temp< getAppConfig()["petri dish"]["temperature"]["min"].toDouble())
+        Temp=getAppConfig()["petri dish"]["temperature"]["min"].toDouble();
+}
+void PetriDish::resetTemp()
+{   // Reprend la valeur par défaut
+    Temp=getAppConfig()["petri dish"]["temperature"]["default"].toDouble();
+}
+
+
+// Gestion de l'exposant du gradient utilisé dans le calcul du score
+double PetriDish::getPositionScore(const Vec2d& pos) const
+{   // Retourne le score de la position, en sommant l'impact de tous les nutriments
+    // Le calcul de l'impact de chaque nutriment est expliqué dans nutriment::getScoreNutriment
+    double score(0);
+    for (auto&  nut : Nut)  score+=nut->getScoreNutriment(pos);
+    return score;
+}
+double PetriDish::getGradientExponent() const
+{
+    return puissance;
+}
+void PetriDish::increaseGradientExponent()
+{   // Augmente l'exposant de "Delta" puis vérifie si la nouvelle n'est pas trop élevée
+    puissance+=getAppConfig()["petri dish"]["gradient"]["exponent"]["delta"].toDouble();
+    if(puissance> getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble())
+        puissance=getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble();
+}
+void PetriDish::decreaseGradientExponent()
+{   // Diminue l'exposant de "Delta" puis vérifie si la nouvelle n'est pas trop faible
+    puissance-=getAppConfig()["petri dish"]["gradient"]["exponent"]["delta"].toDouble();
+    if(puissance< getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())
+        puissance=getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble();
+}
+void PetriDish::resetGradientExponent()
+{   // Reprend la valeur par défaut
+    puissance=(getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+
+               getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2;
+}
+Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body) const
+{   /* Cherche un nutriment en cantact avec l'objet en argument, et retourne un pointeur
+    vers le nutriment s'il y en a un, et sinon retourne un nullptr */
     for(auto const nut : Nut) {
         if (nut->isColliding(body))
             return nut;
@@ -103,81 +168,9 @@ Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body) const
 
 
 
-
-
-
-double PetriDish::getTemperature() const
+std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph)
 {
-    return Temp;
-}
-void PetriDish::increaseTemperature()
-{
-    Temp+=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
-    if(Temp> getAppConfig()["petri dish"]["temperature"]["max"].toDouble())
-        Temp=getAppConfig()["petri dish"]["temperature"]["max"].toDouble();
-}
-void PetriDish::decreaseTemperature()
-{
-    Temp-=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
-    if(Temp< getAppConfig()["petri dish"]["temperature"]["min"].toDouble())
-        Temp=getAppConfig()["petri dish"]["temperature"]["min"].toDouble();
-}
-void PetriDish::resetTemp()
-{
-    Temp=getAppConfig()["petri dish"]["temperature"]["default"].toDouble();
-}
 
-
-
-double PetriDish::getGradientExponent() const
-{
-    return puissance;
-}
-void PetriDish::increaseGradientExponent()
-{
-    puissance+=getAppConfig()["petri dish"]["gradient"]["exponent"]["delta"].toDouble();
-    if(puissance> getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble())
-        puissance=getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble();
-}
-void PetriDish::decreaseGradientExponent()
-{
-    puissance-=getAppConfig()["petri dish"]["gradient"]["exponent"]["delta"].toDouble();
-    if(puissance< getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())
-        puissance=getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble();
-}
-void PetriDish::resetGradientExponent()
-{
-    puissance=(getAppConfig()["petri dish"]["gradient"]["exponent"]["max"].toDouble()+
-               getAppConfig()["petri dish"]["gradient"]["exponent"]["min"].toDouble())/2;
-}
-
-
-
-void PetriDish::reset()
-{
-    //supprime toutes les nutriments et toutes les bactéries de l'assiette
-    for (auto& objet : Nut)
-        delete objet;
-    Nut.clear();
-    for (auto& objet : Bact)
-        delete objet;
-    Bact.clear();
-    for (auto& objet : mesTroupes)
-        delete objet;
-    mesTroupes.clear();
-
-    resetTemp();
-    resetGradientExponent();
-}
-
-double PetriDish::getPositionScore(const Vec2d& pos) const
-{
-    double score(0);
-    for (auto&  nut : Nut)  score+=nut->getScoreNutriment(pos);
-    return score;
-}
-
-std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph){
     std::unordered_map<std::string, double> GraphTemp;
 
     // General graph update
@@ -213,8 +206,10 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
         vector<double> TentaculeVitesse;
 
         for(auto chaq : Bact)  chaq->getDataTwitching(TentaculeLongueur,TentaculeVitesse);
-        GraphTemp[s::TENTACLE_LENGTH]=std::accumulate(TentaculeLongueur.begin(), TentaculeLongueur.end(), 0.0)/TentaculeLongueur.size();
-        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(TentaculeVitesse.begin(), TentaculeVitesse.end(), 0.0)/TentaculeVitesse.size();
+        GraphTemp[s::TENTACLE_LENGTH]=std::accumulate(TentaculeLongueur.begin(),
+                                                      TentaculeLongueur.end(), 0.0)/TentaculeLongueur.size();
+        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(TentaculeVitesse.begin(),
+                                                     TentaculeVitesse.end(), 0.0)/TentaculeVitesse.size();
     }
 
 
@@ -229,10 +224,27 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
     return GraphTemp;
 }
 
+void PetriDish::reset()
+{   /*supprime tout ce que contient l'assiette: on détruit les objets pointés,
+    puis on vide les vecteurs de pointeurs.
+    Remet les paramètres à leurs valeurs par défaut*/
+    for (auto& objet : Nut)
+        delete objet;
+    Nut.clear();
+    for (auto& objet : Bact)
+        delete objet;
+    Bact.clear();
+    for (auto& objet : mesTroupes)
+        delete objet;
+    mesTroupes.clear();
+
+    resetTemp();
+    resetGradientExponent();
+}
 
 //Destructeur
 PetriDish::~PetriDish()
-{
+{   /* Le destructeur est responsable de supprimer ce que l'assiette contient*/
     reset();
 }
 

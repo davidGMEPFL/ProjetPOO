@@ -20,37 +20,37 @@ public:
 // Appels aux méthodes sur l'assiette Petri
     void drawOn(sf::RenderTarget&) const;
     void update(sf::Time);
-    void reset();
-    bool contains(const CircularBody&);
+    bool contains(const CircularBody&) const;
 
 // Ajout des bactéries et nutriments
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const& newBorn=false); //s'occupera d'ajouter les clones dans PetriDish
     void addSwarm(Swarm*);
 
-// Vérifie si en contact avec bord assiette ou nutriment
-    bool doesCollideWithDish(CircularBody const& body);
-    Nutriment* getNutrimentColliding(CircularBody const& body);
+    Swarm* getSwarmWithId(std::string id) const; // Retourne le swarm demandé
 
-    double getPositionScore(const Vec2d&);
+    bool doesCollideWithDish(CircularBody const& body) const; // Vérifie si en contact avec bord assiette
 
-    Swarm* getSwarmWithId(std::string id) const;
 
 // Gestion de la température de l'assiette de Petri
-    double getTemperature();
+    double getTemperature() const;
     void increaseTemperature();
     void decreaseTemperature();
     void resetTemp();
 
 
-// Gestion de l'exposant du gradient pour l'assiette de Petri
-    double getGradientExponent();
+// Méthodes de calcul du score et d'alimentation
+    double getPositionScore(const Vec2d&) const;
+    double getGradientExponent() const;
     void increaseGradientExponent();
     void decreaseGradientExponent();
     void resetGradientExponent();
+    Nutriment* getNutrimentColliding(CircularBody const& body) const;
+
 
 
     std::unordered_map<std::string, double> fetchData(const std::string &);
 
+    void reset();
 
 };

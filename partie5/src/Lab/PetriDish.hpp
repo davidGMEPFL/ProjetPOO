@@ -3,53 +3,43 @@
 #include "Bacterium.hpp"
 #include "Nutriment.hpp"
 #include "Swarm.hpp"
-#include <vector>
-#include <SFML/Graphics.hpp>
-#include "Utility/Vec2d.hpp"
 #include "Interface/Updatable.hpp"
 #include "Interface/Drawable.hpp"
-#include <math.h>
+
 
 class PetriDish: public CircularBody, public Updatable, public Drawable
 {
 protected:
-    std::vector<Nutriment*> Nut;
-    std::vector<Bacterium*> Bact;
-    std::vector<Swarm*> mesTroupes;
-    double Temp;
-    double puissance;
+    std::vector<Nutriment*> Nut; // Vecteur contenant les pointeurs sur nutriments
+    std::vector<Bacterium*> Bact; // Vecteur contenant les pointeurs sur bactéries
+    std::vector<Swarm*> mesTroupes; // Vecteur contenant les pointeurs sur les swarm
 
+    double Temp; // Température
+    double puissance; // Exposant du gradient pour le calcul du score
+
+    std::vector<Bacterium*> vecteur_clones;//Vecteur temporaire de pointeurs vers bactéries clonées
 
 public:
-    std::vector<Bacterium*> vecteur_clones;//Vecteur temporaire de pointeurs vers bactéries clonées
+
 
     // Constructeurs
     PetriDish(Vec2d position,double rayon);
-    PetriDish& operator=(const PetriDish&) = delete;
-    PetriDish(PetriDish const&) = delete;
+    PetriDish& operator=(const PetriDish&) = delete; //Désactive l'affectation
+    PetriDish(PetriDish const&) = delete; // Désactive la copie
 
+
+    // Méthodes principales
     void update(sf::Time dt);
     void drawOn(sf::RenderTarget& targetWindow) const;
 
 
-    //Methodes d'additions
+
+    // Methodes d'ajout d'objets dans l'assiette
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const&);
     void addSwarm(Swarm*);
-    Swarm* getSwarmWithId(std::string id) const;
 
-
-
-
-
-    // Méthodes de calcul du score et d'alimentation
-    double getPositionScore(const Vec2d&) const;
-    double getGradientExponent() const;
-    void increaseGradientExponent();
-    void decreaseGradientExponent();
-    void resetGradientExponent();
-    Nutriment* getNutrimentColliding(CircularBody const& body) const;
-
+    Swarm* getSwarmWithId(std::string id) const; // Retourne le swarm demandé
 
 
     // Méthodes de température
@@ -58,6 +48,18 @@ public:
     void decreaseTemperature();
     void resetTemp();
 
+
+
+    // Méthodes de calcul du score et d'alimentation
+    double getPositionScore(const Vec2d&) const; // Retourne le score de la position
+    double getGradientExponent() const;
+    void increaseGradientExponent();
+    void decreaseGradientExponent();
+    void resetGradientExponent();
+    Nutriment* getNutrimentColliding(CircularBody const& body) const;
+
+
+    // Méthode pour la mise à jour des graphs
     std::unordered_map<std::string, double> fetchData(const std::string &);
 
 

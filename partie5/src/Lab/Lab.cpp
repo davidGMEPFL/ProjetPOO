@@ -16,13 +16,8 @@ void Lab::update(sf::Time dt)
     Generator.update(dt);
     Petri.update(dt);
 }
-void Lab::reset()
-{
-    Petri.reset();
-    Generator.reset();
-}
 
-bool Lab::contains(const CircularBody& autre)
+bool Lab::contains(const CircularBody& autre) const
 {
     return Petri.contains(autre);
 }
@@ -47,29 +42,22 @@ void Lab::addSwarm(Swarm* LeSwarm)
 
 
 //test des collisions
-bool Lab::doesCollideWithDish(CircularBody const& body)
-{
-    return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
-}
-Nutriment* Lab::getNutrimentColliding(CircularBody const& body)
-{
-    return Petri.getNutrimentColliding(body);
-}
-
-//somme tous les scores de l'environnement autour de la bacétrie dans Petri
-double Lab::getPositionScore(const Vec2d& pos)
-{
-    return Petri.getPositionScore(pos);
-}
-
-
 Swarm* Lab::getSwarmWithId(std::string id) const {
     return Petri.getSwarmWithId(id);
 }
 
 
+bool Lab::doesCollideWithDish(CircularBody const& body) const
+{   /* Vérifie que l'objet en argument touche les bords de l'assiette: sa distance
+    par rapport au centre de l'assiette + son rayon, doit dépasser le rayon de l'asstiete */
+    return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
+}
+
+
+
+
 // GESTION TEMP :
-double Lab::getTemperature()
+double Lab::getTemperature() const
 {
     return Petri.getTemperature();
 }
@@ -86,8 +74,13 @@ void Lab::resetTemp()
     Petri.resetTemp();
 }
 
+
 // GESTION GRADIENT :
-double Lab::getGradientExponent()
+double Lab::getPositionScore(const Vec2d& pos) const
+{
+    return Petri.getPositionScore(pos);
+}
+double Lab::getGradientExponent() const
 {
     return Petri.getGradientExponent();
 }
@@ -103,8 +96,17 @@ void Lab::resetGradientExponent()
 {
     Petri.resetGradientExponent();
 }
-
+Nutriment* Lab::getNutrimentColliding(CircularBody const& body) const
+{
+    return Petri.getNutrimentColliding(body);
+}
 
 std::unordered_map<std::string, double> Lab::fetchData(const std::string & titreGraph){
     return Petri.fetchData(titreGraph);
+}
+
+void Lab::reset()
+{
+    Petri.reset();
+    Generator.reset();
 }

@@ -2,11 +2,7 @@
 #include "Random/Random.hpp"
 #include "Application.hpp"
 #include "Utility/DiffEqSolver.hpp"
-//#include "Utility/Vec2d.hpp"
-//#include "SFML/Graphics.hpp"
-//#include "Utility/Utility.hpp"
 #include "Utility/Constants.hpp"
-#include <iostream>
 #include <Lab/NutrimentA.hpp>
 #include <Lab/NutrimentB.hpp>
 
