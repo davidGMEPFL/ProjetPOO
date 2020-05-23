@@ -10,47 +10,42 @@
 class PetriDish: public CircularBody, public Updatable, public Drawable
 {
 protected:
-    std::vector<Nutriment*> Nut; // Vecteur contenant les pointeurs sur nutriments
-    std::vector<Bacterium*> Bact; // Vecteur contenant les pointeurs sur bactéries
+    std::vector<Nutriment*> Nut;    // Vecteur contenant les pointeurs sur nutriments
+    std::vector<Bacterium*> Bact;   // Vecteur contenant les pointeurs sur bactéries
     std::vector<Swarm*> mesTroupes; // Vecteur contenant les pointeurs sur les swarm
 
-    double Temp; // Température
-    double puissance; // Exposant du gradient pour le calcul du score
+    double Temp;        // Température
+    double puissance;  // Exposant du gradient pour le calcul du score
 
-    std::vector<Bacterium*> vecteur_clones;//Vecteur temporaire de pointeurs vers bactéries clonées
+    std::vector<Bacterium*> vecteur_clones; //Vecteur temporaire de pointeurs vers bactéries clônées
 
 public:
 
-
-    // Constructeurs
+// Constructeurs
     PetriDish(Vec2d position,double rayon);
     PetriDish& operator=(const PetriDish&) = delete; //Désactive l'affectation
     PetriDish(PetriDish const&) = delete; // Désactive la copie
 
 
-    // Méthodes principales
+// Méthodes principales
     void update(sf::Time dt);
     void drawOn(sf::RenderTarget& targetWindow) const;
 
 
-
-    // Methodes d'ajout d'objets dans l'assiette
+// Méthodes d'ajout d'objets dans l'assiette
     bool addNutriment(Nutriment*);
     bool addBacterium(Bacterium*,bool const&);
     void addSwarm(Swarm*);
-
     Swarm* getSwarmWithId(std::string id) const; // Retourne le swarm demandé
 
-
-    // Méthodes de température
+// Gestion de la température de l'assiette
     double getTemperature() const;
     void increaseTemperature();
     void decreaseTemperature();
     void resetTemp();
 
 
-
-    // Méthodes de calcul du score et d'alimentation
+// Gestion de l'exposant de gradient
     double getPositionScore(const Vec2d&) const; // Retourne le score de la position
     double getGradientExponent() const;
     void increaseGradientExponent();
@@ -59,13 +54,12 @@ public:
     Nutriment* getNutrimentColliding(CircularBody const& body) const;
 
 
-    // Méthode pour la mise à jour des graphs
+// Méthode pour la mise à jour des graphs
     std::unordered_map<std::string, double> fetchData(const std::string &);
-
 
 
     void reset();
 
-    //Destructeur
+// Destructeur
     ~PetriDish();
 };

@@ -8,6 +8,26 @@ Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double r
       energie(energie), TimeLastMeal(sf::Time::Zero)
 {}
 
+// Paramètres mutables
+void Bacterium::addProperty(const string& key, MutableNumber valeur)
+{   /*Dans la map Params, initialise la valeur Mutable Number à sa clé correspondante */
+
+    Params[key]=valeur;
+}
+
+MutableNumber& Bacterium::getProperty(const string& key)
+{ /* Associe la valeur liée à la clé */
+
+    auto it = Params.find(key); //initialise l'itérateur à l'étiquette recherchée
+    if (it != Params.end()) {
+        return it->second; //retourne la valeur pointée
+    } else {
+        throw std::out_of_range("unknown mutable property :" + key);
+        //programme s'arrête si ne trouve aucune propriété correspondant à la clé
+    }
+}
+
+// Méthodes utilitaires
 void Bacterium::drawOn(sf::RenderTarget& target) const
 {
     auto const circle = buildCircle(position, rayon, couleur.get());
@@ -20,9 +40,10 @@ void Bacterium::drawOn(sf::RenderTarget& target) const
     } //ajout de la quantité d'énergie
 }
 
-
 void Bacterium::update(sf::Time dt)
-{
+{/* Fait évoluer la vie d'une bactérie à chaque pas de temps.
+    Elle lui permet de se mouvoir, de manger si possible, et de se diviser */
+
     //Déplacement spécifique à chaque type de bactérie
     move(dt);
 
@@ -40,42 +61,45 @@ void Bacterium::update(sf::Time dt)
     }
 }
 
-
-void Bacterium::eat(Nutriment& nutriment) { //on ne peut pas être polymorphique directement sur le paramètre
-    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
-    energie+=eaten;
-}
-
-void Bacterium::consumeEnergy(Quantity qt)
-{
-    energie-=qt;
-}
-
-bool Bacterium::testMort()
-{
-    return energie<=0;
-}
-
-void Bacterium::division()
-{
-    if(energie>getMinEnDiv()) {
-        energie/=2;
-        clone();
-        direction*=(-1); //dans sens opposé
-    }
-}
-
 void Bacterium::mutate()
-{
+{ /* Permet de faire muter la couleur et les paramètres mutables de la bactérie */
     couleur.mutate();
-    std::map<std::string, MutableNumber>::iterator it = Params.begin();//itérateur sur premier paramètre mutable
-    while (it != Params.end()) { //tant que dépasse pas le dernier élément
+    std::map<std::string, MutableNumber>::iterator it = Params.begin(); //itérateur sur premier paramètre mutable
+    while (it != Params.end()) {  //tant que dépasse pas le dernier élément
         it->second.mutate();     //contenu mutable pointé mute
         it++;
     }
 }
 
-//Getters utilitaires
+// Consommation nutriments
+void Bacterium::eat(Nutriment& nutriment) {   //on ne peut pas être polymorphique directement sur le paramètre
+    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
+    energie+=eaten;
+}
+
+// Actions en fonction énergie
+void Bacterium::consumeEnergy(Quantity qt)
+{
+    energie-=qt; //soustrait la quantité souhaitée
+}
+bool Bacterium::testMort() const
+{ /* Test si énergie suffisante pour survie de la bactérie */
+    return energie<=0;
+}
+void Bacterium::division()
+{/* Si l'énergie de la bactérie dépasse un seuil, celle-ci se réduit de moitié,
+    et la bactérie engendre un clône de même énérgie mais de direction opposée */
+
+    if(energie>getMinEnDiv()) {
+        energie/=2;
+        clone();
+        direction*=(-1); //sens opposé
+    }
+}
+
+
+// GETTERS utilitaires
+/* Retournent les valeurs associées aux étiquettes dans .appjason */
 double Bacterium::getMinEnDiv() const
 {
     return getConfig()["energy"]["division"].toDouble();
@@ -93,29 +117,12 @@ double Bacterium::mealMax() const
     return getConfig()["meal"]["max"].toDouble();
 }
 
-// PARAMETRES MUTABLES :
-void Bacterium::addProperty(const string& key, MutableNumber valeur)
-{
-    Params[key]=valeur; //dans la map Params, initialise la valeur Mutable Number à sa clé correspondante
-}
-
-MutableNumber& Bacterium::getProperty(const string& key) //associe la valeur liée à la clé
-{
-    auto it = Params.find(key);
-    if (it != Params.end()) {
-        return it->second; //retourne le contenu pointé par l'étiquette
-    } else {
-        throw std::out_of_range("unknown mutable property :" + key);
-        //programme s'arrête si ne trouve aucune propriété correspondant à la clé
-    }
-}
-
 
 // GRAPHS
-void Bacterium::getDataTwitching(vector<double>&, vector<double>&){
+void Bacterium::getDataTwitching(vector<double>&, vector<double>&) {
 }
-
 void Bacterium::getDataSimple(vector<double>&, vector<double>&){
 }
 
+// Destructeur virtuel
 Bacterium::~Bacterium() {}

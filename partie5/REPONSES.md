@@ -287,11 +287,18 @@
 - `PetriDish::update()` s'occupe de tester si la bactérie est morte. Quand c'est le cas, elle appelle le destructeur de `SwarmBacterium`, qui va appeler la méthode `Swarm::PopBack()` qui va supprimer le pointeur du `Swarm`. Enfin, `PetriDish::update()` supprime le pointeur dans `PetriDish`.
 
 
+*************************************************
+##Q5.1 Pourquoi tester le type des objets à l'exécution est-il potentiellement nocif ? 
+
+- Un test de type d'objet viendrait casser la notion de polymorphisme, qui par définition se charge d'appliquer la bonne méthode selon le type, la nature de la donnée manipulée. 
 
 
+*************************************************
+##Q5.2 Pourquoi doit on prévoir une méthode virtual Quantity eatenBy(Bacterium& bact) const = 0; avec comme argument une Bacterium quelconque (alors qu'à priori seule nous intéresse la définition de eatenBy pour des sous-classes de bactéries) ?
+
+- Cette méthode virtual est nécessaire puisque c'est elle qui sera d'abord appelée par `Bacterium::eat()`, et qui se chargera ensuite de renvoyer vers la bonne méthode `eatableQuantity()` (qui elle agira par polymorphisme). Dans le cas où voudrait ajouter une nouvelle sous-classe de `Bacterium`, cela évitera aussi d'engendrer des lignes supplémentaires au code.
 
 
-
-
-
+*************************************************
+##Q5.4 Quelle méthodes prévoyez-vous d'ajouter/modifier et dans quelles classes pour réaliser les décomptes souhaités et construire les ensembles new_data? en d'autres termes, comment pouvez-vous compter le nombre d'instances d'une certaine classe?
 

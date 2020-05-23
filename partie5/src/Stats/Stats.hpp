@@ -17,19 +17,22 @@ class Stats
 
 
 public:
-    Stats();
+    Stats(); //constructeur
+
+// Méthodes utiles
+    void update(sf::Time);
+    void drawOn(sf::RenderTarget& TargetWindow);
+
+// Méthodes d'accès et d'indexation
     void setActiveId(const int&);
     std::string getCurrentTitle();
     void next();
     void previous();
 
-    void reset();
-
-    void update(sf::Time);
-
+// Ajout des séries
     void addGraph(int, std::string const&, std::vector<std::string>, double, double, const Vec2d &);
 //    mCurrentGraphId, title, series, min, max, getStatsSize()
 
-    void drawOn(sf::RenderTarget& TargetWindow);
+    void reset(); //remise à zéro des valeurs des graphes
 };
 

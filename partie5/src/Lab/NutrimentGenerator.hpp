@@ -8,5 +8,5 @@ public:
     NutrimentGenerator();
 
     void update(sf::Time); //ajoute de façon aléatoire des nutriments au fil du temps
-    void reset();
+    void reset(); //remise du chrono à zéro
 };

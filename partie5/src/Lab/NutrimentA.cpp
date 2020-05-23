@@ -20,7 +20,7 @@ Quantity NutrimentA::eatenBy(Bacterium &bact) {  //polymorphisme sur nutriments
     return bact.eatableQuantity(*this);
 }
 
-//qtité nutriment consommée : toujours qtité max consommable
+//Qtité nutriment consommée : toujours qtité max consommable
 Quantity NutrimentA::eatenBy(SimpleBacterium& bacterium)
 {
     return takeQuantity(bacterium.mealMax());

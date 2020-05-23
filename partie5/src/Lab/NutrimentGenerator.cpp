@@ -14,7 +14,9 @@ NutrimentGenerator::NutrimentGenerator():
 
 
 void NutrimentGenerator::update(sf::Time dt)
-{
+{/* En fonction du temps écoulé, la méthode génère un nutriment en remettant à zéro le chrono.
+    Selon le test de bernouilli, elle génèrera une source de NutrimentA ou de NutrimentB,
+    de position donnée par une loi normale, et de quantité aléatoire */
     TimeLastGen+=dt;
     Nutriment* pointNut;
 
@@ -26,7 +28,7 @@ void NutrimentGenerator::update(sf::Time dt)
         Vec2d pos(posX,posY);
         //position aléatoire de la source, selon loi normale de centre X et variance Y
 
-        //test de bernouilli qui dira si l'on retourne un NutA ou un NutB
+        //Test de bernouilli qui dira si l'on retourne un NutA ou un NutB
         if(bernoulli(getShortConfig().generator_nutriment_prob )) {
             Quantity qt(uniform(getShortConfig().nutrimentA_min_qty,getShortConfig().nutrimentA_max_qty));
             pointNut=new NutrimentA(qt,pos);
