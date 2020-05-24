@@ -99,7 +99,7 @@ void Bacterium::division()
 
 
 // GETTERS utilitaires
-/* Retournent les valeurs associées aux étiquettes dans .appjason */
+/* Retournent les valeurs associées aux étiquettes dans app.jason */
 double Bacterium::getMinEnDiv() const
 {
     return getConfig()["energy"]["division"].toDouble();
