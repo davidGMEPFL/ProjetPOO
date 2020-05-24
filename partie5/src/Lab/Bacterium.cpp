@@ -14,7 +14,6 @@ void Bacterium::addProperty(const string& key, MutableNumber valeur)
 
     Params[key]=valeur;
 }
-
 MutableNumber& Bacterium::getProperty(const string& key)
 { /* Associe la valeur liée à la clé */
 
@@ -24,6 +23,7 @@ MutableNumber& Bacterium::getProperty(const string& key)
     } else {
         throw std::out_of_range("unknown mutable property :" + key);
         //programme s'arrête si ne trouve aucune propriété correspondant à la clé
+        //aucun catch ne sera utilisé, car on ne souhaite pas donner de valeur de substitution
     }
 }
 
@@ -37,7 +37,7 @@ void Bacterium::drawOn(sf::RenderTarget& target) const
         auto const text = buildText(std::to_string(int(energie)),position + Vec2d(0,-100),
                                     getAppFont(),18,sf::Color::Red);
         target.draw(text);
-    } //ajout de la quantité d'énergie
+    } //affichage de la quantité d'énergie
 }
 
 void Bacterium::update(sf::Time dt)
@@ -49,7 +49,7 @@ void Bacterium::update(sf::Time dt)
 
     // Bacterie mange des nutriments
     TimeLastMeal+=dt;
-    Nutriment* NutrProxi(nullptr);
+    Nutriment* NutrProxi(nullptr); //nécessaire pour eat()
 
     if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
             TimeLastMeal > getTempsDelay() && !abstinence) { //si y a bien un nutriment en contact + pas en abstinence + délai de temps passé
@@ -99,7 +99,7 @@ void Bacterium::division()
 
 
 // GETTERS utilitaires
-/* Retournent les valeurs associées aux étiquettes dans app.jason */
+/* Retournent les valeurs associées aux étiquettes dans app.json */
 double Bacterium::getMinEnDiv() const
 {
     return getConfig()["energy"]["division"].toDouble();
@@ -119,37 +119,12 @@ double Bacterium::mealMax() const
 
 
 // GRAPHS
-/*
-void Bacterium::getDataTwitching(vector<double>&, vector<double>&) {
+std::unordered_map<std::string, double> Bacterium::Data4Graphs={ {s::SIMPLE_BACTERIA , 0}, {s::TWITCHING_BACTERIA , 0},
+                        {s::SWARM_BACTERIA , 0}, {s::NUTRIMENT_SOURCES , 0}, {s::BETTER, 0}, {s::TENTACLE_LENGTH, 0},
+                        {s::TENTACLE_SPEED, 0}, {s::SPEED, 0}}; //initialisation de la map 'Data4Graphs'
+
+std::unordered_map<std::string, double>& Bacterium::accesMap(){
+    return Data4Graphs;
 }
-void Bacterium::getDataSimple(vector<double>&, vector<double>&){
-}*/
 
-
-std::unordered_map<std::string, double> Bacterium::Data4Graphs={ {s::SIMPLE_BACTERIA , 0},
-                                                                {s::TWITCHING_BACTERIA , 0},
-                                                                {s::SWARM_BACTERIA , 0},
-                                                                {s::NUTRIMENT_SOURCES , 0},
-                                                                {s::BETTER, 0},
-                                                                {s::WORSE, 0},
-                                                                {s::TENTACLE_LENGTH, 0},
-                                                                {s::TENTACLE_SPEED, 0},
-                                                                {s::SPEED, 0}};
-
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TWITCHING_BACTERIA]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::SWARM_BACTERIA]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::NUTRIMENT_SOURCES]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::NUTRIMENT_QUANTITY]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::DISH_TEMPERATURE]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::BETTER]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::WORSE]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TENTACLE_LENGTH]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TENTACLE_SPEEDt]=0;
-//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::SPEED]=0;
-
-
-
-
-
-// Destructeur virtuel
 Bacterium::~Bacterium() {}

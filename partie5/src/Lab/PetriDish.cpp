@@ -23,11 +23,12 @@ void PetriDish::update(sf::Time dt)
     être supprimés, et modifie les vecteurs en conséquence */
 
     for (auto& objet : Nut) {
-        objet->update(dt);
-        if(objet->testEpuise()){ // verifie si le nombre de nutriments est nul
+        if(objet->testEpuise()){ // verifie si le nombre de nutriments est nul avant d'en rajouter
             delete objet;    // libère la mémoire de l'objet pointé (appelle destructeur)
-            objet=nullptr;} // nécessaire pour enlever le pointeur du vecteur
+            objet=nullptr; // nécessaire pour enlever le pointeur du vecteur
+        } else objet->update(dt);
     }
+
     Nut.erase(std::remove(Nut.begin(), Nut.end(), nullptr), Nut.end());
     // permet d'enlever tous les nullptr du vecteur de pointeurs
 
@@ -174,17 +175,17 @@ Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body) const
 
 
 
-std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph)
+std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph) const
 {   /*Méthode pour mettre à jour les graphs dans Stats. Une map temporaire (GraphTemp)
     est créée, remplie avec les valeurs nécessaires en fonction du titre en argument,
-    et retournée
+    et retournée.
     Pour la plupart des Graphs, on utilise un attribut static de Bacterium pour ne pas recalculer
     les valeurs à chaque itération*/
 
     std::unordered_map<std::string, double> GraphTemp; // map temporaire contenant les données
 
-    // General graph update: les nombres en questions sont directement mis à jour
-    // dans les constructeurs, destructeurs, et méthodes de clonages de chaque sous-classe
+    // General graph update: les nombres en question sont directement mis à jour
+    // dans les constructeurs, destructeurs, et méthodes de clonage de chaque sous-classe
     if(s::GENERAL == titreGraph){
         GraphTemp[s::SIMPLE_BACTERIA] = Bacterium::accesMap()[s::SIMPLE_BACTERIA];
         GraphTemp[s::SWARM_BACTERIA] = Bacterium::accesMap()[s::SWARM_BACTERIA];
@@ -193,7 +194,7 @@ std::unordered_map<std::string, double> PetriDish::fetchData(const std::string &
         GraphTemp[s::DISH_TEMPERATURE]=Temp; // PetriDish y a directement accés
     }
 
-    // Nutriment Quantity Graph update: boucle sur tous les nutriments, sommant l'energie de chacun
+    // Nutriment Quantity Graph update: boucle sur tous les nutriments, en sommant l'energie de chacun
     if(s::NUTRIMENT_QUANTITY == titreGraph){
         GraphTemp[s::NUTRIMENT_QUANTITY] = 0;
         for(auto chaq : Nut)  chaq->addToGraph(GraphTemp);

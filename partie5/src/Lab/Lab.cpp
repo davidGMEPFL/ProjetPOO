@@ -95,7 +95,7 @@ void Lab::resetGradientExponent()
 
 
 
-std::unordered_map<std::string, double> Lab::fetchData(const std::string & titreGraph){
+std::unordered_map<std::string, double> Lab::fetchData(const std::string & titreGraph) const{
     return Petri.fetchData(titreGraph);
 }
 

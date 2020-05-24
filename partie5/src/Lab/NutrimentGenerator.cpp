@@ -22,18 +22,17 @@ void NutrimentGenerator::update(sf::Time dt)
 
     if(TimeLastGen > sf::seconds(getShortConfig().generator_nutriment_delay)) { //si délai temps passé
         TimeLastGen=sf::Time::Zero;
-        Vec2d tailleEnv(getApp().getLabSize());
-        double posX(normal(tailleEnv.x/2, tailleEnv.x*tailleEnv.x/16)); //centre
-        double posY(normal(tailleEnv.y/2, tailleEnv.y*tailleEnv.y/16)); //variance
-        Vec2d pos(posX,posY);
-        //position aléatoire de la source, selon loi normale de centre X et variance Y
+        Vec2d tailleEnv(getApp().getLabSize()); //donne dimensions du lab
+        double posX(normal(tailleEnv.x/2, tailleEnv.x*tailleEnv.x/16));
+        double posY(normal(tailleEnv.y/2, tailleEnv.y*tailleEnv.y/16));
+        Vec2d pos(posX,posY); //coordonnées aléatoire de la source, selon loi normale
 
         //Test de bernouilli qui dira si l'on retourne un NutA ou un NutB
         if(bernoulli(getShortConfig().generator_nutriment_prob )) {
             Quantity qt(uniform(getShortConfig().nutrimentA_min_qty,getShortConfig().nutrimentA_max_qty));
             pointNut=new NutrimentA(qt,pos);
             getAppEnv().addNutriment(pointNut);
-            //ajout du nutriment A dans le Lab, ayant une position et une quantité aléatoirment choisies
+            //ajout du nutriment A dans le Lab, ayant la position et une quantité aléatoirment choisies
         } else {
             Quantity qt(uniform(getShortConfig().nutrimentB_min_qty,getShortConfig().nutrimentB_max_qty));
             pointNut=new NutrimentB(qt,pos);

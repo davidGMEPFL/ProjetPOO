@@ -17,6 +17,8 @@ protected:
     double Temp;        // Température
     double puissance;  // Exposant du gradient pour le calcul du score
 
+    /* La modification de la taille d'un vecteur en itérant dessus n'étant pas possible, on crée un autre
+     * vecteur, temporaire, dont les éléments seront ajoutés au moyen de la commande append */
     std::vector<Bacterium*> vecteur_clones; //Vecteur temporaire de pointeurs vers bactéries clônées
 
 public:
@@ -55,7 +57,7 @@ public:
 
 
 // Méthode pour la mise à jour des graphs
-    std::unordered_map<std::string, double> fetchData(const std::string &);
+    std::unordered_map<std::string, double> fetchData(const std::string &)const;
 
 
     void reset();

@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-class Nutriment;
+class Nutriment; //prédéfintion des nutriments pour éviter dépendance circulaire
 class NutrimentA;
 class NutrimentB;
 
@@ -19,37 +19,37 @@ protected:
     Vec2d direction;
     bool abstinence;
     Quantity energie;
-    std::map<std::string, MutableNumber> Params;
-    sf::Time TimeLastMeal;
+    std::map<std::string, MutableNumber> Params; //map de tous les paramètres mutables
+    sf::Time TimeLastMeal; //compteur temps depuis dernier eat
 
-    static std::unordered_map<std::string, double> Data4Graphs;
+    static std::unordered_map<std::string, double> Data4Graphs; //map des statistiques actuelles
 
 public:
 
     Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur);
 
-    virtual j::Value& getConfig() const =0; //à adapter pour chaque type de bactérie par polymorphisme
-    void addProperty(const std::string&, MutableNumber);
-    MutableNumber& getProperty(const std::string&); // propre aux paramètres mutables de chaque type de bactérie
+    virtual j::Value& getConfig() const =0; //accès aux paramètres du fichier app.jason, par polymorphisme
+    void addProperty(const std::string&, MutableNumber); //ajoute un paramètre mutable à la map
+    MutableNumber& getProperty(const std::string&); //accès à la valeur du paramètre mutable
 
 // Méthodes utilitaires
     void drawOn(sf::RenderTarget&) const;
     void update(sf::Time dt);
-    void mutate();
+    void mutate(); //fait muter tous les paramètres mutables
 
 // A redéfinir pour chaque type de bactérie
     virtual void move(sf::Time dt) =0;
     virtual Bacterium* clone()const=0;
 
 // Consommation nutriments
-    void eat(Nutriment& nutriment);    //gère consommation nutriments selon bactérie
-    virtual Quantity eatableQuantity(NutrimentA& nutriment) = 0; //permet polymorphisme sur nutriments
+    void eat(Nutriment& nutriment);    //méthode globale qui gère consommation
+    virtual Quantity eatableQuantity(NutrimentA& nutriment) = 0; //permet polymorphisme sur bactérie
     virtual Quantity eatableQuantity(NutrimentB& nutriment) = 0;
 
 // Actions en fonction énergie
     void consumeEnergy(Quantity qt);
     bool testMort()const;
-    void division();
+    void division(); //commune à tous les types de bactéries
 
 // Getters utilitaires
     double getMinEnDiv() const;       //énergie minimale nécessaire à la division
@@ -57,14 +57,8 @@ public:
     double EnergieDepl() const;     //énergie dépensée à chaque pas de déplacement
     double mealMax() const;        //quantité maximale qu'elle peut consommer
 
-// Methods for getting data for the graphs
-//    virtual void getDataTwitching(std::vector<double>&, std::vector<double>&); //collecte les tailles de tentacule + sa vitesse
-//    virtual void getSpeed(std::vector<double>&) =0;                            //collecte les vitesses des bactéries qui en ont
-//    virtual void getDataSimple(std::vector<double>&, std::vector<double>&); //collecte les basculements selon les tumble
-
-    static std::unordered_map<std::string, double>& accesMap(){
-        return Data4Graphs;
-    }
+// Méthode donnant accès à l'attribut de classe 'map Data4Graphs'
+    static std::unordered_map<std::string, double>& accesMap();
 
 // Destructeur
     virtual ~Bacterium();

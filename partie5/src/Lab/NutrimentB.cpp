@@ -1,9 +1,6 @@
 #include "NutrimentB.hpp"
 #include "Application.hpp"
-//#include<Lab/Bacterium.hpp>
-//#include<Lab/TwitchingBacterium.hpp>
-//#include<Lab/SwarmBacterium.hpp>
-//#include<Lab/SimpleBacterium.hpp>
+
 
 NutrimentB::NutrimentB(const Quantity& nbNutriments,const Vec2d& position):
     Nutriment(nbNutriments,position)
@@ -16,7 +13,7 @@ j::Value  NutrimentB::getConfig() const
 
 // IMPACT DIFFERENCIE :
 
-Quantity NutrimentB::eatenBy(Bacterium &bact) {     //polymorphisme sur nutriments
+Quantity NutrimentB::eatenBy(Bacterium &bact) {     //polymorphisme sur bactéries
     return bact.eatableQuantity(*this);
 }
 

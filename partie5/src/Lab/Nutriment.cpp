@@ -8,18 +8,18 @@
 Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
     CircularBody(position,nbNutriments), nbNutriments(nbNutriments)
 {
-    ++Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
+    ++Bacterium::accesMap()[s::NUTRIMENT_SOURCES]; //incrémente le compteur de sources de nutriments
 }
 
 // NOMBRE NUTRIMENTS
 Quantity Nutriment::takeQuantity(Quantity qtTaken)
 {/* Retournera la quantité qui a pu être prélevée */
 
-    Quantity ret(nbNutriments); //quantité nut dispo
+    Quantity ret(nbNutriments); //quantité nut dispo au début
     if((nbNutriments-=qtTaken)>=0) ret=qtTaken;
     else nbNutriments=0; //cas où plus à prélever que disponible
-    rayon=nbNutriments;
-    return ret; //quantité de nut prélevée (soit qtTaken, soit nbNut)
+    rayon=nbNutriments; //mise à jour pour l'affichage
+    return ret; //quantité de nut prélevée (soit qtTaken, soit nbNutriment)
 }
 void Nutriment::setQuantity(Quantity const& newQt)
 {/* Permettant de mettre à jour la quantité de nutriments */
@@ -53,8 +53,7 @@ void Nutriment::drawOn(sf::RenderTarget& target) const
     }
 }
 void Nutriment::update(sf::Time dt)
-{/* Fait évoluer à chaque pas de temps la croissance des nutriments
-    en augmentant leur quantité */
+{/* Fait croître la quantité de nutriments à chaque pas de temps */
 
     double temp(getAppEnv().getTemperature());
     auto const& speed=getConfig()["growth"]["speed"].toDouble();
@@ -65,23 +64,24 @@ void Nutriment::update(sf::Time dt)
 
     //Si bornes température respectées + quantité max nut respectée -> croissance
     if(minTemp<=temp && temp<=maxTemp && (nbNutriments+growth)<=2*maxVal) nbNutriments+=growth;
-    if(!getAppEnv().contains(*this))nbNutriments-=growth;
+    if(!getAppEnv().contains(*this))nbNutriments-=growth; //si la source dépasse l'assiette -> décroissance
     rayon=nbNutriments; //adaptation rayon
 }
 
 double Nutriment::getScoreNutriment(const Vec2d& pos) const
-{/* Calcul du score d'un nutriment, en fonction de son exposant de gradient
-    et de la position choisie */
+{/* Calcul du score de la position choisie, par rapport au nutriment */
 
     double puissance(getAppEnv().getGradientExponent());
     return nbNutriments/pow(distance(position, pos), puissance);
+    //score proportionnel à qtité nutriments et inversement proportionnel à la distance au nutriment
 }
 
-void Nutriment::addToGraph(std::unordered_map<std::string, double>& GraphTemp){
+// Ajout du nb de nutriments
+void Nutriment::addToGraph(std::unordered_map<std::string, double>& GraphTemp) const{
         GraphTemp[s::NUTRIMENT_QUANTITY] += nbNutriments;
-
 }
 
+//Destructeur : décrémente le compteur de soucres de nutriments
 Nutriment::~Nutriment(){
     --Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
 }

@@ -2,7 +2,6 @@
 #include "Random/Random.hpp"
 #include "Application.hpp"
 #include "Utility/Utility.hpp"
-#include <SFML/Graphics.hpp>
 #include <Lab/NutrimentA.hpp>
 #include <Lab/NutrimentB.hpp>
 
@@ -19,6 +18,8 @@ TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
 {
     addProperty("tentacle length", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["length"]));
     addProperty("tentacle speed", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["speed"]));
+
+    /* prise en compte de la nouvelle bactérie dans les statistiques */
     ++Data4Graphs[s::TWITCHING_BACTERIA];
     Data4Graphs[s::TENTACLE_LENGTH]+=getProperty("tentacle length").get();
     Data4Graphs[s::TENTACLE_SPEED]+=getProperty("tentacle speed").get();
@@ -44,10 +45,9 @@ void TwitchingBacterium::drawOn(sf::RenderTarget& target) const
 
 Bacterium* TwitchingBacterium::clone() const
 {
-    TwitchingBacterium* ptr=new TwitchingBacterium(*this);
+    TwitchingBacterium* ptr=new TwitchingBacterium(*this); //création d'un pointeur sur une copie
     ptr->mutate();
     ptr->position+=Vec2d(8.0,8.0);          //décalage du centre du clone
-    ptr->grapin.setPosition(ptr->position); // tentacule rétracté
     ptr->moveGrip(Vec2d(1.0, -7.0));        // décalage orientation tentacule
     getAppEnv().addBacterium(ptr, true);    //ajout du clone dans le vecteur des newBorn
 
@@ -63,11 +63,8 @@ Bacterium* TwitchingBacterium::clone() const
 //DEPLACEMENT :
 void TwitchingBacterium::moveGrip(const Vec2d& delta)
 {
-    /*if(distance(grapin.getPosition(),position)+delta.length() <=getProperty("tentacle length").get())*/{
         grapin.move(delta);
-    } /*else {
-        grapin.setPosition(position+delta.normalised()*getProperty("tentacle length").get());
-    }*/
+
 }
 
 
@@ -107,10 +104,10 @@ void TwitchingBacterium::move(sf::Time dt)
         moveGrip(direction*vitesse_tentacule*dt.asSeconds());
         consumeEnergy(Qt_deploi);
 
-        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) etat=ATTRACT; //si grapin touche un nutriment
+        if(getAppEnv().getNutrimentColliding(grapin)!=nullptr) etat=ATTRACT; //si grapin touche un nutriment, la bactérie s'approche
         else if((longueur_tentacule>=longueur_max)  or getAppEnv().doesCollideWithDish(grapin)) {
             etat=RETRACT;
-            // si longueur max du tentacule atteinte sans avoir touché de nutriment ou bord assiette touché
+            // si longueur max du tentacule atteinte sans avoir touché de nutriment ou bord assiette touché, alors se rétracte
         }
         break;
     }
@@ -149,6 +146,7 @@ void TwitchingBacterium::move(sf::Time dt)
     }
 
     case EAT: {
+        /* Si la bactérie est en train de manger, elle continue de rétracter son grapin */
         if(longueur_tentacule>rayon) {
             moveGrip((position-grapin.getPosition()).normalised()*vitesse_tentacule*dt.asSeconds());
             //déplacement grapin dans sens inverse
@@ -186,7 +184,7 @@ Vec2d TwitchingBacterium::direction_tentacule() const
     return (grapin.getPosition()-position).normalised();
 }
 
-
+//Destructeur : prise en compte de la destruction de la bactérie dans les statistiques
 TwitchingBacterium::~TwitchingBacterium(){
     --Data4Graphs[s::TWITCHING_BACTERIA];
     Data4Graphs[s::TENTACLE_LENGTH]-= getProperty("tentacle length").get();

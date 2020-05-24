@@ -1,7 +1,7 @@
 #pragma once
 #include "CircularBody.hpp"
-#include "Utility/Vec2d.hpp"
-#include "Utility/Types.hpp"
+//#include "Utility/Vec2d.hpp"
+//#include "Utility/Types.hpp"
 //#include "SFML/Graphics.hpp"
 #include "Interface/Updatable.hpp"
 #include "Interface/Drawable.hpp"
@@ -14,23 +14,24 @@
 class Nutriment : public CircularBody, public Updatable, public Drawable
 {
 protected:
-    Quantity nbNutriments;
+    Quantity nbNutriments; //nombre de nutriments de la source
 
 public:
     Nutriment(const Quantity&,const Vec2d&); // constructeur
 
-    virtual j::Value getConfig() const =0; //propre à NutA et NutB
+    virtual j::Value getConfig() const =0; // permet d'atteindre les paramètres du fichier
+                                           // app.json de façon polymorphique
 
 // Actions liées à quantité nutriments
-    Quantity takeQuantity(Quantity);
-    void setQuantity(Quantity const&); 
+    Quantity takeQuantity(Quantity); //prend la qtité de nutriment, si disponible
+    void setQuantity(Quantity const&); //fixe la quantité, si admissible
     bool testEpuise() const; //test si aucun nutriment présent
 
 // Méthodes utilitaires
     void drawOn(sf::RenderTarget& target) const;
     void update(sf::Time dt);
 
-// Méthodes polymorphiques renvoyant qtité nut consommée selon type bactérie, à définir
+// Méthodes polymorphiques renvoyant qtité nut consommée selon type bactérie
     virtual Quantity eatenBy(Bacterium& bact) = 0;
     virtual Quantity eatenBy(SimpleBacterium& bact) = 0;
     virtual Quantity eatenBy(TwitchingBacterium& bact) = 0;
@@ -39,8 +40,8 @@ public:
 // Calcul du score d'un nutriment, utile pour donner score de la position
     double getScoreNutriment(const Vec2d&) const;
 
-
-    void addToGraph(std::unordered_map<std::string, double>&);
+// Rajoute le nb de nutriments
+    void addToGraph(std::unordered_map<std::string, double>&)const;
 
     ~Nutriment();
 };
