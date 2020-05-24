@@ -119,10 +119,37 @@ double Bacterium::mealMax() const
 
 
 // GRAPHS
+/*
 void Bacterium::getDataTwitching(vector<double>&, vector<double>&) {
 }
 void Bacterium::getDataSimple(vector<double>&, vector<double>&){
-}
+}*/
+
+
+std::unordered_map<std::string, double> Bacterium::Data4Graphs={ {s::SIMPLE_BACTERIA , 0},
+                                                                {s::TWITCHING_BACTERIA , 0},
+                                                                {s::SWARM_BACTERIA , 0},
+                                                                {s::NUTRIMENT_SOURCES , 0},
+                                                                {s::BETTER, 0},
+                                                                {s::WORSE, 0},
+                                                                {s::TENTACLE_LENGTH, 0},
+                                                                {s::TENTACLE_SPEED, 0},
+                                                                {s::SPEED, 0}};
+
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TWITCHING_BACTERIA]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::SWARM_BACTERIA]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::NUTRIMENT_SOURCES]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::NUTRIMENT_QUANTITY]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::DISH_TEMPERATURE]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::BETTER]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::WORSE]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TENTACLE_LENGTH]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::TENTACLE_SPEEDt]=0;
+//std::unordered_map<std::string, double> Bacterium::Data4Graphs[s::SPEED]=0;
+
+
+
+
 
 // Destructeur virtuel
 Bacterium::~Bacterium() {}

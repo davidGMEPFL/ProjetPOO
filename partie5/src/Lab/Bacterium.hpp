@@ -22,7 +22,10 @@ protected:
     std::map<std::string, MutableNumber> Params;
     sf::Time TimeLastMeal;
 
+    static std::unordered_map<std::string, double> Data4Graphs;
+
 public:
+
     Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur);
 
     virtual j::Value& getConfig() const =0; //à adapter pour chaque type de bactérie par polymorphisme
@@ -55,11 +58,16 @@ public:
     double mealMax() const;        //quantité maximale qu'elle peut consommer
 
 // Methods for getting data for the graphs
-    virtual void addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp) = 0;
-    virtual void getDataTwitching(std::vector<double>&, std::vector<double>&); //collecte les tailles de tentacule + sa vitesse
-    virtual void getSpeed(std::vector<double>&) =0;                            //collecte les vitesses des bactéries qui en ont
-    virtual void getDataSimple(std::vector<double>&, std::vector<double>&); //collecte les basculements selon les tumble
+//    virtual void getDataTwitching(std::vector<double>&, std::vector<double>&); //collecte les tailles de tentacule + sa vitesse
+//    virtual void getSpeed(std::vector<double>&) =0;                            //collecte les vitesses des bactéries qui en ont
+//    virtual void getDataSimple(std::vector<double>&, std::vector<double>&); //collecte les basculements selon les tumble
+
+    static std::unordered_map<std::string, double>& accesMap(){
+        return Data4Graphs;
+    }
 
 // Destructeur
     virtual ~Bacterium();
 };
+
+

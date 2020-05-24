@@ -19,6 +19,10 @@ TwitchingBacterium::TwitchingBacterium(const Vec2d& position)
 {
     addProperty("tentacle length", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["length"]));
     addProperty("tentacle speed", MutableNumber::positive(getAppConfig()["twitching bacterium"]["tentacle"]["speed"]));
+    ++Data4Graphs[s::TWITCHING_BACTERIA];
+    Data4Graphs[s::TENTACLE_LENGTH]+=getProperty("tentacle length").get();
+    Data4Graphs[s::TENTACLE_SPEED]+=getProperty("tentacle speed").get();
+    Data4Graphs[s::SPEED] += getProperty("tentacle speed").get()*getConfig()["speed factor"].toDouble();
 }
 
 
@@ -46,6 +50,12 @@ Bacterium* TwitchingBacterium::clone() const
     ptr->grapin.setPosition(ptr->position); // tentacule rétracté
     ptr->moveGrip(Vec2d(1.0, -7.0));        // décalage orientation tentacule
     getAppEnv().addBacterium(ptr, true);    //ajout du clone dans le vecteur des newBorn
+
+    ++Data4Graphs[s::TWITCHING_BACTERIA];
+    Data4Graphs[s::TENTACLE_LENGTH]+= ptr->getProperty("tentacle length").get();
+    Data4Graphs[s::TENTACLE_SPEED] += ptr->getProperty("tentacle speed").get();
+    Data4Graphs[s::SPEED] += ptr->getProperty("tentacle speed").get()*ptr->getConfig()["speed factor"].toDouble();
+
     return ptr;
 }
 
@@ -177,19 +187,10 @@ Vec2d TwitchingBacterium::direction_tentacule() const
 }
 
 
-//POUR GRAPHE :
-void TwitchingBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp)
-{/* Si l'on est sur le graphe général, le courbe des Twitching s'ajoute */
-    if (s::GENERAL==titreGraph) ++GraphTemp[s::TWITCHING_BACTERIA];
-}
-void TwitchingBacterium::getDataTwitching(std::vector<double> & TLength, std::vector<double> &TSpeed)
-{/* Collecte les longueurs de tentacule + leur vitesse */
-    TLength.push_back(getProperty("tentacle length").get());
-    TSpeed.push_back(getProperty("tentacle speed").get());
-}
-void TwitchingBacterium::getSpeed(std::vector<double>& Speed)
-{/* Collecte les vitesses */
-    Speed.push_back(getProperty("tentacle speed").get()*
-                    getConfig()["speed factor"].toDouble());
+TwitchingBacterium::~TwitchingBacterium(){
+    --Data4Graphs[s::TWITCHING_BACTERIA];
+    Data4Graphs[s::TENTACLE_LENGTH]-= getProperty("tentacle length").get();
+    Data4Graphs[s::TENTACLE_SPEED] -= getProperty("tentacle speed").get();
+    Data4Graphs[s::SPEED] -= getProperty("tentacle speed").get()*getConfig()["speed factor"].toDouble();
 }
 

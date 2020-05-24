@@ -175,56 +175,66 @@ Nutriment* PetriDish::getNutrimentColliding(CircularBody const& body) const
 
 
 std::unordered_map<std::string, double> PetriDish::fetchData(const std::string & titreGraph)
-{
+{   /*Méthode pour mettre à jour les graphs dans Stats. Une map temporaire (GraphTemp)
+    est créée, remplie avec les valeurs nécessaires en fonction du titre en argument,
+    et retournée
+    Pour la plupart des Graphs, on utilise un attribut static de Bacterium pour ne pas recalculer
+    les valeurs à chaque itération*/
 
-    std::unordered_map<std::string, double> GraphTemp;
+    std::unordered_map<std::string, double> GraphTemp; // map temporaire contenant les données
 
-    // General graph update
+    // General graph update: les nombres en questions sont directement mis à jour
+    // dans les constructeurs, destructeurs, et méthodes de clonages de chaque sous-classe
     if(s::GENERAL == titreGraph){
-        GraphTemp[s::SIMPLE_BACTERIA] = 0;
-        GraphTemp[s::SWARM_BACTERIA] = 0;
-        GraphTemp[s::TWITCHING_BACTERIA] = 0;
-        GraphTemp[s::NUTRIMENT_SOURCES] = 0;
-        GraphTemp[s::DISH_TEMPERATURE]=Temp;
-
-        for(auto chaq : Bact) chaq->addToGraph(titreGraph, GraphTemp);
-        for(auto chaq : Nut)  chaq->addToGraph(titreGraph, GraphTemp);
-
+        GraphTemp[s::SIMPLE_BACTERIA] = Bacterium::accesMap()[s::SIMPLE_BACTERIA];
+        GraphTemp[s::SWARM_BACTERIA] = Bacterium::accesMap()[s::SWARM_BACTERIA];
+        GraphTemp[s::TWITCHING_BACTERIA] = Bacterium::accesMap()[s::TWITCHING_BACTERIA];
+        GraphTemp[s::NUTRIMENT_SOURCES] = Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
+        GraphTemp[s::DISH_TEMPERATURE]=Temp; // PetriDish y a directement accés
     }
 
+    // Nutriment Quantity Graph update: boucle sur tous les nutriments, sommant l'energie de chacun
     if(s::NUTRIMENT_QUANTITY == titreGraph){
         GraphTemp[s::NUTRIMENT_QUANTITY] = 0;
-        for(auto chaq : Nut)  chaq->addToGraph(titreGraph, GraphTemp);
+        for(auto chaq : Nut)  chaq->addToGraph(GraphTemp);
     }
 
+    // Simple Bacteria Graph update: pour les simpleBacterium, les valeurs des tumble (paramètres mutables) sont ajoutées
+    // dans le constructeur et la méthode clone, ou soustraites dans le destructeur
     if(s::SIMPLE_BACTERIA == titreGraph){
-        vector<double> Better;
-        vector<double> Worse;
-        for(auto chaq : Bact)  chaq->getDataSimple(Better, Worse);
-
-        GraphTemp[s::BETTER]=(float)std::accumulate(Better.begin(), Better.end(), 0.0)/Better.size();
-        GraphTemp[s::WORSE]=(float)std::accumulate(Worse.begin(), Worse.end(), 0.0)/Worse.size();
+        if(Bacterium::accesMap()[s::SIMPLE_BACTERIA]!=0){
+            GraphTemp[s::BETTER]=Bacterium::accesMap()[s::BETTER]/Bacterium::accesMap()[s::SIMPLE_BACTERIA]; // Moyenne sur les
+            GraphTemp[s::WORSE]=Bacterium::accesMap()[s::WORSE]/Bacterium::accesMap()[s::SIMPLE_BACTERIA];  // SimpleBacterium
+        }
+        else{
+            GraphTemp[s::BETTER]=0; // Pour éviter la division par 0
+            GraphTemp[s::WORSE]=0;
+        }
     }
 
-    // Twitching Bacterium graph update
+
+    // Twitching Bacteria Graph update: pour les twitchingBacterium, les longueurs et vitesse des tentacules (paramètres mutables)
+    // sont ajoutées dans le constructeur et la méthode clone, ou soustraites dans le destructeur
     if(s::TWITCHING_BACTERIA == titreGraph){
-        vector<double> TentaculeLongueur;
-        vector<double> TentaculeVitesse;
-
-        for(auto chaq : Bact)  chaq->getDataTwitching(TentaculeLongueur,TentaculeVitesse);
-        GraphTemp[s::TENTACLE_LENGTH]=std::accumulate(TentaculeLongueur.begin(),
-                                                      TentaculeLongueur.end(), 0.0)/TentaculeLongueur.size();
-        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(TentaculeVitesse.begin(),
-                                                     TentaculeVitesse.end(), 0.0)/TentaculeVitesse.size();
+        if(Bacterium::accesMap()[s::TWITCHING_BACTERIA]!=0){
+            GraphTemp[s::TENTACLE_LENGTH]=Bacterium::accesMap()[s::TENTACLE_LENGTH]/Bacterium::accesMap()[s::TWITCHING_BACTERIA]; // Moyenne sur les
+            GraphTemp[s::TENTACLE_SPEED]=Bacterium::accesMap()[s::TENTACLE_SPEED]/Bacterium::accesMap()[s::TWITCHING_BACTERIA]; // TwitchingBacterium
+        }
+        else{
+            GraphTemp[s::TENTACLE_LENGTH]=0; // Pour éviter la division par 0
+            GraphTemp[s::TENTACLE_SPEED]=0;
+        }
     }
 
 
+    // Bacteria Graph update: pour toutes les bactéries, les vitesses (paramètres mutables)
+    // sont ajoutées dans le constructeur et la méthode clone, ou soustraites dans le destructeur
+    // Pour les twitchingBacterium il s'agit de la vitesse du grapin multipliée par le speed factor.
     if(s::BACTERIA == titreGraph){
-        vector<double> Speed;
-        for(auto chaq : Bact) chaq->getSpeed(Speed);
-
-        GraphTemp[s::SPEED]=std::accumulate(Speed.begin(), Speed.end(), 0.0)/Speed.size();
-        GraphTemp[s::TENTACLE_SPEED]=std::accumulate(Speed.begin(), Speed.end(), 0.0)/Speed.size();
+        double nbBact(Bacterium::accesMap()[s::SIMPLE_BACTERIA] + Bacterium::accesMap()[s::SWARM_BACTERIA] + Bacterium::accesMap()[s::TWITCHING_BACTERIA]);
+        if(nbBact) // Pour éviter la division par 0
+            GraphTemp[s::SPEED] = Bacterium::accesMap()[s::SPEED]/nbBact; // Moyenne sur toutes les bactéries
+        else GraphTemp[s::SPEED] = 0;
     }
 
     return GraphTemp;

@@ -7,7 +7,9 @@
 
 Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
     CircularBody(position,nbNutriments), nbNutriments(nbNutriments)
-{}
+{
+    ++Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
+}
 
 // NOMBRE NUTRIMENTS
 Quantity Nutriment::takeQuantity(Quantity qtTaken)
@@ -75,12 +77,12 @@ double Nutriment::getScoreNutriment(const Vec2d& pos) const
     return nbNutriments/pow(distance(position, pos), puissance);
 }
 
-void Nutriment::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
-    if (s::GENERAL==titreGraph){
-        ++GraphTemp[s::NUTRIMENT_SOURCES];
-    }
-    else if (s::NUTRIMENT_QUANTITY==titreGraph){
+void Nutriment::addToGraph(std::unordered_map<std::string, double>& GraphTemp){
         GraphTemp[s::NUTRIMENT_QUANTITY] += nbNutriments;
-    }
 
 }
+
+Nutriment::~Nutriment(){
+    --Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
+}
+

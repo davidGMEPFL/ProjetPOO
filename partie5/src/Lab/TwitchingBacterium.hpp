@@ -36,11 +36,7 @@ public:
     double EnergieTentac() const;   //énargie dépensée pour déploiment du tentacule
     Vec2d direction_tentacule() const; //retourne la direction du tentacule
 
-// Ajout des données pour le graphe
-    void addToGraph(const std::string & , std::unordered_map<std::string, double> &) override;
-    void getDataTwitching(std::vector<double>&, std::vector<double>&) override;
-    void getSpeed(std::vector<double>&) override;
-
+    ~TwitchingBacterium();
 };
 
 

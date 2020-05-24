@@ -12,6 +12,8 @@ SwarmBacterium::SwarmBacterium(const Vec2d& position, Swarm* saTroupe):
                     saTroupe->getColor()), SonSwarm(saTroupe)
 {
     addSwarmBacterium(this, saTroupe);
+    ++Data4Graphs[s::SWARM_BACTERIA];
+    Data4Graphs[s::SPEED] += getConfig()["speed"]["initial"].toDouble();
 }
 
 
@@ -51,6 +53,11 @@ Bacterium* SwarmBacterium::clone() const
     ptr->mutate();
     addSwarmBacterium(ptr, SonSwarm);
     getAppEnv().addBacterium(ptr, true);
+
+    ++Data4Graphs[s::SWARM_BACTERIA];
+    Data4Graphs[s::SPEED] += ptr->getConfig()["speed"]["initial"].toDouble();
+
+
     return ptr;
 }
 
@@ -79,21 +86,8 @@ Quantity SwarmBacterium::eatableQuantity(NutrimentB& nutriment) {
 }
 
 
-void SwarmBacterium::addToGraph(const std::string & titreGraph , std::unordered_map<std::string, double>& GraphTemp){
-    if (s::GENERAL==titreGraph){
-        ++GraphTemp[s::SWARM_BACTERIA];
-    }
-    if (s::SWARM_BACTERIA==titreGraph){
-        ++GraphTemp[s::SWARM_BACTERIA];
-    }
-}
-
-
-void SwarmBacterium::getSpeed(std::vector<double>& Speed){
-    Speed.push_back(getConfig()["speed"]["initial"].toDouble());
-}
-
-
 SwarmBacterium::~SwarmBacterium(){
     SonSwarm->popBact(this);
+    --Data4Graphs[s::SWARM_BACTERIA];
+    Data4Graphs[s::SPEED] -= getConfig()["speed"]["initial"].toDouble();
 }

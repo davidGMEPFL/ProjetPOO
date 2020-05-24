@@ -40,5 +40,7 @@ public:
     double getScoreNutriment(const Vec2d&) const;
 
 
-    void addToGraph(const std::string & ,std::unordered_map<std::string, double>&);
+    void addToGraph(std::unordered_map<std::string, double>&);
+
+    ~Nutriment();
 };

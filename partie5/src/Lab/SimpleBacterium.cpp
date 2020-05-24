@@ -18,6 +18,10 @@ SimpleBacterium::SimpleBacterium(const Vec2d & position)
     addProperty("speed",MutableNumber::positive(getAppConfig()["simple bacterium"]["speed"]));
     addProperty("tumble better",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["better"]));
     addProperty("tumble worse",MutableNumber::positive(getAppConfig()["simple bacterium"]["tumble"]["worse"]));
+    ++Data4Graphs[s::SIMPLE_BACTERIA];
+    Data4Graphs[s::BETTER]+=getProperty("tumble better").get();
+    Data4Graphs[s::WORSE]+=getProperty("tumble worse").get();
+    Data4Graphs[s::SPEED]+=getProperty("speed").get();
 }
 
 j::Value& SimpleBacterium::getConfig() const
@@ -69,6 +73,11 @@ Bacterium* SimpleBacterium::clone() const
     Bacterium* ptr=new SimpleBacterium( *this);
     ptr->mutate();
     getAppEnv().addBacterium(ptr, true); // ajoute le ptr vers le vecteur temporaire de nouvelles bact
+
+    ++Data4Graphs[s::SIMPLE_BACTERIA];
+    Data4Graphs[s::BETTER]+=ptr->getProperty("tumble better").get();
+    Data4Graphs[s::WORSE]+= ptr->getProperty("tumble worse").get();
+    Data4Graphs[s::SPEED]+= ptr->getProperty("speed").get();
     return ptr;
 }
 
@@ -120,22 +129,9 @@ Quantity SimpleBacterium::eatableQuantity(NutrimentB& nutriment) {
 }
 
 
-void SimpleBacterium::addToGraph(const std::string & titreGraph ,std::unordered_map<std::string, double>& GraphTemp){
-    if (s::GENERAL==titreGraph){
-        ++GraphTemp[s::SIMPLE_BACTERIA];
-    }
-    if (s::SIMPLE_BACTERIA==titreGraph){
-        ++GraphTemp[s::SIMPLE_BACTERIA];
-    }
+SimpleBacterium::~SimpleBacterium(){
+    --Data4Graphs[s::SIMPLE_BACTERIA];
+    Data4Graphs[s::BETTER]-=getProperty("tumble better").get();
+    Data4Graphs[s::WORSE]-=getProperty("tumble worse").get();
+    Data4Graphs[s::SPEED]-=getProperty("speed").get();
 }
-
-
-void SimpleBacterium::getSpeed(std::vector<double>& Speed){
-    Speed.push_back(getProperty("speed").get());
-}
-
-void SimpleBacterium::getDataSimple(std::vector<double>& Better, std::vector<double>& Worse){
-    Better.push_back(getProperty("tumble better").get());
-    Worse.push_back(getProperty("tumble worse").get());
-}
-
