@@ -18,13 +18,14 @@ void PetriDish::update(sf::Time dt)
     //fait évoluer toutes les bactéries de l'assiette à chaque pas de temps
     for (auto& objet : Nut) {
         objet->update(dt);
-        if(objet->testEpuise()){
+        if(objet->testEpuise()) {
             delete objet;
-            objet=nullptr;}
+            objet=nullptr;
+        }
     }
     Nut.erase(std::remove(Nut.begin(), Nut.end(), nullptr), Nut.end());
 
-    for(auto& troupe : mesTroupes){
+    for(auto& troupe : mesTroupes) {
         troupe->update(dt);
     }
 
@@ -32,7 +33,8 @@ void PetriDish::update(sf::Time dt)
         objet->update(dt);
         if(objet->testMort()) {
             delete objet;
-            objet=nullptr;}
+            objet=nullptr;
+        }
     }
     if(!vecteur_clones.empty()) {
         append(vecteur_clones,Bact);
@@ -73,12 +75,14 @@ bool PetriDish::addBacterium(Bacterium* bact,bool const& newBorn)
     return contains(*bact);
 }
 
-void PetriDish::addSwarm(Swarm* LeSwamp){
+void PetriDish::addSwarm(Swarm* LeSwamp)
+{
     mesTroupes.push_back(LeSwamp);
 }
 
-Swarm* PetriDish::getSwarmWithId(std::string id) const {
-    for(auto troupe : mesTroupes){
+Swarm* PetriDish::getSwarmWithId(std::string id) const
+{
+    for(auto troupe : mesTroupes) {
         if(troupe->getId()==id) return troupe;
     }
     return nullptr;

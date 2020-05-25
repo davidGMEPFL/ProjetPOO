@@ -48,17 +48,18 @@ sf::Text buildText(std::string const& msg, Vec2d const& position, sf::Font const
     txt.setPosition(position);
     txt.setFillColor(color);
     txt.setCharacterSize(size);
-	/*
+    /*
     auto const bounds = txt.getLocalBounds();
     txt.setOrigin(bounds.width / 2, bounds.height / 2);
-	*/
-	if (rotation != 0.f) {
-		txt.setRotation(rotation);
-	}
+    */
+    if (rotation != 0.f) {
+        txt.setRotation(rotation);
+    }
     return txt;
 }
 
-sf::RectangleShape getTextBox(sf::Text& text) {
+sf::RectangleShape getTextBox(sf::Text& text)
+{
     sf::FloatRect fRect(text.getGlobalBounds());
     sf::Vector2f size(fRect.width,fRect.height);
     sf::RectangleShape rect;

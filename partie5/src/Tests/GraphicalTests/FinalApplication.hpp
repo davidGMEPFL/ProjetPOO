@@ -13,7 +13,7 @@ class FinalApplication : public Application
 {
 public:
     FinalApplication(int argc, char const** argv)
-    : Application(argc, argv)
+        : Application(argc, argv)
     {
     }
 

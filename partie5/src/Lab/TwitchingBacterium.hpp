@@ -15,10 +15,11 @@ private:
     double longueur_tentacule;
     Etats etat{};
 
+    j::Value& getConfig() const override;
 public:
     TwitchingBacterium(const Vec2d&); //constructeur
 
-    j::Value& getConfig() const override;
+
     void drawOn(sf::RenderTarget&) const override;
     Bacterium* clone() const override;
 

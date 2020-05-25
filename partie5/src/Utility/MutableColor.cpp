@@ -7,7 +7,8 @@ MutableColor::MutableColor(j::Value const& config)
 {}
 
 void MutableColor::mutate()
-{   // Itère sur chaque valeur RGBA et peut changer leur valeur
+{
+    // Itère sur chaque valeur RGBA et peut changer leur valeur
     for(auto& elem : RGBA) elem.mutate();
 }
 

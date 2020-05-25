@@ -19,7 +19,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <Stats/Stats.hpp> 
+#include <Stats/Stats.hpp>
 /*!
  * @class Application
  *
@@ -69,7 +69,7 @@ public:
      */
     Lab& getEnv();
     Lab const& getEnv() const;
-	
+
     /*!
      * @brief Get access to the application's configuration
      *
@@ -132,21 +132,21 @@ public:
      * @return The cursor position converted in the view coordinates
      */
     Vec2d getCursorPositionInView() const;
-	
-	enum Control { STATS, TEMPERATURE, GRADIENT, NB_CONTROLS=3	};
+
+    enum Control { STATS, TEMPERATURE, GRADIENT, NB_CONTROLS=3	};
 protected:
-	/**
+    /**
      *  @brief controls the display of statitics
      */
-	void setStats(bool);
+    void setStats(bool);
     /**
      *  @brief initialize the text to be displayed in help
-	 *  menu
+     *  menu
      */
-	void initHelpBox();
-	virtual std::string getHelpTextFile() const;
-	
-	/**
+    void initHelpBox();
+    virtual std::string getHelpTextFile() const;
+
+    /**
      *  @brief Add a graph to the stats manager and update GUI
      *
      *  @param title  graph's title
@@ -196,11 +196,11 @@ protected:
      * @param target a render target
      */
     virtual void onDraw(sf::RenderTarget& target);
-/*!
-     * @brief Subclass can override this method to change the policy for
-	 * background handling
-	 */
-	void chooseBackground();
+    /*!
+         * @brief Subclass can override this method to change the policy for
+    	 * background handling
+    	 */
+    void chooseBackground();
 
 
 protected:
@@ -229,19 +229,19 @@ protected:
      *  @param statsBackground      Background of the stats frame
      */
     void render(sf::Drawable const& simulationBackground,
-				sf::Drawable const& statsBackground,
-				sf::Drawable const& controlBackground,
-				sf::Drawable const& helpBackground
-				);
+                sf::Drawable const& statsBackground,
+                sf::Drawable const& controlBackground,
+                sf::Drawable const& helpBackground
+               );
 
-	/**
+    /**
      *  @brief Get access to the stats manager
      *
      *  @return the application statistic manager
      */
-    Stats& getStats(); 
+    Stats& getStats();
 
-	void setActiveGraph(int id);
+    void setActiveGraph(int id);
 
     /*!
      * @brief Toggle pause
@@ -272,28 +272,28 @@ protected:
      */
     void updateSimulationView();
 
-   /*!
-     * @brief toggle debug mode
-     */
-	void switchDebug();
+    /*!
+      * @brief toggle debug mode
+      */
+    void switchDebug();
 
     void drawOnHelp(sf::RenderWindow& window) const;
 
     void drawControls(sf::RenderWindow& target);
-	
-	void drawOneControl(sf::RenderWindow& target
-						, Control control
-						, size_t xcoord
-						, size_t ycoord
-						, size_t font_size
-						);
-	
-	void drawTitle(sf::RenderWindow& target, sf::Color color
-				  	, size_t xcoord
-				  , size_t ycoord
-				  , size_t font_size
-				  );
-	
+
+    void drawOneControl(sf::RenderWindow& target
+                        , Control control
+                        , size_t xcoord
+                        , size_t ycoord
+                        , size_t font_size
+                       );
+
+    void drawTitle(sf::RenderWindow& target, sf::Color color
+                   , size_t xcoord
+                   , size_t ycoord
+                   , size_t font_size
+                  );
+
 private:
 
     // The order is important since some fields need other to be initialised
@@ -301,9 +301,9 @@ private:
     std::string const mCfgFile;      ///< Relative path to the CFG
 //    j::Value          mJSONRead;       ///< Application configuration
     Config*          mConfig;       ///< Application configuration
-	Stats*   mStats;                 ///< Statistic manager
+    Stats*   mStats;                 ///< Statistic manager
     sf::View mStatsView;             ///< View for the stats area
-	sf::View mControlView;             ///< View for the control area
+    sf::View mControlView;             ///< View for the control area
     int      mCurrentGraphId;        ///< Current graph ID
 
 
@@ -315,7 +315,7 @@ private:
 
     sf::RenderWindow mRenderWindow;  ///< SFML window / render target
     sf::View mSimulationView;        ///< View for simulation area
-	sf::View mLabView;        ///< View for simulation area
+    sf::View mLabView;        ///< View for simulation area
 
     using TexturePool = std::map<std::string, sf::Texture*>;
     TexturePool mTextures;           ///< Pool of textures
@@ -324,24 +324,24 @@ private:
 
     bool         mPaused;            ///< Tells if the application is in pause or not
     bool         mIsResetting;       ///< Is true for one main loop iteration when resetting.
-                                     ///  This is useful to pause the clock while generating
-                                     ///  a new world. Without this, a huge dt would result from
-                                     ///  rebuilding the world.
+    ///  This is useful to pause the clock while generating
+    ///  a new world. Without this, a huge dt would result from
+    ///  rebuilding the world.
     bool         mIsDragging;        ///< Tells whether or not the user is dragging the view
     sf::Vector2i mLastCursorPosition;///< For handling dragging logic
 
-	sf::RectangleShape mSimulationBackground;
-	sf::RectangleShape mLabBackground;
+    sf::RectangleShape mSimulationBackground;
+    sf::RectangleShape mLabBackground;
 
-	Control mCurrentControl;
+    Control mCurrentControl;
 
-	// Views
-	sf::View mCurrentView;
-	sf::Text helpText;
+    // Views
+    sf::View mCurrentView;
+    sf::Text helpText;
     sf::RectangleShape helpBox;
 
-	// display of stats
-	bool isStatsOn;
+    // display of stats
+    bool isStatsOn;
 };
 
 /*!

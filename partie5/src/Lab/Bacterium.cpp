@@ -8,26 +8,42 @@ Bacterium::Bacterium(Quantity energie, Vec2d position, Vec2d direction, double r
       energie(energie), TimeLastMeal(sf::Time::Zero)
 {}
 
-// Paramètres mutables
-void Bacterium::addProperty(const string& key, MutableNumber valeur)
-{   /*Dans la map Params, initialise la valeur Mutable Number à sa clé correspondante */
-
-    Params[key]=valeur;
+// PROTECTED: Consommation nutriments
+void Bacterium::eat(Nutriment& nutriment)     //on ne peut pas être polymorphique directement sur le paramètre
+{
+    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
+    energie+=eaten;
 }
-MutableNumber& Bacterium::getProperty(const string& key)
-{ /* Associe la valeur liée à la clé */
+void Bacterium::consumeEnergy(Quantity qt)
+{
+    energie-=qt; //soustrait la quantité souhaitée
+}
+void Bacterium::division()
+{
+    /* Si l'énergie de la bactérie dépasse un seuil, celle-ci se réduit de moitié,
+       et la bactérie engendre un clône de même énérgie mais de direction opposée */
 
-    auto it = Params.find(key); //initialise l'itérateur à l'étiquette recherchée
-    if (it != Params.end()) {
-        return it->second; //retourne la valeur pointée
-    } else {
-        throw std::out_of_range("unknown mutable property :" + key);
-        //programme s'arrête si ne trouve aucune propriété correspondant à la clé
-        //aucun catch ne sera utilisé, car on ne souhaite pas donner de valeur de substitution
+    if(energie>getMinEnDiv()) {
+        energie/=2;
+        clone();
+        direction*=(-1); //sens opposé
     }
 }
 
+
+
+
 // Méthodes utilitaires
+void Bacterium::mutate()
+{
+    /* Permet de faire muter la couleur et les paramètres mutables de la bactérie */
+    couleur.mutate();
+    std::map<std::string, MutableNumber>::iterator it = Params.begin(); //itérateur sur premier paramètre mutable
+    while (it != Params.end()) {  //tant que dépasse pas le dernier élément
+        it->second.mutate();     //contenu mutable pointé mute
+        it++;
+    }
+}
 void Bacterium::drawOn(sf::RenderTarget& target) const
 {
     auto const circle = buildCircle(position, rayon, couleur.get());
@@ -39,10 +55,10 @@ void Bacterium::drawOn(sf::RenderTarget& target) const
         target.draw(text);
     } //affichage de la quantité d'énergie
 }
-
 void Bacterium::update(sf::Time dt)
-{/* Fait évoluer la vie d'une bactérie à chaque pas de temps.
-    Elle lui permet de se mouvoir, de manger si possible, et de se diviser */
+{
+    /* Fait évoluer la vie d'une bactérie à chaque pas de temps.
+       Elle lui permet de se mouvoir, de manger si possible, et de se diviser */
 
     //Déplacement spécifique à chaque type de bactérie
     move(dt);
@@ -52,7 +68,7 @@ void Bacterium::update(sf::Time dt)
     Nutriment* NutrProxi(nullptr); //nécessaire pour eat()
 
     if ((NutrProxi=getAppEnv().getNutrimentColliding(*this)) != nullptr &&
-            TimeLastMeal > getTempsDelay() && !abstinence) { //si y a bien un nutriment en contact + pas en abstinence + délai de temps passé
+        TimeLastMeal > getTempsDelay() && !abstinence) { //si y a bien un nutriment en contact + pas en abstinence + délai de temps passé
         TimeLastMeal=sf::Time::Zero;
         eat(*NutrProxi);
 
@@ -61,41 +77,35 @@ void Bacterium::update(sf::Time dt)
     }
 }
 
-void Bacterium::mutate()
-{ /* Permet de faire muter la couleur et les paramètres mutables de la bactérie */
-    couleur.mutate();
-    std::map<std::string, MutableNumber>::iterator it = Params.begin(); //itérateur sur premier paramètre mutable
-    while (it != Params.end()) {  //tant que dépasse pas le dernier élément
-        it->second.mutate();     //contenu mutable pointé mute
-        it++;
+
+// Paramètres mutables
+void Bacterium::addProperty(const string& key, MutableNumber valeur)
+{
+    /*Dans la map Params, initialise la valeur Mutable Number à sa clé correspondante */
+
+    Params[key]=valeur;
+}
+MutableNumber& Bacterium::getProperty(const string& key)
+{
+    /* Associe la valeur liée à la clé */
+
+    auto it = Params.find(key); //initialise l'itérateur à l'étiquette recherchée
+    if (it != Params.end()) {
+        return it->second; //retourne la valeur pointée
+    } else {
+        throw std::out_of_range("unknown mutable property :" + key);
+        //programme s'arrête si ne trouve aucune propriété correspondant à la clé
+        //aucun catch ne sera utilisé, car on ne souhaite pas donner de valeur de substitution
     }
 }
 
-// Consommation nutriments
-void Bacterium::eat(Nutriment& nutriment) {   //on ne peut pas être polymorphique directement sur le paramètre
-    Quantity eaten(nutriment.eatenBy(*this)); //on s'arrange pour l'être en invoquant une méthode  polymorphique dessus
-    energie+=eaten;
-}
 
-// Actions en fonction énergie
-void Bacterium::consumeEnergy(Quantity qt)
-{
-    energie-=qt; //soustrait la quantité souhaitée
-}
 bool Bacterium::testMort() const
-{ /* Test si énergie suffisante pour survie de la bactérie */
+{
+    /* Test si énergie suffisante pour survie de la bactérie */
     return energie<=0;
 }
-void Bacterium::division()
-{/* Si l'énergie de la bactérie dépasse un seuil, celle-ci se réduit de moitié,
-    et la bactérie engendre un clône de même énérgie mais de direction opposée */
 
-    if(energie>getMinEnDiv()) {
-        energie/=2;
-        clone();
-        direction*=(-1); //sens opposé
-    }
-}
 
 
 // GETTERS utilitaires
@@ -119,11 +129,13 @@ double Bacterium::mealMax() const
 
 
 // GRAPHS
-std::unordered_map<std::string, double> Bacterium::Data4Graphs={ {s::SIMPLE_BACTERIA , 0}, {s::TWITCHING_BACTERIA , 0},
-                        {s::SWARM_BACTERIA , 0}, {s::NUTRIMENT_SOURCES , 0}, {s::BETTER, 0}, {s::TENTACLE_LENGTH, 0},
-                        {s::TENTACLE_SPEED, 0}, {s::SPEED, 0}}; //initialisation de la map 'Data4Graphs'
+std::unordered_map<std::string, double> Bacterium::Data4Graphs= { {s::SIMPLE_BACTERIA, 0}, {s::TWITCHING_BACTERIA, 0},
+    {s::SWARM_BACTERIA, 0}, {s::NUTRIMENT_SOURCES, 0}, {s::BETTER, 0}, {s::TENTACLE_LENGTH, 0},
+    {s::TENTACLE_SPEED, 0}, {s::SPEED, 0}
+}; //initialisation de la map 'Data4Graphs'
 
-std::unordered_map<std::string, double>& Bacterium::accesMap(){
+std::unordered_map<std::string, double>& Bacterium::accesMap()
+{
     return Data4Graphs;
 }
 

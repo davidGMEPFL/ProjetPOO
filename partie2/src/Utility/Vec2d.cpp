@@ -27,26 +27,26 @@ Vec2d Vec2d::fromJSON(j::Value json)
 }
 
 Vec2d::Vec2d()
-: Vec2d(0.0, 0.0)
+    : Vec2d(0.0, 0.0)
 {
     // Done.
 }
 
 Vec2d::Vec2d(double x_, double y_)
-: x(x_)
-, y(y_)
+    : x(x_)
+    , y(y_)
 {
     // Done.
 }
 
 Vec2d::Vec2d(sf::Vector2f const& sfvect)
-: Vec2d(sfvect.x, sfvect.y)
+    : Vec2d(sfvect.x, sfvect.y)
 {
     // Done.
 }
 
 Vec2d::Vec2d(sf::Vector2i const& sfvect)
-: Vec2d(sfvect.x, sfvect.y)
+    : Vec2d(sfvect.x, sfvect.y)
 {
     // Done.
 }

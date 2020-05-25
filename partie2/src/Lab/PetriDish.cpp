@@ -8,36 +8,44 @@ PetriDish::PetriDish(Vec2d position,double rayon):
 {}
 
 //Methodes
-bool PetriDish::addBacterium(Bacterium*){
+bool PetriDish::addBacterium(Bacterium*)
+{
     //permettra de peupler l'assiette
     //bool sert à savoir si l'on a réussit à placer la bactérie
 }
-bool PetriDish::addNutriment(Nutriment* nut){
+bool PetriDish::addNutriment(Nutriment* nut)
+{
     //place des nutriments dans l'assiette
     //bool sert à savoir si l'on a réussit à placer le nutriment
     if(contains(*nut)) Nut.push_back(nut);
     return contains(*nut);
 }
 
-double PetriDish::getTemperature(){
+double PetriDish::getTemperature()
+{
     return Temp;
 }
-void PetriDish::increaseTemperature(){
+void PetriDish::increaseTemperature()
+{
     Temp+=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
 }
-void PetriDish::decreaseTemperature(){
+void PetriDish::decreaseTemperature()
+{
     Temp-=getAppConfig()["petri dish"]["temperature"]["delta"].toDouble();
 }
-void PetriDish::resetTemp(){
+void PetriDish::resetTemp()
+{
     Temp=getAppConfig()["petri dish"]["temperature"]["default"].toDouble();
 }
 
 
-void PetriDish::update(sf::Time dt){
+void PetriDish::update(sf::Time dt)
+{
     //fait évoluer toutes les bactéries de l'assiette à chaque pas de temps
     for (auto& objet : Nut) objet->update(dt);
 }
-void PetriDish::drawOn(sf::RenderTarget& targetWindow)const {
+void PetriDish::drawOn(sf::RenderTarget& targetWindow)const
+{
     //dessine sur une fenêtre graphique le contour de l'assiette
     sf::Color couleur(sf::Color::Black);
     double epaisseur(5);
@@ -45,7 +53,8 @@ void PetriDish::drawOn(sf::RenderTarget& targetWindow)const {
     targetWindow.draw(border);
     for (auto& nutr : Nut) nutr->drawOn(targetWindow);
 }
-void PetriDish::reset(){
+void PetriDish::reset()
+{
     //supprime toutes les nutriments et toutes les bactéries de l'assiette
     for (auto& objet : Nut)
         delete objet;
@@ -55,6 +64,7 @@ void PetriDish::reset(){
 
 
 //Destructeur
-PetriDish::~PetriDish(){
+PetriDish::~PetriDish()
+{
     reset();
 }

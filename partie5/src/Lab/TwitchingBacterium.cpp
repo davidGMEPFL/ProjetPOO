@@ -64,19 +64,20 @@ Bacterium* TwitchingBacterium::clone() const
 //DEPLACEMENT :
 void TwitchingBacterium::moveGrip(const Vec2d& delta)
 {
-        grapin.move(delta);
+    grapin.move(delta);
 }
 
 
 void TwitchingBacterium::move(sf::Time dt)
-{ /* Permet de mouvoir la bactérie en la faisant passer d'un état à l'autre */
+{
+    /* Permet de mouvoir la bactérie en la faisant passer d'un état à l'autre */
 
     longueur_tentacule  = distance(grapin.getPosition(),position);
     double longueur_max = getProperty("tentacle length").get();
     double vitesse_tentacule = getProperty("tentacle speed").get();
     Quantity Qt_deploi (EnergieTentac()*vitesse_tentacule*dt.asSeconds());
     Quantity Qt_depla  (EnergieDepl()*vitesse_tentacule*dt.asSeconds()*
-                         getConfig()["speed factor"].toDouble());
+                        getConfig()["speed factor"].toDouble());
 
     switch(etat) {
     case IDLE : {
@@ -92,7 +93,7 @@ void TwitchingBacterium::move(sf::Time dt)
         for (int i(0); i<20; ++i) {
             tempRand=Vec2d::fromRandomAngle();  //choix aléatoire de direction
             if(getAppEnv().getPositionScore(position+tempRand)>
-                    getAppEnv().getPositionScore(position+direction))
+               getAppEnv().getPositionScore(position+direction))
                 direction=tempRand;
         }
         etat=DEPLOY;
@@ -162,10 +163,12 @@ void TwitchingBacterium::move(sf::Time dt)
 
 
 //EAT spécifique :
-Quantity TwitchingBacterium::eatableQuantity(NutrimentA& nutriment){
+Quantity TwitchingBacterium::eatableQuantity(NutrimentA& nutriment)
+{
     return nutriment.eatenBy(*this); //retourne quantité nutA mangeable
 }
-Quantity TwitchingBacterium::eatableQuantity(NutrimentB& nutriment) {
+Quantity TwitchingBacterium::eatableQuantity(NutrimentB& nutriment)
+{
     return nutriment.eatenBy(*this); //retourne quantité nutB mangeable
 }
 
@@ -180,12 +183,14 @@ double TwitchingBacterium::EnergieTentac() const
     return getConfig()["energy"]["consumption factor"]["tentacle"].toDouble();
 }
 Vec2d TwitchingBacterium::direction_tentacule() const
-{/* Retourne la différence normalisée entre la position du grapin et celle de la bactérie */
+{
+    /* Retourne la différence normalisée entre la position du grapin et celle de la bactérie */
     return (grapin.getPosition()-position).normalised();
 }
 
 //Destructeur : prise en compte de la destruction de la bactérie dans les statistiques
-TwitchingBacterium::~TwitchingBacterium(){
+TwitchingBacterium::~TwitchingBacterium()
+{
     --Data4Graphs[s::TWITCHING_BACTERIA];
     Data4Graphs[s::TENTACLE_LENGTH]-= getProperty("tentacle length").get();
     Data4Graphs[s::TENTACLE_SPEED] -= getProperty("tentacle speed").get();

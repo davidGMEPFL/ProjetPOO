@@ -5,15 +5,16 @@
 
 SwarmBacterium::SwarmBacterium(const Vec2d& position, Swarm* saTroupe):
     Bacterium(uniform(getConfig()["energy"]["min"].toDouble(),getConfig()["energy"]["max"].toDouble()),
-                    position,  Vec2d::fromRandomAngle(),
-                    uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
-                    saTroupe->getColor()), SonSwarm(saTroupe)
+              position,  Vec2d::fromRandomAngle(),
+              uniform(getConfig()["radius"]["min"].toDouble(),getConfig()["radius"]["max"].toDouble()),
+              saTroupe->getColor()), SonSwarm(saTroupe)
 {
     addSwarmBacterium(this, saTroupe);
 }
 
 
-void SwarmBacterium::addSwarmBacterium(SwarmBacterium *laBact, Swarm* saTroupe)const{
+void SwarmBacterium::addSwarmBacterium(SwarmBacterium *laBact, Swarm* saTroupe)const
+{
     saTroupe->addSwarmBacterium(laBact);
 }
 
@@ -23,19 +24,19 @@ Vec2d SwarmBacterium::f(Vec2d position, Vec2d speed) const
     return SonSwarm->getConfig()["force factor"].toDouble()*(SonSwarm->getPosLeader() - position);
 }
 
-void SwarmBacterium::move(sf::Time dt){
-    if(this==SonSwarm->getLeader()){
+void SwarmBacterium::move(sf::Time dt)
+{
+    if(this==SonSwarm->getLeader()) {
         Vec2d tempRand;
         for (int i(0); i<20; ++i) {
             tempRand=Vec2d::fromRandomAngle();
             if(getAppEnv().getPositionScore(position+tempRand)>
-                    getAppEnv().getPositionScore(position+direction))
+               getAppEnv().getPositionScore(position+direction))
                 direction=tempRand;
         }
         position+=direction*getConfig()["speed"]["initial"].toDouble()*dt.asSeconds();
         consumeEnergy(EnergieDepl()*getConfig()["speed"]["initial"].toDouble()*dt.asSeconds());
-    }
-    else{
+    } else {
         DiffEqResult Result(stepDiffEq(position, direction*getConfig()["speed"]["initial"].toDouble(), dt, *this));
         consumeEnergy((position-Result.position).length()*EnergieDepl());
         position=Result.position;
@@ -57,9 +58,10 @@ j::Value& SwarmBacterium::getConfig() const
     return getAppConfig()["swarm bacterium"];
 }
 
-void SwarmBacterium::drawOn(sf::RenderTarget& target) const{
+void SwarmBacterium::drawOn(sf::RenderTarget& target) const
+{
     Bacterium::drawOn(target);
-    if(isDebugOn() && this==SonSwarm->getLeader()){
+    if(isDebugOn() && this==SonSwarm->getLeader()) {
         sf::Color couleur(sf::Color::Red);
         double epaisseur(5);
         auto border = buildAnnulus(position, rayon, couleur, epaisseur);
@@ -70,6 +72,7 @@ void SwarmBacterium::drawOn(sf::RenderTarget& target) const{
 
 
 
-SwarmBacterium::~SwarmBacterium(){
+SwarmBacterium::~SwarmBacterium()
+{
     SonSwarm->popBact(this);
 }

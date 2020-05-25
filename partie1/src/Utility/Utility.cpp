@@ -51,7 +51,7 @@ sf::Text buildText(std::string const& msg, Vec2d const& position, sf::Font const
 //	txt.setColor(color);
 #else
     txt.setColor(color);
-#endif    
+#endif
     txt.setCharacterSize(size);
     auto const bounds = txt.getLocalBounds();
     txt.setOrigin(bounds.width / 2, bounds.height / 2);

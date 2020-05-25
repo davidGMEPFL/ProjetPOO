@@ -41,7 +41,7 @@ bool CircularBody::contains(const Vec2d& point)const
 bool CircularBody::isColliding(const CircularBody& other)const
 {
     // Test si l'objet en argument est en contact avec l'instance courante
-   return (distance(position,other.position)<=(rayon+other.rayon));
+    return (distance(position,other.position)<=(rayon+other.rayon));
 }
 
 

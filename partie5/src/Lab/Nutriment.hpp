@@ -1,8 +1,5 @@
 #pragma once
 #include "CircularBody.hpp"
-//#include "Utility/Vec2d.hpp"
-//#include "Utility/Types.hpp"
-//#include "SFML/Graphics.hpp"
 #include "Interface/Updatable.hpp"
 #include "Interface/Drawable.hpp"
 #include "Bacterium.hpp"
@@ -20,7 +17,7 @@ public:
     Nutriment(const Quantity&,const Vec2d&); // constructeur
 
     virtual j::Value getConfig() const =0; // permet d'atteindre les paramètres du fichier
-                                           // app.json de façon polymorphique
+    // app.json de façon polymorphique
 
 // Actions liées à quantité nutriments
     Quantity takeQuantity(Quantity); //prend la qtité de nutriment, si disponible
@@ -28,8 +25,8 @@ public:
     bool testEpuise() const; //test si aucun nutriment présent
 
 // Méthodes utilitaires
-    void drawOn(sf::RenderTarget& target) const;
-    void update(sf::Time dt);
+    void drawOn(sf::RenderTarget& target) const override;
+    void update(sf::Time dt) override;
 
 // Méthodes polymorphiques renvoyant qtité nut consommée selon type bactérie
     virtual Quantity eatenBy(Bacterium& bact) = 0;

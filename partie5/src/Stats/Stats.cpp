@@ -20,27 +20,32 @@ void Stats::update(sf::Time dt)
         TimeLastUpdate=sf::Time::Zero; // reset timer
     }
 }
-void Stats::drawOn(sf::RenderTarget& TargetWindow) const{
+void Stats::drawOn(sf::RenderTarget& TargetWindow) const
+{
     activeID->second.second->drawOn(TargetWindow);
 }
 
 
 // ACCES ET INDEXATION :
 void Stats::setActiveId(const int& id)
-{/* Met à jour l'identificateur actif */
+{
+    /* Met à jour l'identificateur actif */
     activeID= Graphs.find(id);
 }
 std::string Stats::getCurrentTitle() const
-{/* Retourne le titre associé à l'id actif */
+{
+    /* Retourne le titre associé à l'id actif */
     return activeID->second.first; //return activeID.second;
 }
 void Stats::next()
-{/* Prochain graph */
+{
+    /* Prochain graph */
     ++activeID;
     if (Graphs.end() == activeID) activeID=Graphs.begin();
 }
 void Stats::previous()
-{/* Graph précédent */
+{
+    /* Graph précédent */
     if (Graphs.begin() == activeID)  activeID = Graphs.end();
     --activeID;
 }
@@ -48,7 +53,8 @@ void Stats::previous()
 
 // AJOUT des séries :
 void Stats::addGraph(int idGraph, std::string const& titreGraph,
-                     std::vector<std::string> sesLibelles, double min, double max, Vec2d const& size){
+                     std::vector<std::string> sesLibelles, double min, double max, Vec2d const& size)
+{
     if(Graphs[idGraph].second!=nullptr) // Verifie que la case n'est pas vide
         Graphs[idGraph].second->reset(); // Méthode reset pour écraser le graph déja présent
     Graphs[idGraph]=std::pair<std::string, std::unique_ptr<Graph>> (titreGraph, unique_ptr<Graph>(new Graph(sesLibelles, size,  min,  max)));
@@ -56,7 +62,8 @@ void Stats::addGraph(int idGraph, std::string const& titreGraph,
 }
 
 void Stats::reset()
-{/* Itère sur chaque courbe pour supprimer les valeurs */
+{
+    /* Itère sur chaque courbe pour supprimer les valeurs */
     for (auto& telGraph: Graphs) {
         telGraph.second.second->reset();
     }

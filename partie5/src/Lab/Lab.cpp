@@ -36,13 +36,15 @@ void Lab::addSwarm(Swarm* LeSwarm)
 {
     Petri.addSwarm(LeSwarm);
 }
-Swarm* Lab::getSwarmWithId(std::string id) const {
+Swarm* Lab::getSwarmWithId(std::string id) const
+{
     return Petri.getSwarmWithId(id);
 }
 
 //Tests des collisions
 bool Lab::doesCollideWithDish(CircularBody const& body) const
-{   /* Vérifie si l'objet en argument touche les bords de l'assiette: sa distance
+{
+    /* Vérifie si l'objet en argument touche les bords de l'assiette: sa distance
     par rapport au centre de l'assiette + son rayon, doit dépasser le rayon de l'asstiete */
 
     return (distance(body.getPosition(),Petri.getPosition())>=(Petri.getRadius()-body.getRadius()));
@@ -95,7 +97,8 @@ void Lab::resetGradientExponent()
 
 
 
-std::unordered_map<std::string, double> Lab::fetchData(const std::string & titreGraph) const{
+std::unordered_map<std::string, double> Lab::fetchData(const std::string & titreGraph) const
+{
     return Petri.fetchData(titreGraph);
 }
 

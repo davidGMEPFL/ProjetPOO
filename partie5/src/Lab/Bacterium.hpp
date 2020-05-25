@@ -24,32 +24,37 @@ protected:
 
     static std::unordered_map<std::string, double> Data4Graphs; //map des statistiques actuelles
 
+    virtual j::Value& getConfig() const =0; //accès aux paramètres du fichier app.jason, par polymorphisme
+
+
+    // A redéfinir pour chaque type de bactérie
+    virtual void move(sf::Time dt) =0;
+    virtual Bacterium* clone()const=0;
+
+    // Actions liées à la consommation
+    void eat(Nutriment& nutriment);    //méthode globale qui gère consommation
+    void consumeEnergy(Quantity qt);
+    void division(); //commune à tous les types de bactéries
 public:
 
     Bacterium(Quantity energie, Vec2d position, Vec2d direction, double rayon, MutableColor couleur);
 
-    virtual j::Value& getConfig() const =0; //accès aux paramètres du fichier app.jason, par polymorphisme
+
+
+
+    // Méthodes utilitaires
+    void mutate(); //fait muter tous les paramètres mutables
+    void drawOn(sf::RenderTarget&) const override; // Dessin commun à toutes les bactéries
+    void update(sf::Time dt) override; // Commun à toutes les bactéries, mais appelé pour les SimpleBacterium
+
     void addProperty(const std::string&, MutableNumber); //ajoute un paramètre mutable à la map
     MutableNumber& getProperty(const std::string&); //accès à la valeur du paramètre mutable
 
-// Méthodes utilitaires
-    void drawOn(sf::RenderTarget&) const override; // Dessin commun à toutes les bactéries
-    void update(sf::Time dt) override;
-    void mutate(); //fait muter tous les paramètres mutables
-
-// A redéfinir pour chaque type de bactérie
-    virtual void move(sf::Time dt) =0;
-    virtual Bacterium* clone()const=0;
-
-// Consommation nutriments
-    void eat(Nutriment& nutriment);    //méthode globale qui gère consommation
+    // Consommation nutriments
     virtual Quantity eatableQuantity(NutrimentA& nutriment) = 0; //permet polymorphisme sur bactérie
     virtual Quantity eatableQuantity(NutrimentB& nutriment) = 0;
 
-// Actions en fonction énergie
-    void consumeEnergy(Quantity qt);
     bool testMort()const;
-    void division(); //commune à tous les types de bactéries
 
 // Getters utilitaires
     double getMinEnDiv() const;       //énergie minimale nécessaire à la division

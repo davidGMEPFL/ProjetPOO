@@ -4,7 +4,8 @@
 #include "Utility/Types.hpp"
 #include "SFML/Graphics.hpp"
 
-class Nutriment : public CircularBody {
+class Nutriment : public CircularBody
+{
     Quantity nbNutriments;
 public:
     Nutriment(const Quantity&,const Vec2d&);

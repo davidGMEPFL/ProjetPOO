@@ -1,16 +1,16 @@
-#Programmation Orientée Objet (SV)
+# Programmation Orientée Objet (SV)
 
-##JOURNAL du groupe 56 (Checoury Annah-Ouriella-Violette & Nigri David)
+## JOURNAL du groupe 56 (Checoury Annah-Ouriella-Violette & Nigri David)
 
 *************************************************
-##03.03 (mardi)
+## 03.03 (mardi)
 
 - inscription du groupe
 - lecture de l'énonce 
 - tentative d'installation des environnements de programmation
 
 *************************************************
-##10.03 (mardi)
+## 10.03 (mardi)
 
 - lecture de l'énonce
 - suivi de l'énoncé étape par étape pour créer la classe CircularBody.
@@ -27,17 +27,20 @@
 ## 18.03 (mercredi)
 
 - Programmation <tt>Nutriment</tt> et suite des classes <tt>PetriDish</tt>, <tt>Lab</tt> 
-- Des problèmes divers ont requis la journée entière pour cette étape : problèmes d'entêtes, fautes d'orthographe, problèmes conceptuels...
+- Des problèmes divers ont requis la journée entière pour cette étape : problèmes d'entêtes,
+  fautes d'orthographe, problèmes conceptuels...
 
 *************************************************
 ##19.03 (jeudi)
 
-- Quelques problèmes mineurs posés sur le forum général (certaines choses n'étaient pas très claires dans l'énoncé), réglés rapidement
+- Quelques problèmes mineurs posés sur le forum général (certaines choses n'étaient pas très claires
+  dans l'énoncé), réglés rapidement
 
 *************************************************
 ## 23.03 (lundi)
 
-- l'ordinateur de David a complètement planté, emportant tout le travail effectué depuis l'étape 1 (et la possibilité de programmer)
+- l'ordinateur de David a complètement planté, emportant tout le travail effectué depuis l'étape 1
+ (et la possibilité de programmer)
 
 *************************************************
 ## 24.03 (mardi)
@@ -105,3 +108,91 @@
 
 - méthode move() beaucoup plus fonctionnelle : Test 14 passé (quelques détails à améliorer)
 - réponses aux questions
+
+*************************************************
+## 24.04 (vendredi)
+
+- suppression de définition à part entière de update() dans <tt>TwitchingBacterium</tt>
+- Test 14 passé
+- début programmation étape 4.2
+
+*************************************************
+## 28.04 (mardi)
+
+- problèmes divers rencontrés : présence de const / auto&, erreur segmentation fault,
+  conception de méthodes au bon endroit...
+- question à l'assistant et au forum sur la gestion des pointeurs
+
+*************************************************
+## 30.04 (jeudi)
+
+- programmation complète de <tt>Swarm</tt> et <tt>SwarmBacterium</tt>
+- Test 15 et 16  passés
+- réponse aux questions
+
+*************************************************
+## 04.05 (lundi)
+
+- début de programmation des méthodes eat()
+- questions de conecption se posent
+- problèmes d'inclusion des classes dans Nutriments et dans Bactéries
+
+*************************************************
+## 05.05 (mardi)
+
+- programmation complète des méthodes de l'étape 5.1
+- Test 17 passé
+- réponse aux questions
+*************************************************
+## 08.05 (vendredi)
+
+- début de programmation de la classe <tt>Stats</tt>
+- questions de conception se posent : doit-on utiliser des vector ou map, a-t-on besoin d'itérateur ?
+- interrogations sur méthode addGraph(), en partie répondues grâce au forum
+
+*************************************************
+## 12.05 (mardi)
+
+- questions de conception posées à l'assistant, qui nous aide à avancer
+- choix d'utiliser une map contenant une paire + création d'un itérateur
+- soucis d'affichage lors de l'exécution
+
+*************************************************
+## 13.05 (mercredi)
+
+- Test 18 passé
+- début de programmation de la méthode fetchData()
+- questions multiples : où placer les nouvelles méthodes utiles, lesquelles ont intérêt à
+  être virtuelles ou constantes ?
+
+*************************************************
+## 17.05 (dimanche)
+
+- méthodes liées à l'ajout de data dans les graphs
+- problème de crash lors d'exécution : segmentation fault
+
+*************************************************
+## 19.05 (mardi)
+
+- problème de crash lors d'exécution : segmentation fault
+- questions à l'assistant sur gestion erreur et sur contenu pointé par un itérateur
+- Test 19 passé, début code pour Test 20
+- ajout de courbes liées à 'speed', 'tumble'...
+
+*************************************************
+## 22.05 (vendredi)
+
+- Test 20 passé
+- quelques modifications apportées au code afin d'améliorer les exécutions précédentes
+- relecture et commentaires du projet
+- vérification des méthodes const, virtuelles, inclusions des classes...
+
+*************************************************
+
+
+## 24.05 (dimanche)
+
+- Modification de la méthode pour mettre à jour les graphs: une map static permet d'avoir les statistiques à jour sans rajouter de boucles itératives superflues. 
+- relecture et commentaires du projet
+
+*************************************************

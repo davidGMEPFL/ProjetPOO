@@ -14,9 +14,10 @@ NutrimentGenerator::NutrimentGenerator():
 
 
 void NutrimentGenerator::update(sf::Time dt)
-{/* En fonction du temps écoulé, la méthode génère un nutriment en remettant à zéro le chrono.
-    Selon le test de bernouilli, elle génèrera une source de NutrimentA ou de NutrimentB,
-    de position donnée par une loi normale, et de quantité aléatoire */
+{
+    /* En fonction du temps écoulé, la méthode génère un nutriment en remettant à zéro le chrono.
+       Selon le test de bernouilli, elle génèrera une source de NutrimentA ou de NutrimentB,
+       de position donnée par une loi normale, et de quantité aléatoire */
     TimeLastGen+=dt;
     Nutriment* pointNut;
 

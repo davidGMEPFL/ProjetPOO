@@ -46,12 +46,14 @@ void MutableNumber::mutate()
 
 MutableNumber MutableNumber::probability(double initialValue,
         double mutationProbability, double sigma)
-{   // Toujours entre 0 et 1
+{
+    // Toujours entre 0 et 1
     return MutableNumber (initialValue, mutationProbability, sigma, true, 0., true, 1.);
 }
 
 MutableNumber MutableNumber::probability(j::Value const& config)
-{   // Toujours entre 0 et 1
+{
+    // Toujours entre 0 et 1
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
                           config["sigma"].toDouble(), true, 0., true, 1.);
 
@@ -60,13 +62,15 @@ MutableNumber MutableNumber::probability(j::Value const& config)
 MutableNumber MutableNumber::positive(double initialValue,
                                       double mutationProbability, double sigma,
                                       bool hasMax, double max)
-{   // Toujours >=0, peut avoir une borne supérieure (max)
+{
+    // Toujours >=0, peut avoir une borne supérieure (max)
     return MutableNumber (initialValue, mutationProbability, sigma, true, 0., hasMax, max);
 }
 
 
 MutableNumber MutableNumber::positive(j::Value const& config, bool hasMax, double max)
-{   // Toujours >=0, peut avoir une borne supérieure (max)
+{
+    // Toujours >=0, peut avoir une borne supérieure (max)
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
                           config["sigma"].toDouble(), true, 0, hasMax, max);
 }

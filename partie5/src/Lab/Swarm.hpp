@@ -13,10 +13,12 @@ class Swarm: public Updatable
     std::vector<SwarmBacterium*> mesBacts; // Le Swarm connait les bactéries qui lui appartiennent
     SwarmBacterium* leader;
 
+
+    void findLeader();
 public:
     Swarm(std::string const&);
     void update(sf::Time dt) override;
-    void findLeader();
+
 
     j::Value& getConfig() const;
     void addSwarmBacterium(SwarmBacterium *); // Ajout des ptrs dans le Swarm

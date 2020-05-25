@@ -13,7 +13,8 @@ j::Value  NutrimentB::getConfig() const
 
 // IMPACT DIFFERENCIE :
 
-Quantity NutrimentB::eatenBy(Bacterium &bact) {     //polymorphisme sur bactéries
+Quantity NutrimentB::eatenBy(Bacterium &bact)       //polymorphisme sur bactéries
+{
     return bact.eatableQuantity(*this);
 }
 

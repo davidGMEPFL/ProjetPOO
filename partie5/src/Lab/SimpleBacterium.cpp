@@ -25,35 +25,7 @@ SimpleBacterium::SimpleBacterium(const Vec2d & position)
     Data4Graphs[s::SPEED]+=getProperty("speed").get();
 }
 
-j::Value& SimpleBacterium::getConfig() const
-{
-    return getAppConfig()["simple bacterium"];
-}
-
-// Méthodes utilitaires
-void SimpleBacterium::drawOn(sf::RenderTarget& target) const
-{
-    Bacterium::drawOn(target); // dessin corps bactérie
-
-    // Création de la flagelle
-    auto set_of_points = sf::VertexArray(sf::LinesStrip);
-    float x,y;
-    for (int i(0); i<30; i++) {
-        x = static_cast<float>(-i * rayon / 10.0 -rayon); //décalage du début de la flagelle,
-        //pour que la sinusoïde démarre à la surface du corps de la bactérie
-        y = static_cast<float>(rayon * sin(t) * sin(2 * i / 10.0));
-        set_of_points.append({{x, y}, couleur.get()});  // ajout des points à l'ensemble
-    }
-    auto transform = sf::Transform(); // déclare une matrice de transformation
-    // ici ensemble d'opérations comme des translations ou rotations faites  sur transform:
-    transform.translate(position);      // Déplace la flagelle à la position de la bactérie
-    transform.rotate(rotation/DEG_TO_RAD); // Rotation aligne progressivement avec la direction
-    target.draw(set_of_points, transform); // dessin de l'ensemble des points
-                                           // fait après leur transformation
-                                           // selon la matrice transform
-}
-
-
+// PRIVATE: méthodes de déplacement et personnelles
 void SimpleBacterium::update(sf::Time dt)
 {
 
@@ -88,7 +60,7 @@ void SimpleBacterium::update(sf::Time dt)
 
     // Rotation Flagelle
     auto const angleDiff = angleDelta(direction.angle(), rotation); // calcule la différence entre l'angle
-                                                        // de la flagelle instantannément et l'angle objectif
+    // de la flagelle instantannément et l'angle objectif
     auto dalpha = PI * dt.asSeconds();    // rotation max admissible en un temps dt
     dalpha = std::min(dalpha, std::abs(angleDiff)); // on ne peut tourner plus que de dalpha
 
@@ -99,7 +71,43 @@ void SimpleBacterium::update(sf::Time dt)
     //Variable pour le mouvement de la flagelle
     t += 3 * dt.asSeconds();
 }
+Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const
+{
+    // La force est nulle pour les SimpleBacterium
+    return Vec2d (0,0);
+}
+Vec2d SimpleBacterium::getSpeedVector()
+{
+    return direction*getProperty("speed").get();
+}
+j::Value& SimpleBacterium::getConfig() const
+{
+    return getAppConfig()["simple bacterium"];
+}
 
+
+// Méthodes utilitaires
+void SimpleBacterium::drawOn(sf::RenderTarget& target) const
+{
+    Bacterium::drawOn(target); // dessin corps bactérie
+
+    // Création de la flagelle
+    auto set_of_points = sf::VertexArray(sf::LinesStrip);
+    float x,y;
+    for (int i(0); i<30; i++) {
+        x = static_cast<float>(-i * rayon / 10.0 -rayon); //décalage du début de la flagelle,
+        //pour que la sinusoïde démarre à la surface du corps de la bactérie
+        y = static_cast<float>(rayon * sin(t) * sin(2 * i / 10.0));
+        set_of_points.append({{x, y}, couleur.get()});  // ajout des points à l'ensemble
+    }
+    auto transform = sf::Transform(); // déclare une matrice de transformation
+    // ici ensemble d'opérations comme des translations ou rotations faites  sur transform:
+    transform.translate(position);      // Déplace la flagelle à la position de la bactérie
+    transform.rotate(rotation/DEG_TO_RAD); // Rotation aligne progressivement avec la direction
+    target.draw(set_of_points, transform); // dessin de l'ensemble des points
+    // fait après leur transformation
+    // selon la matrice transform
+}
 Bacterium* SimpleBacterium::clone() const
 {
     Bacterium* ptr=new SimpleBacterium( *this); //création d'un pointeur sur une copie
@@ -113,10 +121,9 @@ Bacterium* SimpleBacterium::clone() const
     Data4Graphs[s::SPEED]+= ptr->getProperty("speed").get();
     return ptr;
 }
-
-// DEPLACEMENT :
 void SimpleBacterium::move(sf::Time dt)
-{   /*Calcul de la nouvelle position en fonction de la vitesse et de de la force.
+{
+    /*Calcul de la nouvelle position en fonction de la vitesse et de de la force.
     La vitesse est considérée constante, on ne la met pas à jour.
     L'energie de la bactérie diminue en fonction du déplacement */
     DiffEqResult Result(stepDiffEq(position, getSpeedVector(), dt,  *this));
@@ -124,27 +131,21 @@ void SimpleBacterium::move(sf::Time dt)
     position=Result.position;
 }
 
-Vec2d SimpleBacterium::getSpeedVector()
-{
-    return direction*getProperty("speed").get();
-}
-Vec2d SimpleBacterium::f(Vec2d position, Vec2d speed) const
-{   // La force est nulle pour les SimpleBacterium
-    return Vec2d (0,0);
-}
-
 
 
 //CONSOMMATION
-Quantity SimpleBacterium::eatableQuantity(NutrimentA& nutriment){
+Quantity SimpleBacterium::eatableQuantity(NutrimentA& nutriment)
+{
     return nutriment.eatenBy(*this);
 }
-Quantity SimpleBacterium::eatableQuantity(NutrimentB& nutriment) {
+Quantity SimpleBacterium::eatableQuantity(NutrimentB& nutriment)
+{
     return nutriment.eatenBy(*this);
 }
 
 // Destructeur : : prise en compte de la destruction de la bactérie dans les statistiques
-SimpleBacterium::~SimpleBacterium(){
+SimpleBacterium::~SimpleBacterium()
+{
     --Data4Graphs[s::SIMPLE_BACTERIA];
     Data4Graphs[s::BETTER]-=getProperty("tumble better").get();
     Data4Graphs[s::WORSE]-=getProperty("tumble worse").get();

@@ -10,29 +10,33 @@ Swarm::Swarm(std::string const& id): id(id)
 {
 }
 
-void Swarm::update(sf::Time dt) {
+void Swarm::update(sf::Time dt)
+{
     findLeader();
 
 }
 
-void Swarm::findLeader(){
-    if(!mesBacts.empty()){
+void Swarm::findLeader()
+{
+    if(!mesBacts.empty()) {
         leader=mesBacts[0];
-        for(auto& bact : mesBacts){
+        for(auto& bact : mesBacts) {
             if(getAppEnv().getPositionScore(bact->getPosition())>getAppEnv().getPositionScore(leader->getPosition()))
                 leader=bact;
-                    }
+        }
     }
 }
 
 
-void Swarm::addSwarmBacterium(SwarmBacterium* Bact){
+void Swarm::addSwarmBacterium(SwarmBacterium* Bact)
+{
     mesBacts.push_back(Bact);
 }
 
 
-void Swarm::popBact(SwarmBacterium* aDetruire){
-    for(auto& Bact : mesBacts){
+void Swarm::popBact(SwarmBacterium* aDetruire)
+{
+    for(auto& Bact : mesBacts) {
         if(Bact==aDetruire) Bact=nullptr;
     }
     mesBacts.erase(std::remove(mesBacts.begin(), mesBacts.end(), nullptr), mesBacts.end());
@@ -42,19 +46,23 @@ void Swarm::popBact(SwarmBacterium* aDetruire){
 
 
 
-Vec2d Swarm::getPosLeader()const{
+Vec2d Swarm::getPosLeader()const
+{
     return leader->getPosition();
 }
 
-SwarmBacterium *Swarm::getLeader() const{
+SwarmBacterium *Swarm::getLeader() const
+{
     return leader;
 }
 
-MutableColor Swarm::getColor()const{
+MutableColor Swarm::getColor()const
+{
     return MutableColor(getAppConfig()["swarms"][id]["color"]);
 }
 
-std::string Swarm::getId() const{
+std::string Swarm::getId() const
+{
     return id;
 }
 

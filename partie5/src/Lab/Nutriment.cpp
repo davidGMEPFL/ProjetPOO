@@ -13,7 +13,8 @@ Nutriment::Nutriment(const Quantity& nbNutriments,const Vec2d& position):
 
 // NOMBRE NUTRIMENTS
 Quantity Nutriment::takeQuantity(Quantity qtTaken)
-{/* Retournera la quantité qui a pu être prélevée */
+{
+    /* Retournera la quantité qui a pu être prélevée */
 
     Quantity ret(nbNutriments); //quantité nut dispo au début
     if((nbNutriments-=qtTaken)>=0) ret=qtTaken;
@@ -22,11 +23,14 @@ Quantity Nutriment::takeQuantity(Quantity qtTaken)
     return ret; //quantité de nut prélevée (soit qtTaken, soit nbNutriment)
 }
 void Nutriment::setQuantity(Quantity const& newQt)
-{/* Permettant de mettre à jour la quantité de nutriments */
+{
+    /* Permettant de mettre à jour la quantité de nutriments */
 
-    if(newQt>0){
+    if(newQt>0) {
         this->nbNutriments=newQt;
-    } else { nbNutriments=0 ; } //source aura une quantité nulle si on affecte valeur négative
+    } else {
+        nbNutriments=0 ;    //source aura une quantité nulle si on affecte valeur négative
+    }
     rayon=nbNutriments;        //rayon s'adapte de façon appropriée
 }
 bool Nutriment::testEpuise() const
@@ -36,7 +40,8 @@ bool Nutriment::testEpuise() const
 
 // Méthodes utilitaires
 void Nutriment::drawOn(sf::RenderTarget& target) const
-{/* Dessine le fond texturé du nutriment, adapté à son rayon, et affiche sa quantité juste au-dessus */
+{
+    /* Dessine le fond texturé du nutriment, adapté à son rayon, et affiche sa quantité juste au-dessus */
 
     //Dessin du Sprite
     auto const& texture = getAppTexture(getConfig()["texture"].toString());
@@ -45,7 +50,7 @@ void Nutriment::drawOn(sf::RenderTarget& target) const
     nutrimentSprite.setScale(2 * rayon / texture.getSize().x, 2 * rayon / texture.getSize().y);
     target.draw(nutrimentSprite);
 
-   //Dessin du nombre de nutriments si mode debugging activé
+    //Dessin du nombre de nutriments si mode debugging activé
     if (isDebugOn()) {
         auto const text = buildText(std::to_string(int(nbNutriments)),position + Vec2d(0,-100),
                                     getAppFont(),18,sf::Color::Black);
@@ -53,7 +58,8 @@ void Nutriment::drawOn(sf::RenderTarget& target) const
     }
 }
 void Nutriment::update(sf::Time dt)
-{/* Fait croître la quantité de nutriments à chaque pas de temps */
+{
+    /* Fait croître la quantité de nutriments à chaque pas de temps */
 
     double temp(getAppEnv().getTemperature());
     auto const& speed=getConfig()["growth"]["speed"].toDouble();
@@ -69,7 +75,8 @@ void Nutriment::update(sf::Time dt)
 }
 
 double Nutriment::getScoreNutriment(const Vec2d& pos) const
-{/* Calcul du score de la position choisie, par rapport au nutriment */
+{
+    /* Calcul du score de la position choisie, par rapport au nutriment */
 
     double puissance(getAppEnv().getGradientExponent());
     return nbNutriments/pow(distance(position, pos), puissance);
@@ -77,12 +84,14 @@ double Nutriment::getScoreNutriment(const Vec2d& pos) const
 }
 
 // Ajout du nb de nutriments
-void Nutriment::addToGraph(std::unordered_map<std::string, double>& GraphTemp) const{
-        GraphTemp[s::NUTRIMENT_QUANTITY] += nbNutriments;
+void Nutriment::addToGraph(std::unordered_map<std::string, double>& GraphTemp) const
+{
+    GraphTemp[s::NUTRIMENT_QUANTITY] += nbNutriments;
 }
 
 //Destructeur : décrémente le compteur de soucres de nutriments
-Nutriment::~Nutriment(){
+Nutriment::~Nutriment()
+{
     --Bacterium::accesMap()[s::NUTRIMENT_SOURCES];
 }
 
