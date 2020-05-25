@@ -1,7 +1,6 @@
 #pragma once
 #include "Interface/Updatable.hpp"
 #include "Utility/Vec2d.hpp"
-#include "SFML/Graphics.hpp"
 #include "Utility/MutableColor.hpp"
 #include "Bacterium.hpp"
 
@@ -16,14 +15,14 @@ class Swarm: public Updatable
 
 public:
     Swarm(std::string const&);
-    void update(sf::Time dt);
+    void update(sf::Time dt) override;
     void findLeader();
 
     j::Value& getConfig() const;
     void addSwarmBacterium(SwarmBacterium *); // Ajout des ptrs dans le Swarm
     void popBact(SwarmBacterium*); // Permet de retirer une bactérie du Swarm à sa destruction
 
-
+// Getters utiles
     Vec2d getPosLeader() const; // Necessaire pour le calcul de la force
     SwarmBacterium *getLeader() const;
     std::string getId() const;

@@ -1,7 +1,6 @@
 #include "SimpleBacterium.hpp"
 #include "Random/Random.hpp"
 #include "Application.hpp"
-#include "Utility/DiffEqSolver.hpp"
 #include "Utility/Constants.hpp"
 #include <Lab/NutrimentA.hpp>
 #include <Lab/NutrimentB.hpp>

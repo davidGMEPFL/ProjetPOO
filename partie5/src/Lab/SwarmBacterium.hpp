@@ -16,7 +16,7 @@ class SwarmBacterium : public Bacterium, public DiffEqFunction
 public:
     SwarmBacterium(const Vec2d&, Swarm* ); // Constructeur
 
-    j::Value& getConfig() const;
+    j::Value& getConfig() const override;
 
 
 // Méthodes utilitaires
@@ -27,7 +27,7 @@ public:
 
 // Déplacement des bactéries
     Vec2d f(Vec2d position, Vec2d speed) const override;
-    void move(sf::Time);
+    void move(sf::Time) override;
 
 
 // Consommation selon nutriment

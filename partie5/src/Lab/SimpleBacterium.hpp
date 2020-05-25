@@ -15,11 +15,11 @@ class SimpleBacterium : public Bacterium, public DiffEqFunction
 public:
     SimpleBacterium(const Vec2d &);
 
-    j::Value& getConfig() const;
+    j::Value& getConfig() const override;
 
 // Méthodes utilitaires
     void drawOn(sf::RenderTarget&) const override;
-    void update(sf::Time dt);
+    void update(sf::Time dt) override;
     Bacterium* clone() const override;
 
 // Déplacement de la bactérie

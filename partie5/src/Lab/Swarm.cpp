@@ -2,8 +2,6 @@
 #include <vector>
 #include <string.h>
 #include "Application.hpp"
-#include "Utility/MutableColor.hpp"
-#include "PetriDish.hpp"
 #include "SwarmBacterium.hpp"
 
 Swarm::Swarm(std::string const& id): id(id)

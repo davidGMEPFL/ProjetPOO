@@ -300,5 +300,12 @@
 
 
 *************************************************
+##Q5.3 : quelle(s) structure(s) de données choisissez-vous pour l'ensemble des graphes et l'ensemble des titres de la classe Stats.
+
+- Pour représenter l'ensemble des graphes, on utilise une map qui associe à chaque entier une pair titre/graph.
+
+*************************************************
 ##Q5.4 Quelle méthodes prévoyez-vous d'ajouter/modifier et dans quelles classes pour réaliser les décomptes souhaités et construire les ensembles new_data? en d'autres termes, comment pouvez-vous compter le nombre d'instances d'une certaine classe?
+
+- Pour compter le nombre d'instance, on crée des compteurs statiques, sous la forme d'une unordered map, qu'on incrémente/décrémente dans les constructeurs/destructeurs (et méthodes `clone()`).
 

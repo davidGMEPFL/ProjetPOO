@@ -20,7 +20,7 @@ void Stats::update(sf::Time dt)
         TimeLastUpdate=sf::Time::Zero; // reset timer
     }
 }
-void Stats::drawOn(sf::RenderTarget& TargetWindow){
+void Stats::drawOn(sf::RenderTarget& TargetWindow) const{
     activeID->second.second->drawOn(TargetWindow);
 }
 
@@ -30,7 +30,7 @@ void Stats::setActiveId(const int& id)
 {/* Met à jour l'identificateur actif */
     activeID= Graphs.find(id);
 }
-std::string Stats::getCurrentTitle()
+std::string Stats::getCurrentTitle() const
 {/* Retourne le titre associé à l'id actif */
     return activeID->second.first; //return activeID.second;
 }

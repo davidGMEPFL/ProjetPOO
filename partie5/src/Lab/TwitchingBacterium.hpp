@@ -1,7 +1,6 @@
 #pragma once
 #include "Bacterium.hpp"
 #include "Grip.hpp"
-#include <string>
 
 class NutrimentA; //prédéclaration pour éviter dépendance circulaire
 class NutrimentB;

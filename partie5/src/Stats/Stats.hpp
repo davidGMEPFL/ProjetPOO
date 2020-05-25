@@ -2,8 +2,10 @@
 #include <memory>
 #include <map>
 #include "Graph.hpp"
+#include "Interface/Drawable.hpp"
+#include "Interface/Updatable.hpp"
 
-class Stats 
+class Stats : public Drawable, public Updatable
 {
 
     std::map<int, std::pair<std::string, std::unique_ptr<Graph>>> Graphs; // map qui associe à tout indice une pair titre-graph
@@ -15,12 +17,12 @@ public:
     Stats(); //constructeur
 
 // Méthodes utiles
-    void update(sf::Time);
-    void drawOn(sf::RenderTarget& TargetWindow);
+    void update(sf::Time) override;
+    void drawOn(sf::RenderTarget& TargetWindow) const override;
 
 // Méthodes d'accès et d'indexation
     void setActiveId(const int&);
-    std::string getCurrentTitle();
+    std::string getCurrentTitle() const;
     void next();
     void previous();
 

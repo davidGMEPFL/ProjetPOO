@@ -53,7 +53,7 @@ void SwarmBacterium::addSwarmBacterium(SwarmBacterium *laBact, Swarm* saTroupe)c
 }
 
 
-
+// DEPLACEMENT :
 Vec2d SwarmBacterium::f(Vec2d position, Vec2d speed) const
 {   // Les bactéries son attirées par leur leader
     return SonSwarm->getConfig()["force factor"].toDouble()*(SonSwarm->getPosLeader() - position);
