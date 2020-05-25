@@ -17,12 +17,13 @@ public:
     MutableNumber(const double& valeur_, const double& proba_, const double& sigma,
                   const bool&  if_borne_inf_=false, const double& borneinf=0.0,
                   const bool& if_borne_sup_=false,const double& bornesup=0.0);
+    // Argument optionnel
 
-    MutableNumber(j::Value const&);
+    MutableNumber(j::Value const&); // Contructeur à partir des paramètres du fichier app.json
     MutableNumber()=default; //Constructeurs par défaut, utile pourr Bacterium::getProperty
 
-    double get() const ;
-    void set(double value);
+    double get() const ; // Retourne la valeur du MutableNumber
+    void set(double value); // Permet de donner une valeur en respecant les bornes
 
     void mutate();
 

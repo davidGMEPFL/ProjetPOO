@@ -5,8 +5,8 @@ Grip::Grip(const Vec2d& position,const double& rayon):
 {}
 
 
-void Grip::move(const Vec2d& vec)
-{
-    CircularBody::move(vec);
-}
+//void Grip::move(const Vec2d& vec)
+//{
+//    CircularBody::move(vec);
+//}
 

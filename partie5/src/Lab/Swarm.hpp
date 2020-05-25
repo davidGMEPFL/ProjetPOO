@@ -11,7 +11,7 @@ class SwarmBacterium;
 class Swarm: public Updatable
 {
     std::string id;
-    std::vector<SwarmBacterium*> mesBacts;
+    std::vector<SwarmBacterium*> mesBacts; // Le Swarm connait les bactéries qui lui appartiennent
     SwarmBacterium* leader;
 
 public:
@@ -20,11 +20,11 @@ public:
     void findLeader();
 
     j::Value& getConfig() const;
-    void addSwarmBacterium(SwarmBacterium *);
-    void popBact(SwarmBacterium*);
+    void addSwarmBacterium(SwarmBacterium *); // Ajout des ptrs dans le Swarm
+    void popBact(SwarmBacterium*); // Permet de retirer une bactérie du Swarm à sa destruction
 
 
-    Vec2d getPosLeader() const;
+    Vec2d getPosLeader() const; // Necessaire pour le calcul de la force
     SwarmBacterium *getLeader() const;
     std::string getId() const;
     MutableColor getColor() const;

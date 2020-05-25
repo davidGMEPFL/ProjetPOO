@@ -168,7 +168,7 @@
 *************************************************
 ## 17.05 (dimanche)
 
-- méthodes liées à l'ajout de data codées
+- méthodes liées à l'ajout de data dans les graphs
 - problème de crash lors d'exécution : segmentation fault
 
 *************************************************
@@ -186,5 +186,13 @@
 - quelques modifications apportées au code afin d'améliorer les exécutions précédentes
 - relecture et commentaires du projet
 - vérification des méthodes const, virtuelles, inclusions des classes...
+
+*************************************************
+
+
+## 24.05 (dimanche)
+
+- Modification de la méthode pour mettre à jour les graphs: une map static permet d'avoir les statistiques à jour sans rajouter de boucles itératives superflues. 
+- relecture et commentaires du projet
 
 *************************************************

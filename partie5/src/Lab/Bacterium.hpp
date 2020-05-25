@@ -33,7 +33,7 @@ public:
     MutableNumber& getProperty(const std::string&); //accès à la valeur du paramètre mutable
 
 // Méthodes utilitaires
-    void drawOn(sf::RenderTarget&) const;
+    void drawOn(sf::RenderTarget&) const; // Dessin commun à toutes les bactéries
     void update(sf::Time dt);
     void mutate(); //fait muter tous les paramètres mutables
 

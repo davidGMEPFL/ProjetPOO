@@ -11,7 +11,7 @@ private :
     std::array<MutableNumber, 4> RGBA; //Tableau comportant les 4 couleurs
 
 public:
-    MutableColor(j::Value const& config);
+    MutableColor(j::Value const& config); // Constructeur
 
     void mutate();
     sf::Color get() const;

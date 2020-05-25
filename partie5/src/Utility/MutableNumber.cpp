@@ -10,7 +10,7 @@ MutableNumber::MutableNumber(const double& valeur_, const double& proba_,
       borne_inf(borneinf), borne_sup(bornesup),
       ecart_type(sigma)
 {
-    set(valeur_) ;
+    set(valeur_) ; // utilisé pour forcer la valeur à respecter les bornes
 }
 
 MutableNumber::MutableNumber(j::Value const& config)
@@ -19,7 +19,7 @@ MutableNumber::MutableNumber(j::Value const& config)
       borne_inf(config["min"].toDouble()), borne_sup(config["max"].toDouble()),
       ecart_type(config["sigma"].toDouble())
 {
-    set(config["initial"].toDouble());
+    set(config["initial"].toDouble()); // utilisé pour forcer la valeur à respecter les bornes
 }
 
 double MutableNumber::get() const
@@ -29,33 +29,29 @@ double MutableNumber::get() const
 
 void MutableNumber::set(double value)
 {
-    //Plafonnement
-    if(if_borne_inf && value < borne_inf) {
+    //Plafonnement de la nouvelle valeur
+    if(if_borne_inf && value < borne_inf)
         value=borne_inf;
-    } else if(if_borne_sup && value > borne_sup) {
+    else if(if_borne_sup && value > borne_sup)
         value=borne_sup;
-    }
-    valeur=value;
+
+    valeur=value; // mise à jour de l'attribut
 }
 
 void MutableNumber::mutate()
 {
-    bernoulli(proba_mutation);
-    if(bernoulli(proba_mutation)) {
-        const double& nb_tire =  normal(0, ecart_type*ecart_type);
-        set(valeur+nb_tire);
-    }
+    if(bernoulli(proba_mutation))
+        set(valeur+normal(0, ecart_type*ecart_type));
 }
 
 MutableNumber MutableNumber::probability(double initialValue,
         double mutationProbability, double sigma)
-{
+{   // Toujours entre 0 et 1
     return MutableNumber (initialValue, mutationProbability, sigma, true, 0., true, 1.);
-
 }
 
 MutableNumber MutableNumber::probability(j::Value const& config)
-{
+{   // Toujours entre 0 et 1
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
                           config["sigma"].toDouble(), true, 0., true, 1.);
 
@@ -64,13 +60,13 @@ MutableNumber MutableNumber::probability(j::Value const& config)
 MutableNumber MutableNumber::positive(double initialValue,
                                       double mutationProbability, double sigma,
                                       bool hasMax, double max)
-{
+{   // Toujours >=0, peut avoir une borne supérieure (max)
     return MutableNumber (initialValue, mutationProbability, sigma, true, 0., hasMax, max);
 }
 
 
 MutableNumber MutableNumber::positive(j::Value const& config, bool hasMax, double max)
-{
+{   // Toujours >=0, peut avoir une borne supérieure (max)
     return MutableNumber (config["initial"].toDouble(), config["rate"].toDouble(),
                           config["sigma"].toDouble(), true, 0, hasMax, max);
 }

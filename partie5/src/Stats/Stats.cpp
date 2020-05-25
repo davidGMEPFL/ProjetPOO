@@ -13,9 +13,11 @@ void Stats::update(sf::Time dt)
 {
     TimeLastUpdate+=dt;
     if(TimeLastUpdate > sf::seconds(getAppConfig()["stats"]["refresh rate"].toDouble())) {
+        // itération sur toute la map: on récupère les données dans PetriDish
+        // et on utilise la méthode graph::updateData
         for (auto& unGraph : Graphs)
             unGraph.second.second->updateData(TimeLastUpdate, getAppEnv().fetchData(unGraph.second.first));
-        TimeLastUpdate=sf::Time::Zero;
+        TimeLastUpdate=sf::Time::Zero; // reset timer
     }
 }
 void Stats::drawOn(sf::RenderTarget& TargetWindow){
@@ -33,12 +35,12 @@ std::string Stats::getCurrentTitle()
     return activeID->second.first; //return activeID.second;
 }
 void Stats::next()
-{/* */
+{/* Prochain graph */
     ++activeID;
     if (Graphs.end() == activeID) activeID=Graphs.begin();
 }
 void Stats::previous()
-{/* */
+{/* Graph précédent */
     if (Graphs.begin() == activeID)  activeID = Graphs.end();
     --activeID;
 }
@@ -47,7 +49,8 @@ void Stats::previous()
 // AJOUT des séries :
 void Stats::addGraph(int idGraph, std::string const& titreGraph,
                      std::vector<std::string> sesLibelles, double min, double max, Vec2d const& size){
-    Graphs[idGraph].second.reset();
+    if(Graphs[idGraph].second!=nullptr) // Verifie que la case n'est pas vide
+        Graphs[idGraph].second->reset(); // Méthode reset pour écraser le graph déja présent
     Graphs[idGraph]=std::pair<std::string, std::unique_ptr<Graph>> (titreGraph, unique_ptr<Graph>(new Graph(sesLibelles, size,  min,  max)));
     activeID=Graphs.find(idGraph);
 }

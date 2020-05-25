@@ -49,8 +49,9 @@ Bacterium* TwitchingBacterium::clone() const
     ptr->mutate();
     ptr->position+=Vec2d(8.0,8.0);          //décalage du centre du clone
     ptr->moveGrip(Vec2d(1.0, -7.0));        // décalage orientation tentacule
-    getAppEnv().addBacterium(ptr, true);    //ajout du clone dans le vecteur des newBorn
+    getAppEnv().addBacterium(ptr, true);    //ajout du clone dans le vecteur des clones
 
+    /* prise en compte de la bactérie clonée dans les statistiques */
     ++Data4Graphs[s::TWITCHING_BACTERIA];
     Data4Graphs[s::TENTACLE_LENGTH]+= ptr->getProperty("tentacle length").get();
     Data4Graphs[s::TENTACLE_SPEED] += ptr->getProperty("tentacle speed").get();
@@ -64,7 +65,6 @@ Bacterium* TwitchingBacterium::clone() const
 void TwitchingBacterium::moveGrip(const Vec2d& delta)
 {
         grapin.move(delta);
-
 }
 
 

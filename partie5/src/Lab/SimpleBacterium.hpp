@@ -8,7 +8,7 @@ class NutrimentB;
 
 class SimpleBacterium : public Bacterium, public DiffEqFunction
 {
-    double t;
+    double t;   // timer pour l'ondulation de la flagelle
     double rotation; //angle rotation flagelle
     double ancien_score; // score position précédente
     double TimerTumble; // temps écoulé entre basculements
@@ -24,7 +24,7 @@ public:
 
 // Déplacement de la bactérie
     void move(sf::Time dt) override;
-    Vec2d f(Vec2d position, Vec2d speed) const override; //force de déplacement
+    Vec2d f(Vec2d position, Vec2d speed) const override; //force appliquée
     Vec2d getSpeedVector(); //retourne le vecteur vitesse
 
 // Consommation selon nutriment
